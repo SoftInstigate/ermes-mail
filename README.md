@@ -4,8 +4,10 @@ ErmesMail è un insieme di classi Java per inviare messaggi email tramite server
 
 ### SimpleMessage
 
-1. build dell'applicazione: `mvn install`
-2. avviare l'applicazione passando i seguenti parametri.
+1. Build dell'applicazione: `mvn install`
+2. Avviare l'applicazione passando i seguenti parametri:
+
+`java -jar ermes-mail.jar <from-email> <to-email> <mail-object> <mail-message> <smtp-hostname> <smtp-port> <username> <password>`
 
 
 *NB: Per inviare messaggi tramite SMTP Google è necessario configurare l'account gmail abilitando IMAP. [Maggiori informazioni](https://support.google.com/mail/answer/7126229)*
