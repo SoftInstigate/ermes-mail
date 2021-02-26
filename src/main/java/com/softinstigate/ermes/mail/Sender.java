@@ -1,34 +1,67 @@
 package com.softinstigate.ermes.mail;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 
 public class Sender {
 
+    private static final HashSet<String> ENV_SET = new HashSet<>();
+
+    static {
+        ENV_SET.add("SMTP_PORT");
+        ENV_SET.add("SMTP_HOSTNAME");
+        ENV_SET.add("FROM_EMAIL");
+        ENV_SET.add("USERNAME");
+        ENV_SET.add("PASSWORD");
+    }
+
     public static void main(String[] args) throws EmailException {
-        String from = args[0];
-        String to = args[1];
-        String object = args[2];
-        String message = args[3];
-        String hostName = args[4];
-        int smtpPort = Integer.parseInt(args[5]);
-        String username = args[6];
-        String password = args[7];
+        String emailType = args[0];
 
-        System.out.format("from='%s',  to='%s', message='%s'\n", from, to, message);
+        if (emailType.equals("text")) {
+            
+            try {
+                MailSenderSingleton.getInstance().sendTextEmail(args[1], args[2], args[3]);
+            } catch (MailSenderConfigurationException e) {
+                System.out.println("MailSenderSingleton misconfiguration: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Error while sending email: " + e.getMessage());
+            }
+            
+        } else if (emailType.equals("html") || emailType.equals("html-template")) {
+            
+            String htmlMsg = null;
 
-        var email = new SimpleEmail();
+            if (emailType.equals("html-template")) {
 
-        email.setHostName(hostName);
-        email.setSmtpPort(smtpPort);
-        email.setAuthenticator(new DefaultAuthenticator(username, password));
-        email.setSSLOnConnect(true);
-        email.setFrom(from);
-        email.setSubject(object);
-        email.setMsg(message);
-        email.addTo(to);
-        email.send();
+                var vars = new HashMap<String, String>();
+                String _vars = args[4];
+                String[] pairs = _vars.split(",");
+                for (String pair : pairs) {
+                    String[] keyValue = pair.split(":");
+                    vars.put(keyValue[0], keyValue[1]);
+                }
+
+                htmlMsg = HtmlUtils.parseTemplate(args[3], vars);
+
+            } else {
+                htmlMsg = args[3];
+            }
+
+            try {
+                MailSenderSingleton.getInstance().sendHtmlEmail(args[1], args[2], htmlMsg);
+            } catch (MailSenderConfigurationException e) {
+                System.out.println("MailSenderSingleton misconfiguration: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Error while sending email: " + e.getMessage());
+            }
+
+        } else {
+            System.out.println("Unrecognized email type");
+        }
+
     }
 }
