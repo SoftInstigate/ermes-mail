@@ -17,7 +17,6 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -30,10 +29,29 @@
             <artifactId>commons-email</artifactId>
             <version>1.5</version>
         </dependency>
-
     </dependencies>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>aws-snapshot</id>
+            <name>S3 Snapshot Repository</name>
+            <url>s3://maven.softinstigate.com/snapshot</url>
+        </snapshotRepository>
+        <repository>
+            <id>aws-release</id>
+            <name>S3 Release Repository</name>
+            <url>s3://maven.softinstigate.com/release</url>
+        </repository>
+    </distributionManagement>
+
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.springframework.build</groupId>
+                <artifactId>aws-maven</artifactId>
+                <version>5.0.0.RELEASE</version>
+            </extension>
+        </extensions>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

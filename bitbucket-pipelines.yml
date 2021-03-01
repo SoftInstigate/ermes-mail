@@ -13,7 +13,4 @@ pipelines:
         caches:
           - maven
         script:
-          - mvn -B package
-        after-script:
-          # Collect checkstyle results, if any, and convert to Bitbucket Code Insights.
-          - pipe: atlassian/checkstyle-report:0.2.0
+          -  mvn -B -Daws.accessKeyId="$MAVEN_USER" -Daws.secretKey="$MAVEN_PASSWORD" deploy
