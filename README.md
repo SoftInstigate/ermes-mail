@@ -16,4 +16,29 @@ ErmesMail è un insieme di classi Java per inviare messaggi email tramite server
 
 `javax.mail.AuthenticationFailedException: 535-5.7.8 Username and Password not accepted.` [Soluzione] (https://stackoverflow.com/questions/43406528/javamail-api-username-and-password-not-accepted-gmail)
 
+## Maven
 
+per utilizzare in altri progetti questo JAR con Maven è necessario includere il bucket S3 `maven.softinstigate.com` nel POM:
+
+```xml
+<repositories>
+    <repository>
+        <id>aws-release</id>
+        <name>S3 Release Repository</name>
+        <url>s3://maven.softinstigate.com/release</url>
+    </repository>
+    <repository>
+        <id>aws-snapshot</id>
+        <name>S3 Snapshot Repository</name>
+        <url>s3://maven.softinstigate.com/snapshot</url>
+    </repository>
+</repositories>
+```
+
+Inoltre è necessario fare la build passando le credenziali AWS
+
+```shell
+mvn -Daws.accessKeyId="$MAVEN_USER" -Daws.secretKey="$MAVEN_PASSWORD"
+```
+
+Le variabili `$MAVEN_USER` e `MAVEN_PASSWORD` sono le chiavi di accesso dell'utente `maven` nell'account AWS di SoftInstigate.
