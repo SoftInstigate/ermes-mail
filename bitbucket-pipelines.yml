@@ -8,7 +8,7 @@
 pipelines:
   default:
     - step:
-        name: Build and Test
+        name: Build and Deploy
         image: maven:3.6-jdk-11
         caches:
           - maven
