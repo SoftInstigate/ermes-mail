@@ -68,7 +68,7 @@
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.softinstigate.ermes.mail.Sender</mainClass>
+                                    <mainClass>com.softinstigate.ermes.mail.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

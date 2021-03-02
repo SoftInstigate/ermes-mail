@@ -1,20 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.softinstigate.ermes.mail;
 
 import java.util.Set;
 
 /**
- *
  * @author omar
  */
-public class MailSenderConfigurationException extends Exception {
+public class MailConfigurationException extends RuntimeException {
+
+    private static final long serialVersionUID = 8569152854221211947L;
 
     private static String getMessage(Set<String> missingProperties) {
-        var message = "Missing enviroment configuration paramenters: ";
+        var message = "Missing environment configuration parameters: ";
         var res = new String[1];
         res[0] = "";
 
@@ -24,15 +20,12 @@ public class MailSenderConfigurationException extends Exception {
 
         var concatRes = res[0];
         message += concatRes.substring(0, concatRes.length() - 2);
-        
+
         return message;
     }
-    
-    
 
-    public MailSenderConfigurationException(Set<String> missingProperties) {
+    public MailConfigurationException(Set<String> missingProperties) {
         super(getMessage(missingProperties));
-
     }
 
 }
