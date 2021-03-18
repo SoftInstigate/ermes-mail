@@ -13,4 +13,4 @@ pipelines:
         caches:
           - maven
         script:
-          -  mvn -B -Daws.accessKeyId="$MAVEN_USER" -Daws.secretKey="$MAVEN_PASSWORD" deploy
+          -  mvn -B -Daws.accessKeyId="$MAVEN_USER" -Daws.secretKey="$MAVEN_PASSWORD" -DskipITs deploy
