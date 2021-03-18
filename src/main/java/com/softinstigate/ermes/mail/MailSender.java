@@ -5,7 +5,6 @@
  */
 package com.softinstigate.ermes.mail;
 
-import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.HtmlEmail;
@@ -73,7 +72,7 @@ public class MailSender {
     private void setEmailParameters(String address, String subject, Email email) throws EmailException {
         email.setHostName(conf.get(SMTP_HOSTNAME));
         email.setSmtpPort(Integer.parseInt(conf.get(SMTP_PORT)));
-        email.setAuthenticator(new DefaultAuthenticator(conf.get(SMTP_USERNAME), conf.get(SMTP_PASSWORD)));
+        email.setAuthentication(conf.get(SMTP_USERNAME), conf.get(SMTP_PASSWORD));
         email.setSSLOnConnect(true);
         email.setSubject(subject);
         email.setFrom(conf.get(FROM_EMAIL));
