@@ -26,9 +26,19 @@ public class MailModel {
         this.recipients.add(recipient);
     }
 
+    public void setRecipients(List<Recipient> recipients) {
+        this.recipients.clear();
+        this.recipients.addAll(recipients);
+    }
+
     public void addAttachment(String url, String fileName, String description) {
         Attachment attachment = new Attachment(url, fileName, description);
         this.attachments.add(attachment);
+    }
+
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments.clear();
+        this.attachments.addAll(attachments);
     }
 
     public final List<Recipient> getRecipients() {
