@@ -3,8 +3,6 @@ package com.softinstigate.ermes.mail;
 import org.apache.commons.mail.EmailException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class MailServiceIT {
 
     @Test
@@ -20,11 +18,12 @@ class MailServiceIT {
                 false);
         MailService mail = new MailService(smtpConfig);
         MailModel model = new MailModel(
-                "Testo di <strong>prova</strong>.",
-                "sender@domain.com",
+                "dick.silly@domain.com",
                 "Dick Silly",
-                "Sender");
-        model.addRecipient("recipient@email.com", "John Doe", "Test");
+                "Integration Test",
+                "Testo di <strong>prova</strong>."
+        );
+        model.addRecipient("john.doe@email.com", "John Doe");
         mail.send(model);
     }
 }

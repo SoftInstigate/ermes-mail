@@ -12,11 +12,11 @@ public class Main {
                 false);
         MailService mail = new MailService(smtpConfig);
         MailModel model = new MailModel(
-                "Testo di <strong>prova</strong>.",
                 "sender@domain.com",
                 "Nome Cognome",
-                "Sender");
-        model.addRecipient("maurizio@email.com", "Maurizio", "Prova");
+                "Prova",
+                "Testo di <strong>prova</strong>.");
+        model.addRecipient("maurizio@email.com", "Maurizio");
         mail.send(model);
     }
 }
