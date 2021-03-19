@@ -12,7 +12,7 @@ public class SMTPConfigFromEnvironment {
     private final String FROM_EMAIL = "FROM_EMAIL";
     private final String SMTP_USERNAME = "SMTP_USERNAME";
     private final String SMTP_PASSWORD = "SMTP_PASSWORD";
-    private final String SMTP_SSL_ON = "SMTP_SSL_ON";             // optional, default is 'false'
+    private final String SMTP_SSL_ON = "SMTP_SSL_ON";       // optional, default is 'false'
     private final String SMTP_SSL_PORT = "SMTP_SSL_PORT";   // optional, default is "465"
 
     private final HashMap<String, String> conf;
