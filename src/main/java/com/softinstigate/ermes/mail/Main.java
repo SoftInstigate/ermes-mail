@@ -3,22 +3,21 @@ package com.softinstigate.ermes.mail;
 import org.apache.commons.mail.EmailException;
 
 public class Main {
-    public static void main(String[] args) throws EmailException, InterruptedException {
+    public static void main(String[] args) throws EmailException {
         SMTPConfig smtpConfig = new SMTPConfig(
                 "localhost",
                 1025,
                 "user",
                 "password",
                 false);
-        MailModel mailModel = new MailModel(
+        EmailModel emailModel = new EmailModel(
                 "sender@domain.com",
                 "Nome Cognome",
                 "Prova",
                 "Testo di <strong>prova</strong>.");
-        mailModel.addRecipient("maurizio@email.com", "Maurizio");
+        emailModel.addRecipient("maurizio@email.com", "Maurizio");
 
-        MailService mailService = new MailService(smtpConfig, 1);
-        mailService.send(mailModel);
-        mailService.shutdown(5);
+        EmailService emailService = new EmailService(smtpConfig);
+        emailService.send(emailModel);
     }
 }

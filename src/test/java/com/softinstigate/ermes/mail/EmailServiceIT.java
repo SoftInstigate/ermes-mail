@@ -3,15 +3,12 @@ package com.softinstigate.ermes.mail;
 import org.apache.commons.mail.EmailException;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.CountDownLatch;
-
-class MailServiceIT {
-
-    @Test
+class EmailServiceIT {
     /**
      * Start MailHog mock SMTP server first: https://github.com/mailhog/MailHog
      */
-    void send() throws EmailException, InterruptedException {
+    @Test
+    void send() throws EmailException {
         SMTPConfig smtpConfig = new SMTPConfig(
                 "localhost",
                 1025,
@@ -19,21 +16,15 @@ class MailServiceIT {
                 "password",
                 false);
 
-        MailModel mailModel = new MailModel(
+        EmailModel emailModel = new EmailModel(
                 "dick.silly@domain.com",
                 "Dick Silly",
                 "Integration Test - " + System.currentTimeMillis(),
                 "Testo di <strong>prova</strong>."
         );
-        mailModel.addRecipient("john.doe@email.com", "John Doe");
+        emailModel.addRecipient("john.doe@email.com", "John Doe");
 
-        CountDownLatch countdownLatch = new CountDownLatch(1);
-
-        MailService mailService = new MailService(smtpConfig, 1);
-        mailService.send(mailModel);
-        mailService.shutdown(5);
-
-        countdownLatch.countDown();
-        countdownLatch.await();
+        EmailService emailService = new EmailService(smtpConfig);
+        emailService.send(emailModel);
     }
 }

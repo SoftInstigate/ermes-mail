@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MailModel {
+/**
+ * Immutable email object model
+ */
+public class EmailModel {
     public final String from; // Sender's email address
     public final String senderFullName; // Sender's full name
     public final String subject;
@@ -12,7 +15,15 @@ public class MailModel {
     private final List<Recipient> recipients;
     private final List<Attachment> attachments;
 
-    public MailModel(String from, String senderFullName, String subject, String message) {
+    /**
+     * Copnstructor
+     *
+     * @param from           sender
+     * @param senderFullName sender full name
+     * @param subject        subject of the email
+     * @param message        message body
+     */
+    public EmailModel(String from, String senderFullName, String subject, String message) {
         this.from = from;
         this.senderFullName = senderFullName;
         this.subject = subject;
@@ -21,34 +32,66 @@ public class MailModel {
         this.attachments = new ArrayList<>();
     }
 
+    /**
+     * adds a recipient
+     *
+     * @param email recipient's email address
+     * @param name  recipient's full name
+     */
     public void addRecipient(String email, String name) {
         Recipient recipient = new Recipient(email, name);
         this.recipients.add(recipient);
     }
 
+    /**
+     * Replace the list of recipients
+     *
+     * @param recipients the new list of recipients
+     */
     public void setRecipients(List<Recipient> recipients) {
         this.recipients.clear();
         this.recipients.addAll(recipients);
     }
 
+    /**
+     * Add an attachment
+     *
+     * @param url         the attachment's url
+     * @param fileName    the attachment's filename
+     * @param description a description
+     */
     public void addAttachment(String url, String fileName, String description) {
         Attachment attachment = new Attachment(url, fileName, description);
         this.attachments.add(attachment);
     }
 
+    /**
+     * Replace the list of attachments
+     *
+     * @param attachments the new list of attachments
+     */
     public void setAttachments(List<Attachment> attachments) {
         this.attachments.clear();
         this.attachments.addAll(attachments);
     }
 
+    /**
+     * @return the list of recipients
+     */
     public final List<Recipient> getRecipients() {
         return Collections.unmodifiableList(recipients);
     }
 
+    /**
+     * @return the list of attachments
+     */
     public final List<Attachment> getAttachments() {
         return Collections.unmodifiableList(attachments);
     }
 
+    /**
+     * Immutable recipient object model
+     */
     public static class Recipient {
         public final String email;
         public final String name; // Full name
@@ -67,6 +110,9 @@ public class MailModel {
         }
     }
 
+    /**
+     * Immutable attachment object model
+     */
     public static class Attachment {
         public final String url;
         public final String fileName;

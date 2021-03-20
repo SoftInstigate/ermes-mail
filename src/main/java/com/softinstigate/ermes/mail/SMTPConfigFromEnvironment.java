@@ -34,7 +34,7 @@ public class SMTPConfigFromEnvironment {
         });
 
         if (!missingProps.isEmpty()) {
-            throw new MailConfigurationException(missingProps);
+            throw new EmailConfigurationException(missingProps);
         }
 
         this.smtp_config = new SMTPConfig(

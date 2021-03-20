@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * @author omar
  */
-public class MailConfigurationException extends RuntimeException {
+public class EmailConfigurationException extends RuntimeException {
 
     private static final long serialVersionUID = 8569152854221211947L;
 
@@ -24,7 +24,7 @@ public class MailConfigurationException extends RuntimeException {
         return message;
     }
 
-    public MailConfigurationException(Set<String> missingProperties) {
+    public EmailConfigurationException(Set<String> missingProperties) {
         super(getMessage(missingProperties));
     }
 
