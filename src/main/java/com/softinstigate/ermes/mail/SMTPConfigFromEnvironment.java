@@ -43,7 +43,7 @@ public class SMTPConfigFromEnvironment {
                 conf.get(SMTP_HOSTNAME),
                 conf.get(SMTP_PASSWORD),
                 Boolean.parseBoolean(conf.getOrDefault(SMTP_SSL_ON, "false")),
-                conf.getOrDefault(SMTP_SSL_PORT, "465")
+                conf.getOrDefault(SMTP_SSL_PORT, SMTPConfig.DEFAULT_SSL_PORT)
         );
     }
 
