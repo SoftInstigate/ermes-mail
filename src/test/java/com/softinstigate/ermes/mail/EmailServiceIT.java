@@ -24,7 +24,8 @@ class EmailServiceIT {
         );
         emailModel.addRecipient("john.doe@email.com", "John Doe");
 
-        EmailService emailService = new EmailService(smtpConfig);
+        EmailService emailService = new EmailService(smtpConfig, 3);
         emailService.send(emailModel);
+        emailService.shutdown();
     }
 }
