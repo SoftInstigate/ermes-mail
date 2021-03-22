@@ -1,6 +1,5 @@
 package com.softinstigate.ermes.mail;
 
-import org.apache.commons.mail.EmailException;
 import picocli.CommandLine;
 
 import java.util.concurrent.Callable;
