@@ -38,7 +38,7 @@ public class EmailService {
     }
 
     /**
-     * Send an email with explicit timeout
+     * Send emails asynchronously, using the ExecutorService
      *
      * @param model the email object to send
      */
@@ -47,6 +47,11 @@ public class EmailService {
         LOGGER.info("Sending emails asynchronously...");
     }
 
+    /**
+     * Shutdowns the ExecutorService
+     *
+     * @param executorShutdownTimeout timeout for executor.awaitTermination method
+     */
     public void shutdown(long executorShutdownTimeout) {
         executor.shutdown();
         try {
@@ -60,6 +65,9 @@ public class EmailService {
         }
     }
 
+    /**
+     * Shutdowns the ExecutorService using DEFAULT_EXECUTOR_SHUTDOWN_TIMEOUT
+     */
     public void shutdown() {
         this.shutdown(DEFAULT_EXECUTOR_SHUTDOWN_TIMEOUT);
     }

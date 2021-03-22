@@ -24,6 +24,9 @@ public class SendEmailTask implements Runnable {
         this.model = model;
     }
 
+    /**
+     * Send the EmailModel using the HtmlEmail instance
+     */
     @Override
     public void run() {
         LOGGER.info("Processing {}", model.toString());
@@ -46,6 +49,11 @@ public class SendEmailTask implements Runnable {
         }
     }
 
+    /**
+     * Attach included attachments to email
+     *
+     * @param model the EmailModel to process
+     */
     private void processAttachments(EmailModel model) {
         for (EmailModel.Attachment attachment : model.getAttachments()) {
             try {
