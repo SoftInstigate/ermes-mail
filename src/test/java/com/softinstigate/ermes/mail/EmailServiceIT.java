@@ -20,7 +20,7 @@ class EmailServiceIT {
                 "dick.silly@domain.com",
                 "Dick Silly",
                 "Integration Test - " + System.currentTimeMillis(),
-                "Testo di <strong>prova</strong>."
+                "This is a <strong>HTML</strong> message."
         );
         emailModel.addRecipient("john.doe@email.com", "John Doe");
 

@@ -13,8 +13,8 @@ public class Main {
         EmailModel emailModel = new EmailModel(
                 "sender@domain.com",
                 "Nome Cognome",
-                "Prova",
-                "Testo di <strong>prova</strong>.");
+                "Test",
+                "This is a <strong>HTML</strong> message.");
         emailModel.addRecipient("maurizio@email.com", "Maurizio");
 
         EmailService emailService = new EmailService(smtpConfig);
