@@ -6,12 +6,12 @@ import picocli.CommandLine;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "java -jar ermes-mail.jar", description = "Sends an email to the given recipient.")
-public class Main implements Callable {
+public class Main implements Callable<Integer> {
 
     @CommandLine.Option(names = {"-h", "--host"}, defaultValue = "localhost", description = "SMTP host")
     private String smtpHost;
 
-    @CommandLine.Option(names = {"-p", "--port"}, defaultValue = "1025", description = "SMTP port")
+    @CommandLine.Option(names = {"-p", "--port"}, defaultValue = "25", description = "SMTP port")
     private int smtpPort;
 
     @CommandLine.Option(names = {"-u", "--user"}, defaultValue = "", description = "SMTP user name")
@@ -47,7 +47,7 @@ public class Main implements Callable {
     @CommandLine.Option(names = {"--help"}, usageHelp = true, description = "display this help message")
     private boolean help;
 
-    public Integer call() throws EmailException {
+    public Integer call() {
         SMTPConfig smtpConfig = new SMTPConfig(
                 smtpHost,
                 smtpPort,
