@@ -2,16 +2,16 @@ package com.softinstigate.ermes.mail;
 
 public class SMTPConfig {
 
-    public static final String DEFAULT_SSL_PORT = "465";
+    public static final int DEFAULT_SSL_PORT = 465;
 
     public final String hostname;
     public final int port;
     public final String username;
     public final String password;
     public final boolean ssl;
-    public final String sslPort;
+    public final int sslPort;
 
-    public SMTPConfig(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword, boolean sslOn, String sslPort) {
+    public SMTPConfig(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword, boolean sslOn, int sslPort) {
         this.hostname = smtpHostname;
         this.port = smtpPort;
         this.username = smtpUsername;
@@ -32,7 +32,7 @@ public class SMTPConfig {
                 ", username='" + username + '\'' +
                 ", password='************'" +
                 ", ssl=" + ssl +
-                ", sslPort='" + sslPort + '\'' +
+                ", sslPort=" + sslPort +
                 '}';
     }
 }

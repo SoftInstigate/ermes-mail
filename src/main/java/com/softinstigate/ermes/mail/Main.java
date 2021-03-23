@@ -22,8 +22,8 @@ public class Main implements Callable<Integer> {
     @CommandLine.Option(names = {"-o", "--sslon"}, defaultValue = "false", description = "Use SSL")
     private boolean sslOn;
 
-    @CommandLine.Option(names = {"-l", "--sslport"}, defaultValue = SMTPConfig.DEFAULT_SSL_PORT, description = "SSL port (default is 465)")
-    private String sslPort;
+    @CommandLine.Option(names = {"-l", "--sslport"}, defaultValue = "465", description = "SSL port (default is 465)")
+    private int sslPort;
 
     @CommandLine.Option(names = {"-f", "--from"}, required = true, description = "FROM field")
     private String fromAddress;

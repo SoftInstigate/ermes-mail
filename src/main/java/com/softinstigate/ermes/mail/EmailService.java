@@ -33,7 +33,7 @@ public class EmailService {
         email.setSmtpPort(smtpConfig.port);
         email.setAuthentication(smtpConfig.username, smtpConfig.password);
         email.setSSLOnConnect(smtpConfig.ssl);
-        email.setSslSmtpPort(smtpConfig.sslPort);
+        email.setSslSmtpPort(String.valueOf(smtpConfig.sslPort));
 
         LOGGER.info("MailService initialized with {}", smtpConfig.toString());
     }
