@@ -50,19 +50,18 @@ public class SendEmailTask implements Callable<List<String>> {
             for (EmailModel.Recipient recipient : model.getRecipients()) {
                 try {
                     email.addTo(recipient.email, recipient.name);
-                    processAttachments(email, model);
+                    processAttachments(email, model, errors);
                     email.send();
+                    LOGGER.info("Email successfully sent to recipient <{}>", recipient.email);
                 } catch (EmailException ex) {
-                    LOGGER.error("Error with recipient <{}>", recipient.toString(), ex);
-                    errors.add(ex.getMessage());
+                    LOGGER.error("Error sending email to <{}>", recipient.email, ex);
+                    errors.add(String.format("Error sending email to <%s>: '%s'", recipient.email, ex.getMessage()));
                 }
             }
-            LOGGER.info("Email successfully sent to recipients: {}", email.getToAddresses());
-        } catch (EmailException e) {
-            LOGGER.error("Error sending emails: {}", email.toString(), e);
-            errors.add(e.getMessage());
+        } catch (EmailException ex) {
+            LOGGER.error("Email client error", ex);
+            errors.add(String.format("Email client error '%s'", ex.getMessage()));
         }
-
         return errors;
     }
 
@@ -72,7 +71,7 @@ public class SendEmailTask implements Callable<List<String>> {
      * @param email a HtmlEmail instance
      * @param model the EmailModel to process
      */
-    private void processAttachments(HtmlEmail email, EmailModel model) {
+    private void processAttachments(HtmlEmail email, EmailModel model, List<String> errors) {
         for (EmailModel.Attachment attachment : model.getAttachments()) {
             try {
                 EmailAttachment emailAttachment = new EmailAttachment();
@@ -83,8 +82,10 @@ public class SendEmailTask implements Callable<List<String>> {
                 email.attach(emailAttachment);
             } catch (MalformedURLException ex) {
                 LOGGER.error("Malformed attachment.url '{}'", attachment.url, ex);
+                errors.add(String.format("Malformed attachment.url '%s'", ex.getMessage()));
             } catch (EmailException ex) {
-                LOGGER.error("Error with attachment. {}", attachment.toString(), ex);
+                LOGGER.error("Error with attachment '{}'", attachment.toString(), ex);
+                errors.add(String.format("Error with attachment '%s'", ex.getMessage()));
             }
         }
     }
