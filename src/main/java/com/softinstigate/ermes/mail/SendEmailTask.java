@@ -16,11 +16,11 @@ public class SendEmailTask implements Runnable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SendEmailTask.class);
 
-    private final HtmlEmail email;
+    private final SMTPConfig smtpConfig;
     private final EmailModel model;
 
-    public SendEmailTask(HtmlEmail email, EmailModel model) {
-        this.email = email;
+    public SendEmailTask(SMTPConfig smtpConfig, EmailModel model) {
+        this.smtpConfig = smtpConfig;
         this.model = model;
     }
 
@@ -30,6 +30,13 @@ public class SendEmailTask implements Runnable {
     @Override
     public void run() {
         LOGGER.info("Processing {}", model.toString());
+
+        HtmlEmail email = new HtmlEmail();
+        email.setHostName(smtpConfig.hostname);
+        email.setSmtpPort(smtpConfig.port);
+        email.setAuthentication(smtpConfig.username, smtpConfig.password);
+        email.setSSLOnConnect(smtpConfig.ssl);
+        email.setSslSmtpPort(String.valueOf(smtpConfig.sslPort));
         try {
             email.setFrom(model.from, model.senderFullName);
             email.setSubject(model.subject);
@@ -37,7 +44,7 @@ public class SendEmailTask implements Runnable {
             for (EmailModel.Recipient recipient : model.getRecipients()) {
                 try {
                     email.addTo(recipient.email, recipient.name);
-                    processAttachments(model);
+                    processAttachments(email, model);
                     email.send();
                 } catch (EmailException ex) {
                     LOGGER.error("Error with recipient <{}>", recipient.toString(), ex);
@@ -54,7 +61,7 @@ public class SendEmailTask implements Runnable {
      *
      * @param model the EmailModel to process
      */
-    private void processAttachments(EmailModel model) {
+    private void processAttachments(HtmlEmail email, EmailModel model) {
         for (EmailModel.Attachment attachment : model.getAttachments()) {
             try {
                 EmailAttachment emailAttachment = new EmailAttachment();

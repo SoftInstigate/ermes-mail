@@ -16,7 +16,7 @@ public class EmailService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
     private static final long DEFAULT_EXECUTOR_SHUTDOWN_TIMEOUT = 10; // executor shutdown timeout in seconds
 
-    private final HtmlEmail email;
+    private final SMTPConfig smtpConfig;
     private final ExecutorService executor;
 
     /**
@@ -26,15 +26,8 @@ public class EmailService {
      * @param threadPoolSize the ExecutorService thread poll size
      */
     public EmailService(SMTPConfig smtpConfig, int threadPoolSize) {
-        email = new HtmlEmail();
+        this.smtpConfig = smtpConfig;
         executor = Executors.newFixedThreadPool(threadPoolSize);
-
-        email.setHostName(smtpConfig.hostname);
-        email.setSmtpPort(smtpConfig.port);
-        email.setAuthentication(smtpConfig.username, smtpConfig.password);
-        email.setSSLOnConnect(smtpConfig.ssl);
-        email.setSslSmtpPort(String.valueOf(smtpConfig.sslPort));
-
         LOGGER.info("MailService initialized with {}", smtpConfig.toString());
     }
 
@@ -44,7 +37,7 @@ public class EmailService {
      * @param model the email object to send
      */
     public void send(EmailModel model) {
-        executor.execute(new SendEmailTask(email, model));
+        executor.execute(new SendEmailTask(smtpConfig, model));
         LOGGER.info("Sending emails asynchronously...");
     }
 
