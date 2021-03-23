@@ -15,15 +15,14 @@ public class SMTPConfigFromEnvironment {
     private final String SMTP_SSL_ON = "SMTP_SSL_ON";       // optional, default is 'false'
     private final String SMTP_SSL_PORT = "SMTP_SSL_PORT";   // optional, default is "465"
 
-    private final HashMap<String, String> conf;
-    private final SMTPConfig smtp_config;
-
     public SMTPConfigFromEnvironment() {
-        this.conf = new HashMap<>();
+    }
+
+    public SMTPConfig build() {
         Set<String> CONFIG_ENV_VARS = new HashSet<>();
         Collections.addAll(CONFIG_ENV_VARS, SMTP_PORT, SMTP_HOSTNAME, FROM_EMAIL, SMTP_USERNAME, SMTP_PASSWORD);
         Set<String> missingProps = new HashSet<>();
-
+        HashMap<String, String> conf = new HashMap<>();
         CONFIG_ENV_VARS.forEach(env -> {
             var value = System.getenv(env);
             if (value == null) {
@@ -37,7 +36,7 @@ public class SMTPConfigFromEnvironment {
             throw new EmailConfigurationException(missingProps);
         }
 
-        this.smtp_config = new SMTPConfig(
+        return new SMTPConfig(
                 conf.get(SMTP_HOSTNAME),
                 Integer.parseInt(conf.get(SMTP_PORT)),
                 conf.get(SMTP_HOSTNAME),
@@ -45,9 +44,5 @@ public class SMTPConfigFromEnvironment {
                 Boolean.parseBoolean(conf.getOrDefault(SMTP_SSL_ON, "false")),
                 conf.getOrDefault(SMTP_SSL_PORT, SMTPConfig.DEFAULT_SSL_PORT)
         );
-    }
-
-    public SMTPConfig getSMTPConfig() {
-        return this.smtp_config;
     }
 }

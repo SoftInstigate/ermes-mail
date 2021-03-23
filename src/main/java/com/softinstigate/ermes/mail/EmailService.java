@@ -22,7 +22,8 @@ public class EmailService {
     /**
      * Constructor
      *
-     * @param smtpConfig the SMTP server credentials and configuration
+     * @param smtpConfig     the SMTP server credentials and configuration
+     * @param threadPoolSize the ExecutorService thread poll size
      */
     public EmailService(SMTPConfig smtpConfig, int threadPoolSize) {
         email = new HtmlEmail();
