@@ -1,14 +1,18 @@
 package com.softinstigate.ermes.mail;
 
-import org.apache.commons.mail.EmailException;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 class EmailServiceIT {
     /**
      * Start MailHog mock SMTP server first: https://github.com/mailhog/MailHog
      */
     @Test
-    void send() throws EmailException {
+    void send() throws ExecutionException, InterruptedException {
         SMTPConfig smtpConfig = new SMTPConfig(
                 "localhost",
                 1025,
@@ -25,7 +29,10 @@ class EmailServiceIT {
         emailModel.addRecipient("john.doe@email.com", "John Doe");
 
         EmailService emailService = new EmailService(smtpConfig, 3);
-        emailService.send(emailModel);
+        Future<List<String>> errors = emailService.send(emailModel);
+
+        assertTrue(errors.get().isEmpty());
+
         emailService.shutdown();
     }
 }

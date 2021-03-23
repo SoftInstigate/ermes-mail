@@ -1,11 +1,18 @@
 package com.softinstigate.ermes.mail;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
+import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @CommandLine.Command(name = "java -jar ermes-mail.jar", description = "Sends an email to the given recipient.")
 public class Main implements Callable<Integer> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     @CommandLine.Option(names = {"-h", "--host"}, defaultValue = "localhost", description = "SMTP host")
     private String smtpHost;
@@ -46,6 +53,7 @@ public class Main implements Callable<Integer> {
     @CommandLine.Option(names = {"--help"}, usageHelp = true, description = "display this help message")
     private boolean help;
 
+    @Override
     public Integer call() {
         SMTPConfig smtpConfig = new SMTPConfig(
                 smtpHost,
@@ -62,9 +70,22 @@ public class Main implements Callable<Integer> {
         emailModel.addRecipient(toAddress, recipientName);
 
         EmailService emailService = new EmailService(smtpConfig, 1);
-        emailService.send(emailModel);
+        Future<List<String>> errors = emailService.send(emailModel);
+
+        int callResult = 0;
+        try {
+            List<String> listOfErrors = errors.get();
+            if (!listOfErrors.isEmpty()) {
+                LOGGER.error("Errors sending emails: {}", listOfErrors.toString());
+                callResult = 1;
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            callResult = 1;
+        }
         emailService.shutdown();
-        return 0;
+
+        return callResult;
     }
 
     public static void main(String... args) {

@@ -1,11 +1,12 @@
 package com.softinstigate.ermes.mail;
 
-import org.apache.commons.mail.HtmlEmail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -35,10 +36,12 @@ public class EmailService {
      * Send emails asynchronously, using the ExecutorService
      *
      * @param model the email object to send
+     * @return a Future<List<String>> of errors. If the list is empty then no errors!
      */
-    public void send(EmailModel model) {
-        executor.execute(new SendEmailTask(smtpConfig, model));
+    public Future<List<String>> send(EmailModel model) {
+        Future<List<String>> errors = executor.submit(new SendEmailTask(smtpConfig, model));
         LOGGER.info("Sending emails asynchronously...");
+        return errors;
     }
 
     /**
