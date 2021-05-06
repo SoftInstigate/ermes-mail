@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import javax.activation.CommandMap;
+import javax.activation.MailcapCommandMap;
+
 /**
  * Runnable class to invoke the email.send() method in a thread
  */
@@ -37,6 +40,8 @@ public class SendEmailTask implements Callable<List<String>> {
         LOGGER.info("Processing {}", model.toString());
 
         final List<String> errors = new ArrayList<>();
+
+        setDefaultCommandMap();
         HtmlEmail email = new HtmlEmail();
         email.setHostName(smtpConfig.hostname);
         email.setSmtpPort(smtpConfig.port);
@@ -51,7 +56,6 @@ public class SendEmailTask implements Callable<List<String>> {
                 try {
                     email.addTo(recipient.email, recipient.name);
                     processAttachments(email, model, errors);
-                    Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
                     email.send();
                     LOGGER.info("Email successfully sent to recipient <{}>", recipient.email);
                 } catch (EmailException ex) {
@@ -89,5 +93,18 @@ public class SendEmailTask implements Callable<List<String>> {
                 errors.add(String.format("Error with attachment '%s'", ex.getMessage()));
             }
         }
+    }
+
+    /**
+     * Add explicit MailcapCommandMap (See https://stackoverflow.com/a/21183987)
+     */
+    private void setDefaultCommandMap() {
+        MailcapCommandMap mc = (MailcapCommandMap) CommandMap.getDefaultCommandMap();
+        mc.addMailcap("text/html;; x-java-content-handler=com.sun.mail.handlers.text_html");
+        mc.addMailcap("text/xml;; x-java-content-handler=com.sun.mail.handlers.text_xml");
+        mc.addMailcap("text/plain;; x-java-content-handler=com.sun.mail.handlers.text_plain");
+        mc.addMailcap("multipart/*;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed");
+        mc.addMailcap("message/rfc822;; x-java-content-handler=com.sun.mail.handlers.message_rfc822");
+        CommandMap.setDefaultCommandMap(mc);
     }
 }

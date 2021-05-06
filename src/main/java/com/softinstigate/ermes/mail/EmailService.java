@@ -9,9 +9,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import javax.activation.CommandMap;
-import javax.activation.MailcapCommandMap;
-
 /**
  * Receive a SMTP server configuration and send emails with HTML content
  */
@@ -32,13 +29,6 @@ public class EmailService {
     public EmailService(SMTPConfig smtpConfig, int threadPoolSize) {
         this.smtpConfig = smtpConfig;
         executor = Executors.newFixedThreadPool(threadPoolSize);
-        // Add explicit MailcapCommandMap (See https://stackoverflow.com/a/25650033)
-        MailcapCommandMap mc = (MailcapCommandMap) CommandMap.getDefaultCommandMap();
-        mc.addMailcap("text/html;; x-java-content-handler=com.sun.mail.handlers.text_html");
-        mc.addMailcap("text/xml;; x-java-content-handler=com.sun.mail.handlers.text_xml");
-        mc.addMailcap("text/plain;; x-java-content-handler=com.sun.mail.handlers.text_plain");
-        mc.addMailcap("multipart/*;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed");
-        mc.addMailcap("message/rfc822;; x-java-content- handler=com.sun.mail.handlers.message_rfc822");
         LOGGER.info("MailService initialized with {}", smtpConfig.toString());
     }
 
