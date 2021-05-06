@@ -51,6 +51,7 @@ public class SendEmailTask implements Callable<List<String>> {
                 try {
                     email.addTo(recipient.email, recipient.name);
                     processAttachments(email, model, errors);
+                    Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
                     email.send();
                     LOGGER.info("Email successfully sent to recipient <{}>", recipient.email);
                 } catch (EmailException ex) {
