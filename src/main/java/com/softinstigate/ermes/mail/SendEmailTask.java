@@ -41,8 +41,11 @@ public class SendEmailTask implements Callable<List<String>> {
 
         final List<String> errors = new ArrayList<>();
 
+        // Begin FIX for javax.activation.UnsupportedDataTypeException: no object DCH for MIME type multipart/alternative;
         setDefaultCommandMap();
         Thread.currentThread().setContextClassLoader(EmailService.class.getClassLoader());
+        // End Fix
+
         HtmlEmail email = new HtmlEmail();
         email.setHostName(smtpConfig.hostname);
         email.setSmtpPort(smtpConfig.port);
