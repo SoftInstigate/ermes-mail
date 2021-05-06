@@ -113,3 +113,6 @@ buildNumber.properties
 *.code-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/maven,intellij+all,vscode
+.vscode/
+.classpath
+.settings/
