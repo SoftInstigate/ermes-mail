@@ -42,6 +42,7 @@ public class SendEmailTask implements Callable<List<String>> {
         final List<String> errors = new ArrayList<>();
 
         setDefaultCommandMap();
+        Thread.currentThread().setContextClassLoader(EmailService.class.getClassLoader());
         HtmlEmail email = new HtmlEmail();
         email.setHostName(smtpConfig.hostname);
         email.setSmtpPort(smtpConfig.port);
