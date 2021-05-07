@@ -41,21 +41,22 @@ public class SendEmailTask implements Callable<List<String>> {
 
         final List<String> errors = new ArrayList<>();
 
-        // Begin FIX for javax.activation.UnsupportedDataTypeException: no object DCH for MIME type multipart/alternative;
-        setDefaultCommandMap();
-        Thread.currentThread().setContextClassLoader(EmailService.class.getClassLoader());
-        // End Fix
-
-        HtmlEmail email = new HtmlEmail();
-        email.setHostName(smtpConfig.hostname);
-        email.setSmtpPort(smtpConfig.port);
-        email.setAuthentication(smtpConfig.username, smtpConfig.password);
-        email.setSSLOnConnect(smtpConfig.ssl);
-        email.setSslSmtpPort(String.valueOf(smtpConfig.sslPort));
         try {
+            // Begin FIX for javax.activation.UnsupportedDataTypeException: no object DCH for MIME type multipart/alternative;
+            setDefaultCommandMap();
+            Thread.currentThread().setContextClassLoader(EmailService.class.getClassLoader());
+            // End Fix
+
+            HtmlEmail email = new HtmlEmail();
+            email.setHostName(smtpConfig.hostname);
+            email.setSmtpPort(smtpConfig.port);
+            email.setAuthentication(smtpConfig.username, smtpConfig.password);
+            email.setSSLOnConnect(smtpConfig.ssl);
+            email.setSslSmtpPort(String.valueOf(smtpConfig.sslPort));
             email.setFrom(model.from, model.senderFullName);
             email.setSubject(model.subject);
             email.setMsg(model.message);
+
             for (EmailModel.Recipient recipient : model.getRecipients()) {
                 try {
                     email.addTo(recipient.email, recipient.name);
@@ -67,10 +68,11 @@ public class SendEmailTask implements Callable<List<String>> {
                     errors.add(String.format("Error sending email to <%s>: '%s'", recipient.email, ex.getMessage()));
                 }
             }
-        } catch (EmailException ex) {
+        } catch (Exception ex) {
             LOGGER.error("Email client error", ex);
             errors.add(String.format("Email client error '%s'", ex.getMessage()));
-        }
+        } 
+        
         return errors;
     }
 
