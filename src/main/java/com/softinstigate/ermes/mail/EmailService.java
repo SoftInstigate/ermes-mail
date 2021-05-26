@@ -44,6 +44,17 @@ public class EmailService {
     }
 
     /**
+     * Send emails synchronously
+     *
+     * @param model the email object to send
+     * @return a List<String> of errors. If the list is empty then no errors!
+     */
+    public List<String> sendSynch(EmailModel model) {
+        SendEmailTask task = new SendEmailTask(smtpConfig, model);
+        return task.call();
+    }
+
+    /**
      * Shutdowns the ExecutorService
      *
      * @param executorShutdownTimeout timeout for executor.awaitTermination method
