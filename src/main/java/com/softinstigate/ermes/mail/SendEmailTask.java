@@ -34,7 +34,8 @@ public class SendEmailTask implements Callable<List<String>> {
     /**
      * Send the EmailModel using a HtmlEmail instance
      *
-     * @return a Future<List<String>> of errors. If the list is empty then no errors!
+     * @return a Future<List<String>> of errors. If the list is empty then no
+     *         errors!
      */
     @Override
     public List<String> call() {
@@ -42,13 +43,14 @@ public class SendEmailTask implements Callable<List<String>> {
 
         final List<String> errors = new ArrayList<>();
 
-        try {
-            // Begin FIX for javax.activation.UnsupportedDataTypeException: no object DCH for MIME type multipart/alternative;
-            setDefaultCommandMap();
-            Thread.currentThread().setContextClassLoader(EmailService.class.getClassLoader());
-            // End Fix
+        // Begin FIX for javax.activation.UnsupportedDataTypeException: no object DCH
+        // for MIME type multipart/alternative;
+        setDefaultCommandMap();
+        Thread.currentThread().setContextClassLoader(EmailService.class.getClassLoader());
+        // End Fix
 
-            HtmlEmail email = new HtmlEmail();
+        HtmlEmail email = new HtmlEmail();
+        try {
             email.setHostName(smtpConfig.hostname);
             email.setSmtpPort(smtpConfig.port);
             email.setAuthentication(smtpConfig.username, smtpConfig.password);
@@ -58,22 +60,30 @@ public class SendEmailTask implements Callable<List<String>> {
             email.setSubject(model.subject);
             email.setMsg(model.message);
 
-            for (EmailModel.Recipient recipient : model.getRecipients()) {
-                try {
-                    email.addTo(recipient.email, recipient.name);
-                    processAttachments(email, model, errors);
-                    email.send();
-                    LOGGER.info(String.format("Email successfully sent to recipient <%s>", recipient.email));
-                } catch (EmailException ex) {
-                    LOGGER.log(Level.SEVERE, String.format("Error sending email to <%s>", recipient.email), ex);
-                    errors.add(String.format("Error sending email to <%s>: '%s'", recipient.email, ex.getMessage()));
-                }
+            processAttachments(email, model, errors);
+
+            for (EmailModel.Recipient r : model.getToRecipients()) {
+                email.addTo(r.email, r.name);
             }
-        } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Email client error", ex);
-            errors.add(String.format("Email client error '%s'", ex.getMessage()));
-        } 
-        
+
+            for (EmailModel.Recipient r : model.getCcRecipients()) {
+                email.addCc(r.email, r.name);
+            }
+
+            for (EmailModel.Recipient r : model.getBccRecipients()) {
+                email.addBcc(r.email, r.name);
+            }
+
+            email.send();
+
+            LOGGER.info(String.format("Email successfully sent!\nTO: %s \nCC: %s \nBCC: %s", model.getToRecipients(),
+                    model.getCcRecipients(), model.getBccRecipients()));
+
+        } catch (EmailException ex) {
+            LOGGER.log(Level.SEVERE, "Error sending email.", ex);
+            errors.add(String.format("Error sending email: '%s'", ex.getMessage()));
+        }
+
         return errors;
     }
 

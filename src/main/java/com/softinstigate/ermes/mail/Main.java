@@ -66,7 +66,7 @@ public class Main implements Callable<Integer> {
                 senderName,
                 subject,
                 message);
-        emailModel.addRecipient(toAddress, recipientName);
+        emailModel.addTo(toAddress, recipientName);
 
         EmailService emailService = new EmailService(smtpConfig, 1);
         Future<List<String>> errors = emailService.send(emailModel);

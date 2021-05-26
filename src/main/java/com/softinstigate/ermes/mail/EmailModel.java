@@ -12,11 +12,13 @@ public class EmailModel {
     public final String senderFullName; // Sender's full name
     public final String subject;
     public final String message; // Message body
-    private final List<Recipient> recipients;
+    private final List<Recipient> to;
+    private final List<Recipient> cc;
+    private final List<Recipient> bcc;
     private final List<Attachment> attachments;
 
     /**
-     * Copnstructor
+     * Constructor
      *
      * @param from           sender
      * @param senderFullName sender full name
@@ -28,19 +30,40 @@ public class EmailModel {
         this.senderFullName = senderFullName;
         this.subject = subject;
         this.message = message;
-        this.recipients = new ArrayList<>();
+        this.to = new ArrayList<>();
+        this.cc = new ArrayList<>();
+        this.bcc = new ArrayList<>();
         this.attachments = new ArrayList<>();
     }
 
     /**
-     * adds a recipient
+     * adds a to recipient
      *
      * @param email recipient's email address
      * @param name  recipient's full name
      */
-    public void addRecipient(String email, String name) {
-        Recipient recipient = new Recipient(email, name);
-        this.recipients.add(recipient);
+    public void addTo(String email, String name) {
+        this.to.add(new Recipient(email, name));
+    }
+
+    /**
+     * adds a Cc recipient
+     *
+     * @param email cc's email address
+     * @param name  cc's full name
+     */
+    public void addCc(String email, String name) {
+        this.cc.add(new Recipient(email, name));
+    }
+
+    /**
+     * adds a Bcc recipient
+     *
+     * @param email bcc's email address
+     * @param name  bcc's full name
+     */
+    public void addBcc(String email, String name) {
+        this.bcc.add(new Recipient(email, name));
     }
 
     /**
@@ -48,9 +71,29 @@ public class EmailModel {
      *
      * @param recipients the new list of recipients
      */
-    public void setRecipients(List<Recipient> recipients) {
-        this.recipients.clear();
-        this.recipients.addAll(recipients);
+    public void setTo(List<Recipient> recipients) {
+        this.to.clear();
+        this.to.addAll(recipients);
+    }
+
+    /**
+     * Replace the list of Cc
+     *
+     * @param recipients the new list of Cc recipients
+     */
+    public void setCc(List<Recipient> recipients) {
+        this.cc.clear();
+        this.cc.addAll(recipients);
+    }
+
+    /**
+     * Replace the list of Bcc
+     *
+     * @param recipients the new list of Bcc recipients
+     */
+    public void setBcc(List<Recipient> recipients) {
+        this.bcc.clear();
+        this.bcc.addAll(recipients);
     }
 
     /**
@@ -76,10 +119,24 @@ public class EmailModel {
     }
 
     /**
-     * @return the list of recipients
+     * @return the list of to recipients
      */
-    public final List<Recipient> getRecipients() {
-        return Collections.unmodifiableList(recipients);
+    public final List<Recipient> getToRecipients() {
+        return Collections.unmodifiableList(to);
+    }
+
+    /**
+     * @return the list of to recipients
+     */
+    public final List<Recipient> getCcRecipients() {
+        return Collections.unmodifiableList(cc);
+    }
+
+    /**
+     * @return the list of to recipients
+     */
+    public final List<Recipient> getBccRecipients() {
+        return Collections.unmodifiableList(bcc);
     }
 
     /**
@@ -141,7 +198,9 @@ public class EmailModel {
                 ", senderFullName='" + senderFullName + '\'' +
                 ", subject='" + subject + '\'' +
                 ", message='" + message + '\'' +
-                ", recipients=" + recipients +
+                ", to=" + to +
+                ", cc=" + cc +
+                ", bcc=" + bcc +
                 ", attachments=" + attachments +
                 '}';
     }
