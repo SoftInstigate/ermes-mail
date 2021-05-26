@@ -3,8 +3,9 @@ package com.softinstigate.ermes.mail;
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,7 +21,7 @@ import javax.activation.MailcapCommandMap;
  */
 public class SendEmailTask implements Callable<List<String>> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SendEmailTask.class);
+    private static final Logger LOGGER = Logger.getLogger(SendEmailTask.class.getName());
 
     private final SMTPConfig smtpConfig;
     private final EmailModel model;
@@ -37,7 +38,7 @@ public class SendEmailTask implements Callable<List<String>> {
      */
     @Override
     public List<String> call() {
-        LOGGER.info("Processing {}", model.toString());
+        LOGGER.info("Processing " + model.toString());
 
         final List<String> errors = new ArrayList<>();
 
@@ -62,14 +63,14 @@ public class SendEmailTask implements Callable<List<String>> {
                     email.addTo(recipient.email, recipient.name);
                     processAttachments(email, model, errors);
                     email.send();
-                    LOGGER.info("Email successfully sent to recipient <{}>", recipient.email);
+                    LOGGER.info(String.format("Email successfully sent to recipient <%s>", recipient.email));
                 } catch (EmailException ex) {
-                    LOGGER.error("Error sending email to <{}>", recipient.email, ex);
+                    LOGGER.log(Level.SEVERE, String.format("Error sending email to <%s>", recipient.email), ex);
                     errors.add(String.format("Error sending email to <%s>: '%s'", recipient.email, ex.getMessage()));
                 }
             }
         } catch (Exception ex) {
-            LOGGER.error("Email client error", ex);
+            LOGGER.log(Level.SEVERE, "Email client error", ex);
             errors.add(String.format("Email client error '%s'", ex.getMessage()));
         } 
         
@@ -92,10 +93,10 @@ public class SendEmailTask implements Callable<List<String>> {
                 emailAttachment.setDescription(attachment.description);
                 email.attach(emailAttachment);
             } catch (MalformedURLException ex) {
-                LOGGER.error("Malformed attachment.url '{}'", attachment.url, ex);
+                LOGGER.log(Level.SEVERE, String.format("Malformed attachment.url '%s'", attachment.url), ex);
                 errors.add(String.format("Malformed attachment.url '%s'", ex.getMessage()));
             } catch (EmailException ex) {
-                LOGGER.error("Error with attachment '{}'", attachment.toString(), ex);
+                LOGGER.log(Level.SEVERE, String.format("Error with attachment '%s'", attachment.toString()), ex);
                 errors.add(String.format("Error with attachment '%s'", ex.getMessage()));
             }
         }

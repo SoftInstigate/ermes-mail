@@ -1,7 +1,6 @@
 package com.softinstigate.ermes.mail;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 import picocli.CommandLine;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.concurrent.Future;
 @CommandLine.Command(name = "java -jar ermes-mail.jar", description = "Sends an email to the given recipient.")
 public class Main implements Callable<Integer> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     @CommandLine.Option(names = {"-h", "--host"}, defaultValue = "localhost", description = "SMTP host")
     private String smtpHost;
@@ -76,7 +75,7 @@ public class Main implements Callable<Integer> {
         try {
             List<String> listOfErrors = errors.get();
             if (!listOfErrors.isEmpty()) {
-                LOGGER.error("Errors sending emails: {}", listOfErrors.toString());
+                LOGGER.severe("Errors sending emails: " + listOfErrors.toString());
                 callResult = 1;
             }
         } catch (InterruptedException | ExecutionException e) {

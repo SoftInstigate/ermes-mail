@@ -1,8 +1,7 @@
 package com.softinstigate.ermes.mail;
 
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +14,7 @@ import java.util.concurrent.Future;
  */
 class EmailServiceIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceIT.class);
+    private static final Logger LOGGER = Logger.getLogger(EmailServiceIT.class.getName());
 
     @Test
     void send() throws ExecutionException, InterruptedException {
@@ -65,7 +64,7 @@ class EmailServiceIT {
         List<String> errors = futureErrors.get();
         emailService.shutdown();
 
-        LOGGER.info("Errors: {}", errors.toString());
+        LOGGER.severe("Errors: " + errors.toString());
         assertFalse(errors.isEmpty());
     }
 }

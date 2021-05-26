@@ -1,7 +1,6 @@
 package com.softinstigate.ermes.mail;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -14,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class EmailService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
+    private static final Logger LOGGER = Logger.getLogger(EmailService.class.getName());
     private static final long DEFAULT_EXECUTOR_SHUTDOWN_TIMEOUT = 10; // executor shutdown timeout in seconds
 
     private final SMTPConfig smtpConfig;
@@ -29,7 +28,7 @@ public class EmailService {
     public EmailService(SMTPConfig smtpConfig, int threadPoolSize) {
         this.smtpConfig = smtpConfig;
         executor = Executors.newFixedThreadPool(threadPoolSize);
-        LOGGER.info("MailService initialized with {}", smtpConfig.toString());
+        LOGGER.info("MailService initialized with " + smtpConfig.toString());
     }
 
     /**
@@ -55,7 +54,7 @@ public class EmailService {
             if (executor.awaitTermination(executorShutdownTimeout, TimeUnit.SECONDS)) {
                 LOGGER.info("ExecutorService terminated normally after shutdown request.");
             } else {
-                LOGGER.warn("ExecutorService timeout elapsed: some emails may not have been sent.");
+                LOGGER.warning("ExecutorService timeout elapsed: some emails may not have been sent.");
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
