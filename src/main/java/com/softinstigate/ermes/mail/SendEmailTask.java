@@ -58,7 +58,7 @@ public class SendEmailTask implements Callable<List<String>> {
             email.setSslSmtpPort(String.valueOf(smtpConfig.sslPort));
             email.setFrom(model.from, model.senderFullName);
             email.setSubject(model.subject);
-            email.setMsg(model.message);
+            email.setHtmlMsg(model.message);
 
             processAttachments(email, model, errors);
 
