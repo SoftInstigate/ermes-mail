@@ -51,6 +51,7 @@ public class SendEmailTask implements Callable<List<String>> {
 
         HtmlEmail email = new HtmlEmail();
         try {
+            email.setCharset("UTF-8");
             email.setHostName(smtpConfig.hostname);
             email.setSmtpPort(smtpConfig.port);
             email.setAuthentication(smtpConfig.username, smtpConfig.password);
