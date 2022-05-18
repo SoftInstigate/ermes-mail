@@ -30,7 +30,7 @@ public class SMTPConfig {
                 "hostname='" + hostname + '\'' +
                 ", port=" + port +
                 ", username='" + username + '\'' +
-                ", password='"+ password + '\'' +
+                //", password='"+ password + '\'' +
                 ", ssl=" + ssl +
                 ", sslPort=" + sslPort +
                 '}';
