@@ -1,11 +1,10 @@
 image: maven:3.8-openjdk-17
 
 pipelines:
-  tags:
-    '*':
-      - step:
-          name: Build and Deploy tags
-          caches:
-            - maven
-          script:
-            - mvn -B -Daws.accessKeyId="$MAVEN_USER" -Daws.secretKey="$MAVEN_PASSWORD" -DskipITs deploy
+  default:
+    - step:
+        name: Build
+        caches:
+          - maven
+        script:
+          - mvn -B clean package
