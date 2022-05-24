@@ -1,3 +1,22 @@
+/*-
+ * ========================LICENSE_START=================================
+ * ermes-mail
+ * %%
+ * Copyright (C) 2021 - 2022 SoftInstigate srl
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =========================LICENSE_END==================================
+ */
 package com.softinstigate.ermes.mail;
 
 import org.apache.commons.mail.EmailAttachment;
@@ -25,14 +44,33 @@ public class SendEmailTask implements Callable<List<String>> {
 
     private final SMTPConfig smtpConfig;
     private final EmailModel model;
+    private final String charset;
 
-    public SendEmailTask(SMTPConfig smtpConfig, EmailModel model) {
+    /**
+     * Main constructor
+     * 
+     * @param smtpConfig a SMTPConfig object
+     * @param model      a EmailModel object
+     * @param charset    a charset (default is UTF-8)
+     */
+    public SendEmailTask(SMTPConfig smtpConfig, EmailModel model, String charset) {
         this.smtpConfig = smtpConfig;
         this.model = model;
+        this.charset = charset;
     }
 
     /**
-     * Send the EmailModel using a HtmlEmail instance
+     * Constructor with default UTF-8 charset
+     * 
+     * @param smtpConfig a SMTPConfig object
+     * @param model      a EmailModel object
+     */
+    public SendEmailTask(SMTPConfig smtpConfig, EmailModel model) {
+        this(smtpConfig, model, "UTF-8");
+    }
+
+    /**
+     * Send the EmailModel using an Apache Commons' HtmlEmail instance
      *
      * @return a Future<List<String>> of errors. If the list is empty then no
      *         errors!
@@ -51,7 +89,7 @@ public class SendEmailTask implements Callable<List<String>> {
 
         HtmlEmail email = new HtmlEmail();
         try {
-            email.setCharset("UTF-8");
+            email.setCharset(charset);
             email.setHostName(smtpConfig.hostname);
             email.setSmtpPort(smtpConfig.port);
             email.setAuthentication(smtpConfig.username, smtpConfig.password);
@@ -82,7 +120,7 @@ public class SendEmailTask implements Callable<List<String>> {
 
         } catch (EmailException ex) {
             LOGGER.log(Level.SEVERE, "Error sending email.", ex);
-            errors.add(String.format("Error sending email: '%s'", ex.getMessage()));
+            errors.add(ex.getMessage());
         }
 
         return errors;
