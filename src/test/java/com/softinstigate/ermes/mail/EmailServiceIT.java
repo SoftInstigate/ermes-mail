@@ -39,7 +39,7 @@ class EmailServiceIT {
                                 "Integration Test - " + System.currentTimeMillis(),
                                 "This is a <strong>HTML</strong> message.");
                 emailModel.addTo("john.doe@email.com", "John Doe");
-                emailModel.addTo("serena.wiliamns@email.com", "Serena Wiliams");
+                emailModel.addTo("serena.wiliams@email.com", "Serena Wiliams");
                 emailModel.addCc("tom.clancy@email.com", "Tom Clancy");
                 emailModel.addBcc("ann.smith@email.com", "Ann Smith");
 
