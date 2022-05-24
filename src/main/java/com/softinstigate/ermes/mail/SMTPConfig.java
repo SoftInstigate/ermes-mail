@@ -1,5 +1,28 @@
+/*-
+ * ========================LICENSE_START=================================
+ * ermes-mail
+ * %%
+ * Copyright (C) 2021 - 2022 SoftInstigate srl
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =========================LICENSE_END==================================
+ */
 package com.softinstigate.ermes.mail;
 
+/**
+ * SMTPConfig holds the SMTP server configuration, which is used by the
+ * EmailService class
+ */
 public class SMTPConfig {
 
     public static final int DEFAULT_SSL_PORT = 465;
@@ -11,7 +34,8 @@ public class SMTPConfig {
     public final boolean ssl;
     public final int sslPort;
 
-    public SMTPConfig(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword, boolean sslOn, int sslPort) {
+    public SMTPConfig(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword, boolean sslOn,
+            int sslPort) {
         this.hostname = smtpHostname;
         this.port = smtpPort;
         this.username = smtpUsername;
@@ -21,7 +45,7 @@ public class SMTPConfig {
     }
 
     public SMTPConfig(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword, boolean sslOn) {
-        this(smtpHostname, smtpPort, smtpUsername, smtpPassword, sslOn, DEFAULT_SSL_PORT); // default to standard SSL port
+        this(smtpHostname, smtpPort, smtpUsername, smtpPassword, sslOn, DEFAULT_SSL_PORT);
     }
 
     @Override
@@ -30,7 +54,6 @@ public class SMTPConfig {
                 "hostname='" + hostname + '\'' +
                 ", port=" + port +
                 ", username='" + username + '\'' +
-                //", password='"+ password + '\'' +
                 ", ssl=" + ssl +
                 ", sslPort=" + sslPort +
                 '}';
