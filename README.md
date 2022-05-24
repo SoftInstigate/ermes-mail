@@ -1,89 +1,108 @@
 # README
 
-ErmesMail è un insieme di classi Java per inviare messaggi email tramite server SMTP .
+ErmesMail is a set of Java classes for sending e-mail messages asynchronously, via SMTP servers.
 
-## Build ed esecuzione
+It can be embeded in your Java project as a tiny warapper for the Apache Commons Email library
+https://commons.apache.org/proper/commons-email/
 
-1. Build dell'applicazione: `mvn package`
-2. Avviare l'applicazione passando i seguenti parametri:
+Alternatively, it can be used as a command line utility.
+
+It has been developed in Java 17 and built with Maven 3.8.
+
+## Build and execution
+
+1. Build the application with maven: `mvn package`.
+2. Start the application by passing the following parameters:
 
 ```shell
 $ java -jar target/ermes-mail.jar --help
 
-Usage: java -jar ermes-mail.jar [-o] [--help] [-P[=<password>]]
-                                -f=<fromAddress> [-h=<smtpHost>] [-l=<sslPort>]
-                                -m=<message> [-n=<senderName>] [-p=<smtpPort>]
-                                [-r=<recipientName>] -s=<subject>
-                                -t=<toAddress> [-u=<user>]
-Sends an email to the given recipient.
-  -f, --from=<fromAddress>   FROM field
-  -h, --host=<smtpHost>      SMTP host
-      --help                 display this help message
-  -l, --sslport=<sslPort>    SSL port (default is 465)
-  -m, --message=<message>    Message body (can be HTML)
-  -n, --sender=<senderName>  Sender full name (optional)
-  -o, --sslon                Use SSL
-  -p, --port=<smtpPort>      SMTP port
+Usage: java -jar ermes-mail.jar [-v] [--help] [--sslon] [-P[=<password>]]
+                                -b=<message> -f=<fromAddress> [-h=<smtpHost>]
+                                [-n=<senderName>] [-p=<smtpPort>] -s=<subject>
+                                [--sslport=<sslPort>] [-u=<user>]
+                                [--bcc=<bccList>[,<bccList>...]...]...
+                                [--cc=<ccList>[,<ccList>...]...]...
+                                --to=<toList>[,<toList>...]... [--to=<toList>[,
+                                <toList>...]...]...
+Sends an HTML email to the given recipient(s).
+  -h, --host=<smtpHost>      SMTP host.
+  -p, --port=<smtpPort>      SMTP port.
+  -u, --user=<user>          SMTP user name.
   -P, --password[=<password>]
-                             SMTP user password
-  -r, --recipient=<recipientName>
-                             Recipient full name (optional)
-  -s, --subject=<subject>    Subject
-  -t, --to=<toAddress>       TO field
-  -u, --user=<user>          SMTP user name
+                             SMTP user password.
+      --sslon                Use SSL.
+      --sslport=<sslPort>    SSL port (default is 465).
+  -f, --from=<fromAddress>   FROM field.
+  -n, --sender=<senderName>  Sender full name (optional).
+  -s, --subject=<subject>    Subject.
+  -b, --body=<message>       Message body (can be HTML).
+      --to=<toList>[,<toList>...]...
+                             List of mandatory TO recipients.
+      --cc=<ccList>[,<ccList>...]...
+                             List of optional CC recipients.
+      --bcc=<bccList>[,<bccList>...]...
+                             List of optional BCC recipients.
+      --help                 display this help message.
+  -v, --version              print version information and exit.
+Copyright(c) 2022 SoftInstigate srl (https://www.softinstigate.com)
 ```
 
-## Esempi
+## Examples
 
-Esempio invio mail a [MailHog](https://github.com/mailhog/MailHog) installato localmente
+### Send a test email message to MailHog
+
+To test the sending of e-mails, we suggest using a local SMTP mock server like [MailHog](https://github.com/mailhog/MailHog).
+
+Please look [here](https://github.com/mailhog/MailHog#installation) for MailHogs's installation instructions.
+
+After executing MailHog (usually with the `MailHog` command) you can send your first HTML email message to `localhost` with ErmesEmail:
 
 ```shell
 $ java -jar target/ermes-mail.jar -h localhost -p 1025 \
-  -f sender@email.com -s "test" -m "Prova invio mail <b>HTML</b>." \
-  -t receiver@email.com
+  -f sender@email.com -s "test" -b "This is a <strong>HTML</strong> test email." \
+  --to receiver@email.com
   
-18:54:18.560 [main] INFO com.softinstigate.ermes.mail.EmailService - MailService initialized with SMTPConfig{hostname='localhost', port=1025, username='', password='************', ssl=false, sslPort='465'}
-18:54:18.564 [main] INFO com.softinstigate.ermes.mail.EmailService - Sending emails asynchronously...
-18:54:18.597 [pool-1-thread-1] INFO com.softinstigate.ermes.mail.SendEmailTask - Processing MailModel{from='sender@email.com', senderFullName='null', subject='test', message='Prova invio mail <b>HTML</b>.', recipients=[Recipient{email='receiver@email.com', name='null'}], attachments=[]}
-18:54:18.767 [pool-1-thread-1] INFO com.softinstigate.ermes.mail.SendEmailTask - Email successfully sent to recipients: [receiver@email.com]
-18:54:18.768 [main] INFO com.softinstigate.ermes.mail.EmailService - ExecutorService terminated normally after shutdown request.
+mag 24, 2022 4:46:16 PM com.softinstigate.ermes.mail.EmailService <init>
+INFORMAZIONI: MailService initialized with SMTPConfig{hostname='localhost', port=1025, username='', ssl=false, sslPort=465}
+mag 24, 2022 4:46:16 PM com.softinstigate.ermes.mail.EmailService send
+INFORMAZIONI: Sending emails asynchronously...
+mag 24, 2022 4:46:16 PM com.softinstigate.ermes.mail.SendEmailTask call
+INFORMAZIONI: Processing MailModel{from='sender@email.com', senderFullName='null', subject='test', message='This is a <strong>HTML</strong> test email.', to=[Recipient{email='receiver@email.com', name='null'}], cc=[], bcc=[], attachments=[]}
+mag 24, 2022 4:46:16 PM com.softinstigate.ermes.mail.SendEmailTask call
+INFORMAZIONI: Email successfully sent!
+TO: [Recipient{email='receiver@email.com', name='null'}]
+CC: []
+BCC: []
+mag 24, 2022 4:46:16 PM com.softinstigate.ermes.mail.EmailService shutdown
+INFORMAZIONI: ExecutorService terminated normally after shutdown request.```
 ```
 
-
-Esempio invio PEC con Legalmail di Infocert:
-
-```shell
-$ java -jar target/ermes-mail.jar -h sendm.cert.legalmail.it -o \
-  -u M6774147 -P ************ \
-  -f maurizio.turatti@legalmail.it -s "test PEC" \
-  -m "Prova invio PEC da Legalmail." -t andrea.dicesare@ingpec.eu
-```
-
-*NB: Per inviare messaggi tramite SMTP Google è necessario configurare l'account gmail abilitando IMAP. [Maggiori informazioni](https://support.google.com/mail/answer/7126229)*
+> Note: To send messages via Google SMTP, it is necessary to configure your Gmail account by enabling IMAP. [More information](https://support.google.com/mail/answer/7126229)
 
 ## Maven
 
-per utilizzare in altri progetti questo JAR con Maven è necessario includere il bucket S3 `maven.softinstigate.com` nel POM:
+To use ErmesMail in your maven build you need to add the following dependencies in your pom.xml:
 
 ```xml
-<repositories>
-    <repository>
-        <id>aws-release</id>
-        <name>S3 Release Repository</name>
-        <url>s3://maven.softinstigate.com/release</url>
-    </repository>
-    <repository>
-        <id>aws-snapshot</id>
-        <name>S3 Snapshot Repository</name>
-        <url>s3://maven.softinstigate.com/snapshot</url>
-    </repository>
-</repositories>
+<dependency>
+    <groupId>com.softinstigate</groupId>
+    <artifactId>ermes-mail</artifactId>
+    <version>1.1.0</version>
+    <classifier>shaded</classifier>
+</dependency>
+<dependency>
+    <groupId>javax.mail</groupId>
+    <artifactId>javax.mail-api</artifactId>
+    <version>1.5.6</version>
+    <scope>runtime</scope>
+</dependency>
+<dependency>
+    <groupId>com.sun.mail</groupId>
+    <artifactId>javax.mail</artifactId>
+    <version>1.5.6</version>
+    <scope>runtime</scope>
+</dependency>
 ```
 
-Inoltre è necessario fare la build passando le credenziali AWS
-
-```shell
-mvn -Daws.accessKeyId="$MAVEN_USER" -Daws.secretKey="$MAVEN_PASSWORD"
-```
-
-Le variabili `$MAVEN_USER` e `MAVEN_PASSWORD` sono le chiavi di accesso dell'utente `maven` nell'account AWS di SoftInstigate.
+> As ErmesMail depends on `org.apache.commons.commons-email` v1.5, we suggest to include the above runtime dependencies (`javax.mail-api` and `javax.mail`) to prevent classpath conflicts. Specifically, the wrong version of these dependancies may provoke the following runtime exception: `java.lang.NoSuchMethodError: 'void com.sun.mail.util.LineOutputStream.<init>(java.io.OutputStream, boolean)`
