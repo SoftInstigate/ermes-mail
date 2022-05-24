@@ -1,3 +1,22 @@
+/*-
+ * ========================LICENSE_START=================================
+ * ermes-mail
+ * %%
+ * Copyright (C) 2021 - 2022 SoftInstigate srl
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =========================LICENSE_END==================================
+ */
 package com.softinstigate.ermes.mail;
 
 import java.util.ArrayList;
@@ -37,7 +56,7 @@ public class EmailModel {
     }
 
     /**
-     * adds a to recipient
+     * adds a TO recipient
      *
      * @param email recipient's email address
      * @param name  recipient's full name
@@ -47,7 +66,20 @@ public class EmailModel {
     }
 
     /**
-     * adds a Cc recipient
+     * adds a list of TO recipient
+     *
+     * @param emails list of email addresses
+     */
+    public void setMultipleTo(List<String> emails) {
+        List<Recipient> recipients = new ArrayList<Recipient>(emails.size());
+        emails.forEach(e -> {
+            recipients.add(new Recipient(e, null));
+        });
+        this.setTo(recipients);
+    }
+
+    /**
+     * adds a CC recipient
      *
      * @param email cc's email address
      * @param name  cc's full name
@@ -57,7 +89,20 @@ public class EmailModel {
     }
 
     /**
-     * adds a Bcc recipient
+     * adds a list of CC recipients
+     *
+     * @param emails list of email addresses
+     */
+    public void setMultipleCc(List<String> emails) {
+        List<Recipient> recipients = new ArrayList<Recipient>(emails.size());
+        emails.forEach(e -> {
+            recipients.add(new Recipient(e, null));
+        });
+        this.setCc(recipients);
+    }
+
+    /**
+     * adds a BCC recipient
      *
      * @param email bcc's email address
      * @param name  bcc's full name
@@ -67,7 +112,20 @@ public class EmailModel {
     }
 
     /**
-     * Replace the list of recipients
+     * adds a list of BCC recipients
+     *
+     * @param emails list of email addresses
+     */
+    public void setMultipleBcc(List<String> emails) {
+        List<Recipient> recipients = new ArrayList<Recipient>(emails.size());
+        emails.forEach(e -> {
+            recipients.add(new Recipient(e, null));
+        });
+        this.setBcc(recipients);
+    }
+
+    /**
+     * Replace the list of TO recipients
      *
      * @param recipients the new list of recipients
      */
@@ -77,7 +135,7 @@ public class EmailModel {
     }
 
     /**
-     * Replace the list of Cc
+     * Replace the list of CC
      *
      * @param recipients the new list of Cc recipients
      */
@@ -87,7 +145,7 @@ public class EmailModel {
     }
 
     /**
-     * Replace the list of Bcc
+     * Replace the list of BCC
      *
      * @param recipients the new list of Bcc recipients
      */
@@ -119,21 +177,21 @@ public class EmailModel {
     }
 
     /**
-     * @return the list of to recipients
+     * @return the list of TO recipients
      */
     public final List<Recipient> getToRecipients() {
         return Collections.unmodifiableList(to);
     }
 
     /**
-     * @return the list of to recipients
+     * @return the list of CC recipients
      */
     public final List<Recipient> getCcRecipients() {
         return Collections.unmodifiableList(cc);
     }
 
     /**
-     * @return the list of to recipients
+     * @return the list of BCC recipients
      */
     public final List<Recipient> getBccRecipients() {
         return Collections.unmodifiableList(bcc);
@@ -147,7 +205,7 @@ public class EmailModel {
     }
 
     /**
-     * Immutable recipient object model
+     * Recipient object model
      */
     public static class Recipient {
         public final String email;
@@ -168,7 +226,7 @@ public class EmailModel {
     }
 
     /**
-     * Immutable attachment object model
+     * Attachment object model
      */
     public static class Attachment {
         public final String url;
