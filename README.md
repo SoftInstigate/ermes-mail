@@ -1,4 +1,4 @@
-# README
+# Ἑρμῆς (Hermês) Mail
 
 ErmesMail is a set of Java classes for sending e-mail messages asynchronously, via SMTP servers.
 
