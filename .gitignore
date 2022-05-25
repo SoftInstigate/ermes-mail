@@ -116,3 +116,4 @@ buildNumber.properties
 .vscode/
 .classpath
 .settings/
+.DS_Store
