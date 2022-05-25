@@ -50,11 +50,9 @@ Copyright(c) 2022 SoftInstigate srl (https://www.softinstigate.com)
 
 ## Examples
 
-### Send a test email message to MailHog
+### Send a test email message to MailHog via cli
 
-To test the sending of e-mails, we suggest using a local SMTP mock server like [MailHog](https://github.com/mailhog/MailHog).
-
-Please look [here](https://github.com/mailhog/MailHog#installation) for MailHogs's installation instructions.
+To test the sending of e-mails via comand line, we suggest running a local SMTP mock server like [MailHog](https://github.com/mailhog/MailHog). Please look [here](https://github.com/mailhog/MailHog#installation) for MailHogs's installation instructions.
 
 After executing MailHog (usually with the `MailHog` command) you can send your first HTML email message to `localhost` with ErmesEmail:
 
@@ -78,7 +76,9 @@ mag 24, 2022 4:46:16 PM com.softinstigate.ermes.mail.EmailService shutdown
 INFORMAZIONI: ExecutorService terminated normally after shutdown request.```
 ```
 
-> Note: To send messages via Google SMTP, it is necessary to configure your Gmail account by enabling IMAP. [More information](https://support.google.com/mail/answer/7126229)
+You can read the e-mail message on the [MailHog UI](http://0.0.0.0:8025/).
+
+> **Note**: To send messages via Google SMTP, it is necessary to configure your Gmail account by enabling IMAP. [More information](https://support.google.com/mail/answer/7126229)
 
 ## Maven
 
@@ -105,4 +105,27 @@ To use ErmesMail in your maven build you need to add the following dependencies 
 </dependency>
 ```
 
-> As ErmesMail depends on `org.apache.commons.commons-email` v1.5, we suggest to include the above runtime dependencies (`javax.mail-api` and `javax.mail`) to prevent classpath conflicts. Specifically, the wrong version of these dependancies may provoke the following runtime exception: `java.lang.NoSuchMethodError: 'void com.sun.mail.util.LineOutputStream.<init>(java.io.OutputStream, boolean)`
+> **Note**: As ErmesMail depends on `org.apache.commons.commons-email` v1.5, we suggest to include the above runtime dependencies (`javax.mail-api` and `javax.mail`) to prevent classpath conflicts. Specifically, the wrong version of these dependancies may provoke the following runtime exception: `java.lang.NoSuchMethodError: 'void com.sun.mail.util.LineOutputStream.<init>(java.io.OutputStream, boolean)`
+
+### Java example
+
+There are two methods for sending emails: `EmailService.send` is asynchronous and returns a Future list of error strings. the `EmailService.sendSynch` is synchronous and returns a list of error strings.
+
+Below a java fragment:
+
+```java
+SMTPConfig smtpConfig = new SMTPConfig("localhost", 1025, "user", "password", false);
+
+EmailModel emailModel = new EmailModel("dick.silly@domain.com", "Dick Silly",
+                "Integration Test - " + System.currentTimeMillis(),
+                "This is a <strong>HTML</strong> message.");
+emailModel.addTo("john.doe@email.com", "John Doe");
+emailModel.addTo("serena.wiliams@email.com", "Serena Wiliams");
+emailModel.addCc("tom.clancy@email.com", "Tom Clancy");
+emailModel.addBcc("ann.smith@email.com", "Ann Smith");
+
+EmailService emailService = new EmailService(smtpConfig, 3);
+Future<List<String>> errors = emailService.send(emailModel);
+
+emailService.shutdown();
+```
