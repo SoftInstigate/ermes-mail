@@ -84,11 +84,22 @@ You can read the e-mail message on the [MailHog UI](http://0.0.0.0:8025/).
 
 ## Maven
 
-To use ErmesMail in your maven build you need to add the following dependencies in your pom.xml:
+To use ErmesMail in your maven build, first add the JitPack repository in your pom.xml
+
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+```
+
+Then add the following dependencies:
 
 ```xml
 <dependency>
-    <groupId>com.softinstigate</groupId>
+    <groupId>com.github.SoftInstigate</groupId>
     <artifactId>ermes-mail</artifactId>
     <version>1.1.0</version>
     <classifier>shaded</classifier>
