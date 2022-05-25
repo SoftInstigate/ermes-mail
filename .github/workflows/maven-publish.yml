@@ -36,19 +36,6 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Upload GitHub release
-      uses: softprops/action-gh-release@v1
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-      with:
-        body: |
-          Release ${{ github.ref }}
-        files: |
-          target/ermes-mail.jar
-          target/ermes-mail-javadoc.jar
-        draft: true
-        prerelease: false  
-
     - name: Publish to GitHub Packages Apache Maven
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
       env:
