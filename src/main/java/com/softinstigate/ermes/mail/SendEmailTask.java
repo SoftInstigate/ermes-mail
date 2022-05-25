@@ -72,8 +72,7 @@ public class SendEmailTask implements Callable<List<String>> {
     /**
      * Send the EmailModel using an Apache Commons' HtmlEmail instance
      *
-     * @return a Future<List<String>> of errors. If the list is empty then no
-     *         errors!
+     * @return a {@code Future<List<String>>} of errors.
      */
     @Override
     public List<String> call() {

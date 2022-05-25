@@ -54,7 +54,7 @@ public class EmailService {
      * Send emails asynchronously, using the ExecutorService
      *
      * @param model the email object to send
-     * @return a Future<List<String>> of errors. If the list is empty then no errors!
+     * @return a {@code Future<List<String>> } of errors.
      */
     public Future<List<String>> send(EmailModel model) {
         Future<List<String>> errors = executor.submit(new SendEmailTask(smtpConfig, model));
@@ -66,7 +66,7 @@ public class EmailService {
      * Send emails synchronously
      *
      * @param model the email object to send
-     * @return a List<String> of errors. If the list is empty then no errors!
+     * @return a {@code List<String>} of errors.
      */
     public List<String> sendSynch(EmailModel model) {
         SendEmailTask task = new SendEmailTask(smtpConfig, model);
