@@ -27,6 +27,11 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+/**
+ * Implements the command line interface with picocli
+ * Build it with {@code mvn clean package} and the run with
+ * {@code java -jar target/ermes-mail.jar --help}
+ */
 @CommandLine.Command(
     name = "java -jar ermes-mail.jar",
     description = "Sends an HTML email to the given recipient(s).",
@@ -86,6 +91,9 @@ public class Main implements Callable<Integer> {
     @CommandLine.Option(names = { "-v", "--version" }, versionHelp = true, description = "print version information and exit.")
     private boolean versionRequested;
 
+    /**
+     * Implements the Callable<Integer> interface's call() method
+     */
     @Override
     public Integer call() {
         SMTPConfig smtpConfig = new SMTPConfig(
@@ -130,6 +138,11 @@ public class Main implements Callable<Integer> {
         return callResult;
     }
 
+    /**
+     * Executes the CommandLine
+     * 
+     * @param args cli parameters, to be parsed by picocli
+     */
     public static void main(String... args) {
         int exitCode = new CommandLine(new Main()).execute(args);
         System.exit(exitCode);

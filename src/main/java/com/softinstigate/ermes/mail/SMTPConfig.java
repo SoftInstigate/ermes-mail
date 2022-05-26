@@ -34,6 +34,16 @@ public class SMTPConfig {
     public final boolean ssl;
     public final int sslPort;
 
+    /**
+     * Default constructor
+     * 
+     * @param smtpHostname SMTP hostname
+     * @param smtpPort     SMTP port
+     * @param smtpUsername SMTP username
+     * @param smtpPassword SMTP password
+     * @param sslOn        if true then use SSL for sending
+     * @param sslPort      SSL port to use
+     */
     public SMTPConfig(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword, boolean sslOn,
             int sslPort) {
         this.hostname = smtpHostname;
@@ -44,6 +54,15 @@ public class SMTPConfig {
         this.sslPort = sslPort;
     }
 
+    /**
+     * Constructor using DEFAULT_SSL_PORT
+     * 
+     * @param smtpHostname SMTP hostname
+     * @param smtpPort     SMTP port
+     * @param smtpUsername SMTP username
+     * @param smtpPassword SMTP password
+     * @param sslOn        if true then use SSL for sending
+     */
     public SMTPConfig(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword, boolean sslOn) {
         this(smtpHostname, smtpPort, smtpUsername, smtpPassword, sslOn, DEFAULT_SSL_PORT);
     }

@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Immutable email object model
+ * E-mails object model
  */
 public class EmailModel {
     public final String from; // Sender's email address
@@ -39,7 +39,7 @@ public class EmailModel {
     /**
      * Constructor
      *
-     * @param from           sender
+     * @param from           sender e-mail address
      * @param senderFullName sender full name
      * @param subject        subject of the email
      * @param message        message body
@@ -58,8 +58,8 @@ public class EmailModel {
     /**
      * adds a TO recipient
      *
-     * @param email recipient's email address
-     * @param name  recipient's full name
+     * @param email recipient email address
+     * @param name  recipient full name
      */
     public void addTo(String email, String name) {
         this.to.add(new Recipient(email, name));
@@ -68,7 +68,7 @@ public class EmailModel {
     /**
      * adds a list of TO recipient
      *
-     * @param emails list of email addresses
+     * @param emails list of TO email addresses
      */
     public void setMultipleTo(List<String> emails) {
         List<Recipient> recipients = new ArrayList<Recipient>(emails.size());
@@ -81,8 +81,8 @@ public class EmailModel {
     /**
      * adds a CC recipient
      *
-     * @param email cc's email address
-     * @param name  cc's full name
+     * @param email CC email address
+     * @param name  CC full name
      */
     public void addCc(String email, String name) {
         this.cc.add(new Recipient(email, name));
@@ -91,7 +91,7 @@ public class EmailModel {
     /**
      * adds a list of CC recipients
      *
-     * @param emails list of email addresses
+     * @param emails list of multiple CC email addresses
      */
     public void setMultipleCc(List<String> emails) {
         List<Recipient> recipients = new ArrayList<Recipient>(emails.size());
@@ -104,8 +104,8 @@ public class EmailModel {
     /**
      * adds a BCC recipient
      *
-     * @param email bcc's email address
-     * @param name  bcc's full name
+     * @param email BCC email address
+     * @param name  BCC full name
      */
     public void addBcc(String email, String name) {
         this.bcc.add(new Recipient(email, name));
@@ -114,7 +114,7 @@ public class EmailModel {
     /**
      * adds a list of BCC recipients
      *
-     * @param emails list of email addresses
+     * @param emails list of multiple BCC email addresses
      */
     public void setMultipleBcc(List<String> emails) {
         List<Recipient> recipients = new ArrayList<Recipient>(emails.size());
@@ -127,7 +127,7 @@ public class EmailModel {
     /**
      * Replace the list of TO recipients
      *
-     * @param recipients the new list of recipients
+     * @param recipients the new list of TO recipients
      */
     public void setTo(List<Recipient> recipients) {
         this.to.clear();
@@ -135,9 +135,9 @@ public class EmailModel {
     }
 
     /**
-     * Replace the list of CC
+     * Replace the list of CC recipients
      *
-     * @param recipients the new list of Cc recipients
+     * @param recipients the new list of CC recipients
      */
     public void setCc(List<Recipient> recipients) {
         this.cc.clear();
@@ -145,9 +145,9 @@ public class EmailModel {
     }
 
     /**
-     * Replace the list of BCC
+     * Replace the list of BCC recipients
      *
-     * @param recipients the new list of Bcc recipients
+     * @param recipients the new list of BCC recipients
      */
     public void setBcc(List<Recipient> recipients) {
         this.bcc.clear();
@@ -177,6 +177,8 @@ public class EmailModel {
     }
 
     /**
+     * get all TO recipients
+     * 
      * @return the list of TO recipients
      */
     public final List<Recipient> getToRecipients() {
@@ -184,6 +186,8 @@ public class EmailModel {
     }
 
     /**
+     * get all CC recipients
+     * 
      * @return the list of CC recipients
      */
     public final List<Recipient> getCcRecipients() {
@@ -191,6 +195,8 @@ public class EmailModel {
     }
 
     /**
+     * get all BCC recipients
+     * 
      * @return the list of BCC recipients
      */
     public final List<Recipient> getBccRecipients() {
@@ -198,6 +204,8 @@ public class EmailModel {
     }
 
     /**
+     * get all attachments
+     * 
      * @return the list of attachments
      */
     public final List<Attachment> getAttachments() {
@@ -211,6 +219,12 @@ public class EmailModel {
         public final String email;
         public final String name; // Full name
 
+        /**
+         * Default constructor
+         * 
+         * @param email recipients' email
+         * @param name  optional recipient's name (cab be null)
+         */
         public Recipient(String email, String name) {
             this.email = email;
             this.name = name;
@@ -233,6 +247,13 @@ public class EmailModel {
         public final String fileName;
         public final String description;
 
+        /**
+         * Default constructor
+         * 
+         * @param url           attachment's URL
+         * @param fileName      file to attach
+         * @param description   file description
+         */
         public Attachment(String url, String fileName, String description) {
             this.url = url;
             this.fileName = fileName;

@@ -47,7 +47,7 @@ public class SendEmailTask implements Callable<List<String>> {
     private final String charset;
 
     /**
-     * Main constructor
+     * Default constructor
      * 
      * @param smtpConfig a SMTPConfig object
      * @param model      a EmailModel object
@@ -60,7 +60,7 @@ public class SendEmailTask implements Callable<List<String>> {
     }
 
     /**
-     * Constructor with default UTF-8 charset
+     * Constructor with UTF-8 charset
      * 
      * @param smtpConfig a SMTPConfig object
      * @param model      a EmailModel object
@@ -151,7 +151,7 @@ public class SendEmailTask implements Callable<List<String>> {
     }
 
     /**
-     * Add explicit MailcapCommandMap (See https://stackoverflow.com/a/21183987)
+     * Add explicit MailcapCommandMap (workaround - see https://stackoverflow.com/a/21183987)
      */
     private void setDefaultCommandMap() {
         MailcapCommandMap mc = (MailcapCommandMap) CommandMap.getDefaultCommandMap();
