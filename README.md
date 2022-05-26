@@ -4,17 +4,15 @@
 
 ErmesMail is a set of Java classes for sending e-mail messages asynchronously, via SMTP servers.
 
-It can be embeded in your Java project as a tiny warapper for the Apache Commons Email library
-https://commons.apache.org/proper/commons-email/
+1. It can be embeded in your Java project as a tiny warapper for the [Apache Commons Email library](https://commons.apache.org/proper/commons-email/).
+1. it can be used as a handy command line utility, to send emails programmatically from the shell.
 
-Alternatively, it can be used as a command line utility.
+ErmesMail is developed in Java 17 and built with Maven 3.8.
 
-It has been developed in Java 17 and built with Maven 3.8.
-
-## Build and execution
+## Build and cli execution
 
 1. Build the application with maven: `mvn package`.
-2. Start the application by passing the following parameters:
+2. Run the Java executable by passing the following parameters:
 
 ```shell
 $ java -jar target/ermes-mail.jar --help
@@ -50,9 +48,7 @@ Sends an HTML email to the given recipient(s).
 Copyright(c) 2022 SoftInstigate srl (https://www.softinstigate.com)
 ```
 
-## Examples
-
-### Send a test email message to MailHog via cli
+## Send a test email message to MailHog
 
 To test the sending of e-mails via comand line, we suggest running a local SMTP mock server like [MailHog](https://github.com/mailhog/MailHog). Please look [here](https://github.com/mailhog/MailHog#installation) for MailHogs's installation instructions.
 
@@ -82,9 +78,9 @@ You can read the e-mail message on the [MailHog UI](http://0.0.0.0:8025/).
 
 > **Note**: To send messages via Google SMTP, it is necessary to configure your Gmail account by enabling IMAP. [More information](https://support.google.com/mail/answer/7126229)
 
-## Maven
+## Add ErmesMail to your Maven project
 
-To use ErmesMail in your maven build, first add the JitPack repository in your pom.xml
+To use ErmesMail in your Maven build, first add the JitPack repository in your pom.xml
 
 ```xml
 <repositories>
@@ -118,27 +114,39 @@ Then add the following dependencies:
 </dependency>
 ```
 
-> **Note**: As ErmesMail depends on `org.apache.commons.commons-email` v1.5, we suggest to include the above runtime dependencies (`javax.mail-api` and `javax.mail`) to prevent classpath conflicts. Specifically, the wrong version of these dependancies may provoke the following runtime exception: `java.lang.NoSuchMethodError: 'void com.sun.mail.util.LineOutputStream.<init>(java.io.OutputStream, boolean)`
+> **Note**: As ErmesMail depends on `org.apache.commons.commons-email` v1.5, we suggest to include the above runtime dependencies (`javax.mail-api` and `javax.mail`) to prevent classpath conflicts. Specifically, the wrong version of these dependancies may provoke the following runtime exception when sendin emails: `java.lang.NoSuchMethodError: 'void com.sun.mail.util.LineOutputStream.<init>(java.io.OutputStream, boolean)`
 
 ### Java example
 
-There are two methods for sending emails: `EmailService.send` is asynchronous and returns a Future list of error strings. the `EmailService.sendSynch` is synchronous and returns a list of error strings.
+There are two methods for sending emails: `EmailService.send` is asynchronous and returns a Future list of error strings. the `EmailService.sendSynch` is synchronous and returns a list of error strings. If the list is empty, it means no errors. However, the [SendEmailTask](https://github.com/SoftInstigate/ermes-mail/blob/master/src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java) logs exceptions anyway.
 
-Below a java fragment:
+You may wanto to use the asynchronous invocation only in case you have to send tons of email in parallel and don't want to block the rest of the program, otherwise the synchronous method works just fine.
+
+Internally the [EmailService](https://github.com/SoftInstigate/ermes-mail/blob/master/src/main/java/com/softinstigate/ermes/mail/EmailService.java) uses a [java.util.concurrent.ExecutorService](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorService.html) to send emails in parallel.
+
+A good understanding of [Java Futures](https://www.baeldung.com/java-future) would help you implementing the best waiting strategy.
+
+Below a java fragment, for example:
 
 ```java
 SMTPConfig smtpConfig = new SMTPConfig("localhost", 1025, "user", "password", false);
 
-EmailModel emailModel = new EmailModel("dick.silly@domain.com", "Dick Silly",
-                "Integration Test - " + System.currentTimeMillis(),
-                "This is a <strong>HTML</strong> message.");
+EmailModel emailModel = new EmailModel(
+    "dick.silly@domain.com", "Dick Silly",
+    "Test email - " + System.currentTimeMillis(),
+    "This is a <strong>HTML</strong> message.");
 emailModel.addTo("john.doe@email.com", "John Doe");
 emailModel.addTo("serena.wiliams@email.com", "Serena Wiliams");
 emailModel.addCc("tom.clancy@email.com", "Tom Clancy");
 emailModel.addBcc("ann.smith@email.com", "Ann Smith");
 
-EmailService emailService = new EmailService(smtpConfig, 3);
-Future<List<String>> errors = emailService.send(emailModel);
+EmailService emailService = new EmailService(smtpConfig, 3); // 3 threads pool
+Future<List<String>> errors = emailService.send(emailModel); // send is asynch
 
 emailService.shutdown();
+
+List<String> listOfErrors = errors.get(); // WARNING: Future.get() is blocking
+if (!listOfErrors.isEmpty()) {
+    System.err.println("Errors sending emails: " + listOfErrors.toString());
+}
 ```
