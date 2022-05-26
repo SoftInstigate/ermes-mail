@@ -1,6 +1,6 @@
 # Ἑρμῆς (Hermês) Mail
 
-[![](https://jitpack.io/v/SoftInstigate/ermes-mail.svg)](https://jitpack.io/#SoftInstigate/ermes-mail)
+[![](https://jitpack.io/v/com.softinstigate/ermes-mail.svg)](https://jitpack.io/#com.softinstigate/ermes-mail)
 
 ErmesMail is a set of Java classes for sending e-mail messages asynchronously, via SMTP servers.
 
