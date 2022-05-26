@@ -9,6 +9,10 @@ ErmesMail is a set of Java classes for sending e-mail messages asynchronously, v
 
 ErmesMail is developed in Java 17 and built with Maven 3.8.
 
+## JavaDocs
+
+JavaDocs are available [here](https://jitpack.io/com/github/softinstigate/ermes-mail/latest/javadoc/).
+
 ## Build and cli execution
 
 1. Build the application with maven: `mvn package`.
