@@ -4,7 +4,7 @@
 
 ErmesMail is a set of Java classes for sending e-mail messages asynchronously, via SMTP servers.
 
-1. It can be embeded in your Java project as a tiny warapper for the [Apache Commons Email library](https://commons.apache.org/proper/commons-email/).
+1. It can be embedded in your Java project as a tiny wrapper for the [Apache Commons Email library](https://commons.apache.org/proper/commons-email/).
 1. it can be used as a handy command line utility, to send emails programmatically from the shell.
 
 ErmesMail is developed in Java 17 and built with Maven 3.8.
