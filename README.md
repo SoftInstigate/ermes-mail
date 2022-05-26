@@ -91,15 +91,20 @@ To use ErmesMail in your Maven build, first add the JitPack repository in your p
 </repositories>
 ```
 
-Then add the following dependencies:
+Then add the following dependency:
 
 ```xml
 <dependency>
-    <groupId>com.github.SoftInstigate</groupId>
+    <groupId>com.softinstigate</groupId>
     <artifactId>ermes-mail</artifactId>
     <version>1.1.0</version>
     <classifier>shaded</classifier>
 </dependency>
+```
+
+As ErmesMail depends on `org.apache.commons.commons-email` v1.5, we suggest to include the below runtime dependencies (`javax.mail-api` and `javax.mail`) to prevent classpath conflicts. The wrong version of these dependancies, included by other libraries, might provoke the following runtime exception when sending emails: `java.lang.NoSuchMethodError: 'void com.sun.mail.util.LineOutputStream.<init>(java.io.OutputStream, boolean)`
+
+```xml
 <dependency>
     <groupId>javax.mail</groupId>
     <artifactId>javax.mail-api</artifactId>
@@ -114,7 +119,7 @@ Then add the following dependencies:
 </dependency>
 ```
 
-> **Note**: As ErmesMail depends on `org.apache.commons.commons-email` v1.5, we suggest to include the above runtime dependencies (`javax.mail-api` and `javax.mail`) to prevent classpath conflicts. Specifically, the wrong version of these dependancies may provoke the following runtime exception when sendin emails: `java.lang.NoSuchMethodError: 'void com.sun.mail.util.LineOutputStream.<init>(java.io.OutputStream, boolean)`
+You can run `mvn dependency:tree` in your project to check if other artifacts are including these.
 
 ### Java example
 
