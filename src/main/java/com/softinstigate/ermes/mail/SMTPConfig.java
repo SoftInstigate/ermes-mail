@@ -2,7 +2,7 @@
  * ========================LICENSE_START=================================
  * ermes-mail
  * %%
- * Copyright (C) 2021 - 2022 SoftInstigate srl
+ * Copyright (C) 2021 - 2025 SoftInstigate srl
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
