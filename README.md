@@ -54,11 +54,11 @@ Sends an HTML email to the given recipient(s).
 Copyright(c) 2022 SoftInstigate srl (https://www.softinstigate.com)
 ```
 
-## Send a test email message to MailHog
+## Send a test email message to Mailpit
 
-To test the sending of e-mails via command line, we suggest running a local SMTP mock server like [MailHog](https://github.com/mailhog/MailHog). Please look at the [MailHog installation instructions](https://github.com/mailhog/MailHog#installation) for setup details.
+To test the sending of e-mails via command line, we suggest running a local SMTP mock server like [Mailpit](https://github.com/axllent/mailpit). Please look at the [Mailpit installation instructions](https://github.com/axllent/mailpit#installation) for setup details.
 
-After executing MailHog (usually with the `MailHog` command) you can send your first HTML email message to `localhost` with ErmesMail:
+After executing Mailpit (usually with the `mailpit` command) you can send your first HTML email message to `localhost` with ErmesMail:
 
 ```shell
 $ java -jar target/ermes-mail.jar -h localhost -p 1025 \
@@ -80,7 +80,7 @@ mag 24, 2022 4:46:16 PM com.softinstigate.ermes.mail.EmailService shutdown
 INFORMAZIONI: ExecutorService terminated normally after shutdown request.```
 ```
 
-You can read the e-mail message on the [MailHog UI](http://0.0.0.0:8025/).
+You can read the e-mail message on the [Mailpit UI](http://0.0.0.0:8025/).
 
 > **Note**: To send messages via Google SMTP, it is necessary to configure your Gmail account by enabling IMAP. [More information](https://support.google.com/mail/answer/7126229)
 
@@ -174,7 +174,7 @@ You can configure the SMTP host, port, user, password, and security mode via the
 
 To test different SMTP configurations:
 
-1. Use a local SMTP server like MailHog for development and testing.
+1. Use a local SMTP server like Mailpit for development and testing.
 2. For SSL (implicit TLS), use the `--sslon` and `--sslport` options (default SSL port is 465).
 3. For STARTTLS, use `--starttls` to enable opportunistic STARTTLS, and add `--starttls-required` if you want the client to fail when the server does not advertise STARTTLS.
 4. For plain SMTP, omit the `--sslon` and `--starttls` flags and use the standard port (usually 25 or 1025 for local testing).

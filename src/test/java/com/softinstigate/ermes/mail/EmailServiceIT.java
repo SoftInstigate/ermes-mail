@@ -27,7 +27,7 @@ import java.util.concurrent.ExecutionException;
 import org.junit.jupiter.api.Test;
 
 /**
- * Start MailHog mock SMTP server first: https://github.com/mailhog/MailHog
+ * Start Mailpit mock SMTP server first: https://github.com/axllent/mailpit
  */
 class EmailServiceIT {
 
