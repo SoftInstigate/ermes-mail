@@ -182,6 +182,40 @@ To test different SMTP configurations:
 
 If you encounter issues, check the logs for detailed error messages. For troubleshooting tips, see the [project issues](https://github.com/SoftInstigate/ermes-mail/issues) or contact the maintainers.
 
+## Running integration tests
+
+The integration tests that exercise real SMTP servers read credentials from environment variables or from a local `smtp-integration.properties` file placed in the project root. Use either method to provide the following properties:
+
+- `smtp.host`
+- `smtp.port` (e.g. `465`)
+- `smtp.username`
+- `smtp.password`
+- `smtp.sslport` (optional, default 465)
+
+Example `smtp-integration.properties` (do not commit this file):
+
+```txt
+smtp.host=smtps.example.com
+smtp.port=465
+smtp.username=info@yourdomain.example
+smtp.password=supersecret
+smtp.sslport=465
+```
+
+Run the integration tests with JavaMail debug enabled to see client-side TLS/SSL handshake information:
+
+```bash
+mvn -Dmail.debug=true -DfailIfNoTests=false verify
+```
+
+If you only want to run integration tests and skip unit tests:
+
+```bash
+mvn -Dmail.debug=true -DskipTests=true -DfailIfNoTests=false verify
+```
+
+The README includes `smtp-integration.properties.example` and the `.gitignore` already excludes local credential files. Keep secrets out of the repository.
+
 ## Migration note
 
 Version 2.0 introduces a breaking change: the boolean-heavy `SMTPConfig` constructors were removed in favor of explicit factory methods that make the security policy clear.
