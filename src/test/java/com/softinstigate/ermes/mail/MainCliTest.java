@@ -1,6 +1,7 @@
 package com.softinstigate.ermes.mail;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -11,60 +12,62 @@ class MainCliTest {
     @Test
     void sslFlagParsesAndMapsToSslConfig() {
         Main main = new Main();
-    CommandLine.populateCommand(main, "--sslon", "--sslport", "465", "-h", "smtp.example.com", "-u", "u", "-P", "p",
-        "-f", "sender@example.com", "-s", "subj", "-b", "body", "--to", "rcpt@example.com");
+        CommandLine.populateCommand(main, "--sslon", "--sslport", "465", "-h", "smtp.example.com", "-u", "u", "-P", "p",
+                "-f", "sender@example.com", "-s", "subj", "-b", "body", "--to", "rcpt@example.com");
 
-    assertTrue((Boolean) getField(main, "sslOn"));
-    assertEquals(465, (Integer) getField(main, "sslPort"));
-    assertEquals("smtp.example.com", (String) getField(main, "smtpHost"));
+        assertTrue((Boolean) getField(main, "sslOn"));
+        assertEquals(465, (Integer) getField(main, "sslPort"));
+        assertEquals("smtp.example.com", (String) getField(main, "smtpHost"));
 
-    // emulate Main's config selection logic
-    boolean sslOn = (Boolean) getField(main, "sslOn");
-    String smtpHost = (String) getField(main, "smtpHost");
-    int smtpPort = (Integer) getField(main, "smtpPort");
-    String user = (String) getField(main, "user");
-    String password = (String) getField(main, "password");
-    int sslPort = (Integer) getField(main, "sslPort");
+        // emulate Main's config selection logic
+        boolean sslOn = (Boolean) getField(main, "sslOn");
+        String smtpHost = (String) getField(main, "smtpHost");
+        int smtpPort = (Integer) getField(main, "smtpPort");
+        String user = (String) getField(main, "user");
+        String password = (String) getField(main, "password");
+        int sslPort = (Integer) getField(main, "sslPort");
 
-    SMTPConfig cfg = sslOn
-        ? SMTPConfig.forSsl(smtpHost, smtpPort, user, password, sslPort)
-        : SMTPConfig.forPlain(smtpHost, smtpPort, user, password);
+        SMTPConfig cfg = sslOn
+            ? SMTPConfig.forSsl(smtpHost, smtpPort, user, password, sslPort)
+            : SMTPConfig.forPlain(smtpHost, smtpPort, user, password);
 
-    assertEquals(SMTPConfig.SecurityMode.SSL, cfg.securityMode);
-    assertTrue(cfg.ssl);
-    assertEquals(465, cfg.sslPort);
+        assertEquals(SMTPConfig.SecurityMode.SSL, cfg.securityMode);
+        assertTrue(cfg.ssl);
+        assertEquals(465, cfg.sslPort);
     }
 
     @Test
     void startTlsRequiredParsesAndMapsToStartTlsRequired() {
         Main main = new Main();
-    CommandLine.populateCommand(main, "--starttls", "--starttls-required", "-h", "smtp.example.com", "-p", "587", "-u", "u", "-P", "p",
-        "-f", "sender@example.com", "-s", "subj", "-b", "body", "--to", "rcpt@example.com");
+        CommandLine.populateCommand(main, "--starttls", "--starttls-required", "-h", "smtp.example.com", "-p", "587",
+                "-u", "u", "-P", "p",
+                "-f", "sender@example.com", "-s", "subj", "-b", "body", "--to", "rcpt@example.com");
 
-    assertTrue((Boolean) getField(main, "startTls"));
-    assertTrue((Boolean) getField(main, "startTlsRequired"));
-    assertEquals(587, (Integer) getField(main, "smtpPort"));
+        assertTrue((Boolean) getField(main, "startTls"));
+        assertTrue((Boolean) getField(main, "startTlsRequired"));
+        assertEquals(587, (Integer) getField(main, "smtpPort"));
 
-    boolean startTls = (Boolean) getField(main, "startTls");
-    boolean startTlsRequired = (Boolean) getField(main, "startTlsRequired");
-    String smtpHost = (String) getField(main, "smtpHost");
-    int smtpPort = (Integer) getField(main, "smtpPort");
-    String user = (String) getField(main, "user");
-    String password = (String) getField(main, "password");
+        boolean startTls = (Boolean) getField(main, "startTls");
+        boolean startTlsRequired = (Boolean) getField(main, "startTlsRequired");
+        String smtpHost = (String) getField(main, "smtpHost");
+        int smtpPort = (Integer) getField(main, "smtpPort");
+        String user = (String) getField(main, "user");
+        String password = (String) getField(main, "password");
 
-    SMTPConfig cfg2 = startTls
-        ? (startTlsRequired
-            ? SMTPConfig.forStartTlsRequired(smtpHost, smtpPort, user, password)
-            : SMTPConfig.forStartTlsOptional(smtpHost, smtpPort, user, password))
-        : SMTPConfig.forPlain(smtpHost, smtpPort, user, password);
+        SMTPConfig cfg2 = startTls
+            ? (startTlsRequired
+                ? SMTPConfig.forStartTlsRequired(smtpHost, smtpPort, user, password)
+                : SMTPConfig.forStartTlsOptional(smtpHost, smtpPort, user, password))
+            : SMTPConfig.forPlain(smtpHost, smtpPort, user, password);
 
-    assertEquals(SMTPConfig.SecurityMode.STARTTLS_REQUIRED, cfg2.securityMode);
+        assertEquals(SMTPConfig.SecurityMode.STARTTLS_REQUIRED, cfg2.securityMode);
     }
 
     @Test
     void mutuallyExclusiveFlagsDetectedByLogic() {
         Main main = new Main();
-    CommandLine.populateCommand(main, "--sslon", "--starttls", "-f", "sender@example.com", "-s", "subj", "-b", "body", "--to", "rcpt@example.com");
+        CommandLine.populateCommand(main, "--sslon", "--starttls", "-f", "sender@example.com", "-s", "subj", "-b",
+                "body", "--to", "rcpt@example.com");
 
         // parsing should set both flags; the mutual exclusion is enforced at runtime
         assertTrue((Boolean) getField(main, "sslOn"));
