@@ -94,11 +94,41 @@ class IntegrationScenariosIT {
             String sslPortStr = System.getenv("SMTP_INTEGRATION_SSLPORT");
             int sslPort = sslPortStr != null ? Integer.parseInt(sslPortStr) : port;
 
-            SMTPConfig smtpConfig = SMTPConfig.forSsl(host, port, user, pass, sslPort);
+            // Determine whether to use STARTTLS or implicit SSL (SMTPS).
+            // Priority: environment var SMTP_INTEGRATION_STARTTLS, then properties file, then port heuristic (587 -> STARTTLS).
+            java.util.Properties cfg = loadFromFiles();
+            String starttlsEnv = System.getenv("SMTP_INTEGRATION_STARTTLS");
+            if (starttlsEnv == null) starttlsEnv = cfg.getProperty("SMTP_INTEGRATION_STARTTLS");
+            boolean useStartTls = false;
+            if (starttlsEnv != null) {
+                useStartTls = "true".equalsIgnoreCase(starttlsEnv) || "yes".equalsIgnoreCase(starttlsEnv);
+            } else {
+                // fallback heuristic: use STARTTLS when running against submission port 587
+                useStartTls = (port == 587);
+            }
 
-            // Ensure we are testing SSL mode explicitly
-            org.junit.jupiter.api.Assertions.assertEquals(SMTPConfig.SecurityMode.SSL, smtpConfig.securityMode,
-                    "SMTPConfig must be in SSL mode for this scenario");
+            SMTPConfig smtpConfig;
+            if (useStartTls) {
+                // Check whether STARTTLS should be required (fail if not offered)
+                String starttlsRequiredEnv = System.getenv("SMTP_INTEGRATION_STARTTLS_REQUIRED");
+                if (starttlsRequiredEnv == null) starttlsRequiredEnv = cfg.getProperty("SMTP_INTEGRATION_STARTTLS_REQUIRED");
+                boolean starttlsRequired = "true".equalsIgnoreCase(starttlsRequiredEnv);
+
+                if (starttlsRequired) {
+                    smtpConfig = SMTPConfig.forStartTlsRequired(host, port, user, pass);
+                    org.junit.jupiter.api.Assertions.assertEquals(SMTPConfig.SecurityMode.STARTTLS_REQUIRED, smtpConfig.securityMode,
+                            "SMTPConfig must be in STARTTLS_REQUIRED mode for this scenario");
+                } else {
+                    smtpConfig = SMTPConfig.forStartTlsOptional(host, port, user, pass);
+                    org.junit.jupiter.api.Assertions.assertEquals(SMTPConfig.SecurityMode.STARTTLS_OPTIONAL, smtpConfig.securityMode,
+                            "SMTPConfig must be in STARTTLS_OPTIONAL mode for this scenario");
+                }
+            } else {
+                smtpConfig = SMTPConfig.forSsl(host, port, user, pass, sslPort);
+                // Ensure we are testing SSL mode explicitly
+                org.junit.jupiter.api.Assertions.assertEquals(SMTPConfig.SecurityMode.SSL, smtpConfig.securityMode,
+                        "SMTPConfig must be in SSL mode for this scenario");
+            }
 
             // Enable JavaMail debug so that handshake info is printed in logs when running the test
             System.setProperty("mail.debug", "true");
