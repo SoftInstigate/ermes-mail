@@ -1,0 +1,12 @@
+# Example smtp-integration.properties (do NOT store real secrets in the repo)
+# Copy to smtp-integration.properties and fill with your credentials locally.
+
+SMTP_INTEGRATION_USERNAME=you@example.com
+SMTP_INTEGRATION_PASSWORD=change_me
+SMTP_INTEGRATION_SENDER=you@example.com
+SMTP_INTEGRATION_RECIPIENT=recipient@example.com
+SMTP_INTEGRATION_HOST=smtp.example.com
+SMTP_INTEGRATION_PORT=465
+# Optional
+#SMTP_INTEGRATION_SSLPORT=465
+#SMTP_INTEGRATION_SSLON=true
