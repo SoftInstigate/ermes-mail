@@ -130,6 +130,12 @@ public class SendEmailTask implements Callable<List<String>> {
                 email.addBcc(r.email, r.name);
             }
 
+            // Enable JavaMail debug if requested via system property (useful for integration tests)
+            boolean mailDebug = Boolean.getBoolean("mail.debug");
+            if (mailDebug) {
+                email.setDebug(true);
+            }
+
             email.send();
 
             LOGGER.info(String.format("Email successfully sent!\nTO: %s \nCC: %s \nBCC: %s", model.getToRecipients(),
