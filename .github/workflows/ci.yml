@@ -5,6 +5,8 @@ on:
     paths:
       - '**/*.java'
       - 'pom.xml'
+    tags-ignore:
+      - '*'
 
 jobs:
   build:
