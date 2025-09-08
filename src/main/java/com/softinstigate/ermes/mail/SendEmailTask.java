@@ -19,21 +19,20 @@
  */
 package com.softinstigate.ermes.mail;
 
-import org.apache.commons.mail.EmailAttachment;
-import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.HtmlEmail;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.activation.CommandMap;
 import javax.activation.MailcapCommandMap;
+
+import org.apache.commons.mail.EmailAttachment;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
 
 /**
  * Runnable class to invoke the email.send() method in a thread
@@ -50,8 +49,8 @@ public class SendEmailTask implements Callable<List<String>> {
      * Default constructor
      * 
      * @param smtpConfig a SMTPConfig object
-     * @param model      a EmailModel object
-     * @param charset    a charset (default is UTF-8)
+     * @param model a EmailModel object
+     * @param charset a charset (default is UTF-8)
      */
     public SendEmailTask(SMTPConfig smtpConfig, EmailModel model, String charset) {
         this.smtpConfig = smtpConfig;
@@ -63,7 +62,7 @@ public class SendEmailTask implements Callable<List<String>> {
      * Constructor with UTF-8 charset
      * 
      * @param smtpConfig a SMTPConfig object
-     * @param model      a EmailModel object
+     * @param model a EmailModel object
      */
     public SendEmailTask(SMTPConfig smtpConfig, EmailModel model) {
         this(smtpConfig, model, "UTF-8");
@@ -136,7 +135,7 @@ public class SendEmailTask implements Callable<List<String>> {
             try {
                 EmailAttachment emailAttachment = new EmailAttachment();
                 emailAttachment.setDisposition(EmailAttachment.ATTACHMENT);
-                emailAttachment.setURL(new URL(attachment.url));
+                emailAttachment.setURL(URI.create(attachment.url).toURL());
                 emailAttachment.setName(attachment.fileName);
                 emailAttachment.setDescription(attachment.description);
                 email.attach(emailAttachment);
