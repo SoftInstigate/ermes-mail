@@ -39,10 +39,10 @@ public class EmailModel {
     /**
      * Constructor
      *
-     * @param from           sender e-mail address
+     * @param from sender e-mail address
      * @param senderFullName sender full name
-     * @param subject        subject of the email
-     * @param message        message body
+     * @param subject subject of the email
+     * @param message message body
      */
     public EmailModel(String from, String senderFullName, String subject, String message) {
         this.from = from;
@@ -59,7 +59,7 @@ public class EmailModel {
      * adds a TO recipient
      *
      * @param email recipient email address
-     * @param name  recipient full name
+     * @param name recipient full name
      */
     public void addTo(String email, String name) {
         this.to.add(new Recipient(email, name));
@@ -82,7 +82,7 @@ public class EmailModel {
      * adds a CC recipient
      *
      * @param email CC email address
-     * @param name  CC full name
+     * @param name CC full name
      */
     public void addCc(String email, String name) {
         this.cc.add(new Recipient(email, name));
@@ -105,7 +105,7 @@ public class EmailModel {
      * adds a BCC recipient
      *
      * @param email BCC email address
-     * @param name  BCC full name
+     * @param name BCC full name
      */
     public void addBcc(String email, String name) {
         this.bcc.add(new Recipient(email, name));
@@ -157,8 +157,8 @@ public class EmailModel {
     /**
      * Add an attachment
      *
-     * @param url         the attachment's url
-     * @param fileName    the attachment's filename
+     * @param url the attachment's url
+     * @param fileName the attachment's filename
      * @param description a description
      */
     public void addAttachment(String url, String fileName, String description) {
@@ -223,7 +223,7 @@ public class EmailModel {
          * Default constructor
          * 
          * @param email recipients' email
-         * @param name  optional recipient's name (cab be null)
+         * @param name optional recipient's name (cab be null)
          */
         public Recipient(String email, String name) {
             this.email = email;
@@ -250,9 +250,9 @@ public class EmailModel {
         /**
          * Default constructor
          * 
-         * @param url           attachment's URL
-         * @param fileName      file to attach
-         * @param description   file description
+         * @param url attachment's URL
+         * @param fileName file to attach
+         * @param description file description
          */
         public Attachment(String url, String fileName, String description) {
             this.url = url;
