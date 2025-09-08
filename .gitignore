@@ -118,3 +118,7 @@ buildNumber.properties
 .settings/
 .DS_Store
 .project
+
+# Integration test credentials (local only) - DO NOT COMMIT real secrets
+smtp-integration.properties
+.env
