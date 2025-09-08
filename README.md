@@ -103,7 +103,7 @@ Then add the following dependency:
 <dependency>
     <groupId>com.softinstigate</groupId>
     <artifactId>ermes-mail</artifactId>
-    <version>1.1.0</version>
+    <version>2.0.0</version>
     <classifier>shaded</classifier>
 </dependency>
 ```
