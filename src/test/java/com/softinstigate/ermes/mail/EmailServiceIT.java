@@ -33,7 +33,7 @@ class EmailServiceIT {
 
     @Test
     void send() throws ExecutionException, InterruptedException {
-        SMTPConfig smtpConfig = new SMTPConfig("localhost", 1025, "user", "password", false);
+        SMTPConfig smtpConfig = SMTPConfig.forPlain("localhost", 1025, "user", "password");
 
         EmailModel emailModel = new EmailModel("dick.silly@domain.com", "Dick Silly",
                 "Integration Test - " + System.currentTimeMillis(),

@@ -1,6 +1,6 @@
 # Ἑρμῆς (Hermês) Mail
 
-[![](https://jitpack.io/v/com.softinstigate/ermes-mail.svg)](https://jitpack.io/#com.softinstigate/ermes-mail)
+[![JitPack version](https://jitpack.io/v/com.softinstigate/ermes-mail.svg)](https://jitpack.io/#com.softinstigate/ermes-mail)
 
 ErmesMail is a set of Java classes for sending e-mail messages asynchronously, via SMTP servers.
 
@@ -11,7 +11,7 @@ ErmesMail is developed in Java 17 and built with Maven 3.8.
 
 ## JavaDocs
 
-JavaDocs are available [here](https://jitpack.io/com/github/softinstigate/ermes-mail/latest/javadoc/).
+JavaDocs are available at the [ErmesMail JavaDocs](https://jitpack.io/com/github/softinstigate/ermes-mail/latest/javadoc/).
 
 ## Build and cli execution
 
@@ -21,7 +21,7 @@ JavaDocs are available [here](https://jitpack.io/com/github/softinstigate/ermes-
 ```shell
 $ java -jar target/ermes-mail.jar --help
 
-Usage: java -jar ermes-mail.jar [-v] [--help] [--sslon] [-P[=<password>]]
+Usage: java -jar ermes-mail.jar [-v] [--help] [--sslon] [--starttls] [--starttls-required] [-P[=<password>]]
                                 -b=<message> -f=<fromAddress> [-h=<smtpHost>]
                                 [-n=<senderName>] [-p=<smtpPort>] -s=<subject>
                                 [--sslport=<sslPort>] [-u=<user>]
@@ -35,8 +35,10 @@ Sends an HTML email to the given recipient(s).
   -u, --user=<user>          SMTP user name.
   -P, --password[=<password>]
                              SMTP user password.
-      --sslon                Use SSL.
-      --sslport=<sslPort>    SSL port (default is 465).
+    --sslon                Use SSL.
+    --sslport=<sslPort>    SSL port (default is 465).
+    --starttls             Enable STARTTLS (upgrade to TLS if server supports it).
+    --starttls-required    Require STARTTLS (fail if not supported).
   -f, --from=<fromAddress>   FROM field.
   -n, --sender=<senderName>  Sender full name (optional).
   -s, --subject=<subject>    Subject.
@@ -54,7 +56,7 @@ Copyright(c) 2022 SoftInstigate srl (https://www.softinstigate.com)
 
 ## Send a test email message to MailHog
 
-To test the sending of e-mails via command line, we suggest running a local SMTP mock server like [MailHog](https://github.com/mailhog/MailHog). Please look [here](https://github.com/mailhog/MailHog#installation) for MailHog's installation instructions.
+To test the sending of e-mails via command line, we suggest running a local SMTP mock server like [MailHog](https://github.com/mailhog/MailHog). Please look at the [MailHog installation instructions](https://github.com/mailhog/MailHog#installation) for setup details.
 
 After executing MailHog (usually with the `MailHog` command) you can send your first HTML email message to `localhost` with ErmesMail:
 
@@ -138,7 +140,8 @@ A good understanding of [Java Futures](https://www.baeldung.com/java-future) wou
 Below a java fragment, for example:
 
 ```java
-SMTPConfig smtpConfig = new SMTPConfig("localhost", 1025, "user", "password", false);
+// Use the factory methods on SMTPConfig to express the desired security mode.
+SMTPConfig smtpConfig = SMTPConfig.forPlain("localhost", 1025, "user", "password");
 
 EmailModel emailModel = new EmailModel(
     "dick.silly@domain.com", "Dick Silly",
@@ -161,17 +164,43 @@ List<String> listOfErrors = errors.get(); // WARNING: Future.get() is blocking
 if (!listOfErrors.isEmpty()) {
     System.err.println("Errors sending emails: " + listOfErrors.toString());
 }
+```
 
 ## SMTP Configuration and Testing
 
-ErmesMail currently supports sending emails via plain SMTP and SSL (SMTPS). You can configure the SMTP host, port, user, password, and SSL options via the command line or programmatically using the `SMTPConfig` class.
+ErmesMail supports plain SMTP, SSL (SMTPS), and STARTTLS (opportunistic or required).
+
+You can configure the SMTP host, port, user, password, and security mode via the command line or programmatically using the `SMTPConfig` factory methods.
 
 To test different SMTP configurations:
 
 1. Use a local SMTP server like MailHog for development and testing.
-2. For SSL, use the `--sslon` and `--sslport` options (default SSL port is 465).
-3. For plain SMTP, omit the `--sslon` flag and use the standard port (usually 25 or 1025 for local testing).
-4. To test with real SMTP providers (e.g., Gmail, Aruba), ensure your credentials and security settings are correct and that your network/firewall allows outbound connections to the SMTP server and port.
+2. For SSL (implicit TLS), use the `--sslon` and `--sslport` options (default SSL port is 465).
+3. For STARTTLS, use `--starttls` to enable opportunistic STARTTLS, and add `--starttls-required` if you want the client to fail when the server does not advertise STARTTLS.
+4. For plain SMTP, omit the `--sslon` and `--starttls` flags and use the standard port (usually 25 or 1025 for local testing).
+5. To test with real SMTP providers (e.g., Gmail), ensure your credentials and security settings are correct and that your network/firewall allows outbound connections to the SMTP server and port.
 
 If you encounter issues, check the logs for detailed error messages. For troubleshooting tips, see the [project issues](https://github.com/SoftInstigate/ermes-mail/issues) or contact the maintainers.
+
+## Migration note
+
+Version 2.0 introduces a breaking change: the boolean-heavy `SMTPConfig` constructors were removed in favor of explicit factory methods that make the security policy clear.
+
+Old code (pre-2.0):
+
+```java
+// Older constructor with boolean flags (removed in 2.0)
+SMTPConfig smtpConfig = new SMTPConfig("localhost", 1025, "user", "password", false /*ssl*/);
 ```
+
+New code (2.0+):
+
+```java
+// Use factory methods to express intent clearly
+SMTPConfig smtpPlain = SMTPConfig.forPlain("localhost", 1025, "user", "password");
+SMTPConfig smtpSsl = SMTPConfig.forSsl("smtp.example.com", 465, "user", "password", 465);
+SMTPConfig smtpStartTls = SMTPConfig.forStartTlsOptional("smtp.example.com", 587, "user", "password");
+SMTPConfig smtpStartTlsRequired = SMTPConfig.forStartTlsRequired("smtp.example.com", 587, "user", "password");
+```
+
+This makes it explicit whether you want plain SMTP, implicit SSL (SMTPS), or STARTTLS (optional or required).

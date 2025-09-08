@@ -20,8 +20,21 @@
 package com.softinstigate.ermes.mail;
 
 /**
- * SMTPConfig holds the SMTP server configuration, which is used by the
- * EmailService class
+ * SMTPConfig holds the SMTP server configuration used by {@link EmailService}.
+ *
+ * <p>
+ * Construction is done via explicit factory methods to make the security
+ * intent clear. Use one of:
+ * <ul>
+ * <li>{@link #forPlain(String,int,String,String)}</li>
+ * <li>{@link #forSsl(String,int,String,String,int)}</li>
+ * <li>{@link #forStartTlsOptional(String,int,String,String)}</li>
+ * <li>{@link #forStartTlsRequired(String,int,String,String)}</li>
+ * </ul>
+ *
+ * <p>
+ * The {@link SecurityMode} enum expresses the security policy (plain, SSL,
+ * STARTTLS optional or required).
  */
 public class SMTPConfig {
 
@@ -33,38 +46,72 @@ public class SMTPConfig {
     public final String password;
     public final boolean ssl;
     public final int sslPort;
+    public final SecurityMode securityMode;
 
     /**
-     * Default constructor
-     * 
+     * Security mode for the SMTP connection.
+     */
+    public enum SecurityMode {
+        PLAIN, SSL, STARTTLS_OPTIONAL, STARTTLS_REQUIRED
+    }
+
+    /**
+     * Private initializer used by factory methods.
+     *
      * @param smtpHostname SMTP hostname
-     * @param smtpPort     SMTP port
+     * @param smtpPort SMTP port
      * @param smtpUsername SMTP username
      * @param smtpPassword SMTP password
-     * @param sslOn        if true then use SSL for sending
-     * @param sslPort      SSL port to use
+     * @param sslOn whether SSL-on-connect should be used
+     * @param sslPort SSL port value (only meaningful for SSL mode)
+     * @param mode the desired {@link SecurityMode}
      */
-    public SMTPConfig(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword, boolean sslOn,
-            int sslPort) {
+    private SMTPConfig(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword, boolean sslOn,
+            int sslPort, SecurityMode mode) {
         this.hostname = smtpHostname;
         this.port = smtpPort;
         this.username = smtpUsername;
         this.password = smtpPassword;
         this.ssl = sslOn;
         this.sslPort = sslPort;
+        this.securityMode = mode;
     }
 
     /**
-     * Constructor using DEFAULT_SSL_PORT
-     * 
-     * @param smtpHostname SMTP hostname
-     * @param smtpPort     SMTP port
-     * @param smtpUsername SMTP username
-     * @param smtpPassword SMTP password
-     * @param sslOn        if true then use SSL for sending
+     * Create a plain (no TLS) SMTP configuration.
      */
-    public SMTPConfig(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword, boolean sslOn) {
-        this(smtpHostname, smtpPort, smtpUsername, smtpPassword, sslOn, DEFAULT_SSL_PORT);
+    public static SMTPConfig forPlain(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword) {
+        return new SMTPConfig(smtpHostname, smtpPort, smtpUsername, smtpPassword, false, DEFAULT_SSL_PORT,
+                SecurityMode.PLAIN);
+    }
+
+    /**
+     * Create an SSL-on-connect SMTP configuration (implicit TLS, typically port 465).
+     */
+    public static SMTPConfig forSsl(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword,
+            int sslPort) {
+        return new SMTPConfig(smtpHostname, smtpPort, smtpUsername, smtpPassword, true, sslPort,
+                SecurityMode.SSL);
+    }
+
+    /**
+     * Create a STARTTLS (opportunistic) SMTP configuration: upgrade to TLS if
+     * the server supports it, otherwise continue in plaintext.
+     */
+    public static SMTPConfig forStartTlsOptional(String smtpHostname, int smtpPort, String smtpUsername,
+            String smtpPassword) {
+        return new SMTPConfig(smtpHostname, smtpPort, smtpUsername, smtpPassword, false, DEFAULT_SSL_PORT,
+                SecurityMode.STARTTLS_OPTIONAL);
+    }
+
+    /**
+     * Create a STARTTLS-required SMTP configuration: fail if the server does not
+     * advertise STARTTLS.
+     */
+    public static SMTPConfig forStartTlsRequired(String smtpHostname, int smtpPort, String smtpUsername,
+            String smtpPassword) {
+        return new SMTPConfig(smtpHostname, smtpPort, smtpUsername, smtpPassword, false, DEFAULT_SSL_PORT,
+                SecurityMode.STARTTLS_REQUIRED);
     }
 
     @Override
@@ -73,7 +120,7 @@ public class SMTPConfig {
                 "hostname='" + hostname + '\'' +
                 ", port=" + port +
                 ", username='" + username + '\'' +
-                ", ssl=" + ssl +
+                ", securityMode=" + securityMode +
                 ", sslPort=" + sslPort +
                 '}';
     }

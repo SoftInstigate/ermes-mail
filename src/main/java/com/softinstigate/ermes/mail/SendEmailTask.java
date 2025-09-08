@@ -93,6 +93,16 @@ public class SendEmailTask implements Callable<List<String>> {
             email.setAuthentication(smtpConfig.username, smtpConfig.password);
             email.setSSLOnConnect(smtpConfig.ssl);
             email.setSslSmtpPort(String.valueOf(smtpConfig.sslPort));
+            // Configure STARTTLS using Commons Email API (preferred to mutating Session properties).
+            // The security mode is expressed via SMTPConfig.SecurityMode and set by
+            // the factory methods on SMTPConfig (forPlain/forSsl/forStartTls*).
+            if (smtpConfig.securityMode == SMTPConfig.SecurityMode.STARTTLS_OPTIONAL
+                    || smtpConfig.securityMode == SMTPConfig.SecurityMode.STARTTLS_REQUIRED) {
+                email.setStartTLSEnabled(true);
+                if (smtpConfig.securityMode == SMTPConfig.SecurityMode.STARTTLS_REQUIRED) {
+                    email.setStartTLSRequired(true);
+                }
+            }
             email.setFrom(model.from, model.senderFullName);
             email.setSubject(model.subject);
             email.setHtmlMsg(model.message);

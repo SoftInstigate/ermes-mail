@@ -19,13 +19,13 @@
  */
 package com.softinstigate.ermes.mail;
 
-import java.util.logging.Logger;
-import picocli.CommandLine;
-
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.logging.Logger;
+
+import picocli.CommandLine;
 
 /**
  * Implements the command line interface with picocli
@@ -42,53 +42,111 @@ public class Main implements Callable<Integer> {
 
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
-    @CommandLine.Option(names = { "-h", "--host" }, defaultValue = "localhost", description = "SMTP host.")
+    @CommandLine.Option(
+        names = { "-h", "--host" },
+        defaultValue = "localhost",
+        description = "SMTP host.")
     private String smtpHost;
 
-    @CommandLine.Option(names = { "-p", "--port" }, defaultValue = "25", description = "SMTP port.")
+    @CommandLine.Option(
+        names = { "-p", "--port" },
+        defaultValue = "25",
+        description = "SMTP port.")
     private int smtpPort;
 
-    @CommandLine.Option(names = { "-u", "--user" }, defaultValue = "", description = "SMTP user name.")
+    @CommandLine.Option(
+        names = { "-u", "--user" },
+        defaultValue = "",
+        description = "SMTP user name.")
     private String user;
 
-    @CommandLine.Option(names = { "-P", "--password" }, defaultValue = "",
-        arity = "0..1", interactive = true, description = "SMTP user password.")
+    @CommandLine.Option(
+        names = { "-P", "--password" },
+        defaultValue = "",
+        arity = "0..1",
+        interactive = true,
+        description = "SMTP user password.")
     private String password;
 
-    @CommandLine.Option(names = { "--sslon" }, defaultValue = "false", description = "Use SSL.")
+    @CommandLine.Option(
+        names = { "--sslon" },
+        defaultValue = "false",
+        description = "Use SSL.")
     private boolean sslOn;
 
-    @CommandLine.Option(names = { "--sslport" }, defaultValue = "465", description = "SSL port (default is 465).")
+    @CommandLine.Option(
+        names = { "--sslport" },
+        defaultValue = "465",
+        description = "SSL port (default is 465).")
     private int sslPort;
 
-    @CommandLine.Option(names = { "-f", "--from" }, required = true, description = "FROM field.")
+    @CommandLine.Option(
+        names = { "--starttls" },
+        defaultValue = "false",
+        description = "Enable STARTTLS (upgrade to TLS).")
+    private boolean startTls;
+
+    @CommandLine.Option(
+        names = { "--starttls-required" },
+        defaultValue = "false",
+        description = "Require STARTTLS (fail if not supported).")
+    private boolean startTlsRequired;
+
+    @CommandLine.Option(
+        names = { "-f", "--from" },
+        required = true,
+        description = "FROM field.")
     private String fromAddress;
 
-    @CommandLine.Option(names = { "-n", "--sender" }, description = "Sender full name (optional).")
+    @CommandLine.Option(
+        names = { "-n", "--sender" },
+        description = "Sender full name (optional).")
     private String senderName;
 
-    @CommandLine.Option(names = { "-s", "--subject" }, required = true, description = "Subject.")
+    @CommandLine.Option(
+        names = { "-s", "--subject" },
+        required = true,
+        description = "Subject.")
     private String subject;
 
-    @CommandLine.Option(names = { "-b", "--body" }, required = true, description = "Message body (can be HTML).")
+    @CommandLine.Option(
+        names = { "-b", "--body" },
+        required = true,
+        description = "Message body (can be HTML).")
     private String message;
 
-    @CommandLine.Option(names = { "--to" }, required = true, description = "List of mandatory TO recipients.",
-        split = ",", arity = "1..*")
+    @CommandLine.Option(
+        names = { "--to" },
+        required = true,
+        description = "List of mandatory TO recipients.",
+        split = ",",
+        arity = "1..*")
     private List<String> toList;
 
-    @CommandLine.Option(names = { "--cc" }, description = "List of optional CC recipients.",
-        split = ",", arity = "1..*")
+    @CommandLine.Option(
+        names = { "--cc" },
+        description = "List of optional CC recipients.",
+        split = ",",
+        arity = "1..*")
     private List<String> ccList;
 
-    @CommandLine.Option(names = { "--bcc" }, description = "List of optional BCC recipients.",
-        split = ",", arity = "1..*")
+    @CommandLine.Option(
+        names = { "--bcc" },
+        description = "List of optional BCC recipients.",
+        split = ",",
+        arity = "1..*")
     private List<String> bccList;
 
-    @CommandLine.Option(names = { "--help" }, usageHelp = true, description = "display this help message.")
+    @CommandLine.Option(
+        names = { "--help" },
+        usageHelp = true,
+        description = "display this help message.")
     private boolean help;
 
-    @CommandLine.Option(names = { "-v", "--version" }, versionHelp = true, description = "print version information and exit.")
+    @CommandLine.Option(
+        names = { "-v", "--version" },
+        versionHelp = true,
+        description = "print version information and exit.")
     private boolean versionRequested;
 
     /**
@@ -96,13 +154,27 @@ public class Main implements Callable<Integer> {
      */
     @Override
     public Integer call() {
-        SMTPConfig smtpConfig = new SMTPConfig(
-                smtpHost,
-                smtpPort,
-                user,
-                password,
-                sslOn,
-                sslPort);
+    // Validate incompatible flags early: SSL-on-connect and STARTTLS are
+    // mutually exclusive. The SMTPConfig factory methods express the
+    // desired security mode (forSsl / forStartTlsOptional / forStartTlsRequired / forPlain).
+        if (sslOn && startTls) {
+            LOGGER.severe("Configuration error: --sslon and --starttls are mutually exclusive. Enable only one.");
+            return 1;
+        }
+
+        SMTPConfig smtpConfig;
+        if (sslOn) {
+            smtpConfig = SMTPConfig.forSsl(smtpHost, smtpPort, user, password, sslPort);
+        } else if (startTls) {
+            if (startTlsRequired) {
+                smtpConfig = SMTPConfig.forStartTlsRequired(smtpHost, smtpPort, user, password);
+            } else {
+                smtpConfig = SMTPConfig.forStartTlsOptional(smtpHost, smtpPort, user, password);
+            }
+        } else {
+            // plain SMTP
+            smtpConfig = SMTPConfig.forPlain(smtpHost, smtpPort, user, password);
+        }
         EmailModel emailModel = new EmailModel(
                 fromAddress,
                 senderName,
