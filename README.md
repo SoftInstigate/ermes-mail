@@ -184,37 +184,51 @@ If you encounter issues, check the logs for detailed error messages. For trouble
 
 ## Running integration tests
 
-The integration tests that exercise real SMTP servers read credentials from environment variables or from a local `smtp-integration.properties` file placed in the project root. Use either method to provide the following properties:
+Integration tests are consolidated in `IntegrationScenariosIT` and cover two scenarios:
 
-- `smtp.host`
-- `smtp.port` (e.g. `465`)
-- `smtp.username`
-- `smtp.password`
-- `smtp.sslport` (optional, default 465)
+- `local-plain-mailpit`: sends plain SMTP to a local Mailpit instance (localhost:1025). This test is executed only when Mailpit is reachable on `localhost:1025` (the test probes the TCP port and will be skipped automatically if nothing is listening).
+- `external-smtps-conditional`: performs an implicit SSL (SMTPS) send against an external SMTP provider and is run only when integration credentials/configuration are provided via environment variables or a local properties file.
+
+Provide external SMTP configuration either using environment variables or a `smtp-integration.properties` file in the project root with these keys:
+
+- `SMTP_INTEGRATION_HOST` (e.g. `smtps.example.com`)
+- `SMTP_INTEGRATION_PORT` (e.g. `465`)
+- `SMTP_INTEGRATION_USERNAME`
+- `SMTP_INTEGRATION_PASSWORD`
+- `SMTP_INTEGRATION_SENDER`
+- `SMTP_INTEGRATION_RECIPIENT`
+- `SMTP_INTEGRATION_SSLPORT` (optional, defaults to the port above)
 
 Example `smtp-integration.properties` (do not commit this file):
 
-```txt
-smtp.host=smtps.example.com
-smtp.port=465
-smtp.username=info@yourdomain.example
-smtp.password=supersecret
-smtp.sslport=465
+```properties
+SMTP_INTEGRATION_HOST=smtps.example.com
+SMTP_INTEGRATION_PORT=465
+SMTP_INTEGRATION_USERNAME=info@yourdomain.example
+SMTP_INTEGRATION_PASSWORD=supersecret
+SMTP_INTEGRATION_SENDER=info@yourdomain.example
+SMTP_INTEGRATION_RECIPIENT=you@example.com
+SMTP_INTEGRATION_SSLPORT=465
 ```
 
-Run the integration tests with JavaMail debug enabled to see client-side TLS/SSL handshake information:
+Run the tests (integration tests are executed by the Maven `verify` phase). Use JavaMail debug to capture client-side TLS/SSL handshake logs when the external scenario runs:
 
 ```bash
 mvn -Dmail.debug=true -DfailIfNoTests=false verify
 ```
 
-If you only want to run integration tests and skip unit tests:
+To run only integration tests while skipping unit tests:
 
 ```bash
 mvn -Dmail.debug=true -DskipTests=true -DfailIfNoTests=false verify
 ```
 
-The README includes `smtp-integration.properties.example` and the `.gitignore` already excludes local credential files. Keep secrets out of the repository.
+Notes:
+
+- The local Mailpit scenario will be automatically skipped if nothing is listening on `localhost:1025`.
+- The external SMTPS scenario is conditional and will be skipped when the required configuration is not present (either env vars or `smtp-integration.properties` / `.env`).
+- Older individual integration test files have been removed; `IntegrationScenariosIT` is the canonical integration test.
+- Keep integration credentials out of the repository; `smtp-integration.properties` is ignored by `.gitignore` and an example file is provided.
 
 ## Migration note
 
