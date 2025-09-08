@@ -12,6 +12,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      BYTEBUDDY_VERSION: 1.17.5
     permissions:
       contents: read
       packages: write
@@ -33,10 +35,13 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
+    - name: Download ByteBuddy agent for tests
+      run: mvn -B dependency:copy -Dartifact=net.bytebuddy:byte-buddy-agent:${{ env.BYTEBUDDY_VERSION }} -DoutputDirectory=target/test-agent -Dtransitive=false
+
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn -B -DargLine="-javaagent=${{ github.workspace }}/target/test-agent/byte-buddy-agent-${{ env.BYTEBUDDY_VERSION }}.jar" package --file pom.xml
 
     - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml -D skipITs
+      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml -DskipITs -DargLine="-javaagent=${{ github.workspace }}/target/test-agent/byte-buddy-agent-${{ env.BYTEBUDDY_VERSION }}.jar"
       env:
         GITHUB_TOKEN: ${{ github.token }}
