@@ -14,6 +14,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+    <!-- ByteBuddy agent version used by Mockito inline mock maker as a javaagent -->
+    <bytebuddy.version>1.17.5</bytebuddy.version>
         <skipITs>false</skipITs>
         <skipUpdateLicense>true</skipUpdateLicense>
     </properties>
@@ -57,6 +59,20 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.12.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.18.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Ensure the ByteBuddy agent JAR is available and loaded as a javaagent by the test runners
+             to avoid dynamic agent attachment which will be disallowed in future JDKs. -->
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+            <version>${bytebuddy.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -177,12 +193,18 @@
                     <excludes>
                         <exclude>**/IT*.java</exclude>
                     </excludes>
+                    <!-- Load ByteBuddy agent as a javaagent so Mockito doesn't need to attach dynamically -->
+                    <argLine>-javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/${bytebuddy.version}/byte-buddy-agent-${bytebuddy.version}.jar</argLine>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.5.3</version>
+                <configuration>
+                    <!-- Also load the agent for integration test runs -->
+                    <argLine>-javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/${bytebuddy.version}/byte-buddy-agent-${bytebuddy.version}.jar</argLine>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

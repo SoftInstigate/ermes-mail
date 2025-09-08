@@ -44,6 +44,7 @@ public class SendEmailTask implements Callable<List<String>> {
     private final SMTPConfig smtpConfig;
     private final EmailModel model;
     private final String charset;
+    private final HtmlEmailFactory emailFactory;
 
     /**
      * Default constructor
@@ -53,9 +54,17 @@ public class SendEmailTask implements Callable<List<String>> {
      * @param charset a charset (default is UTF-8)
      */
     public SendEmailTask(SMTPConfig smtpConfig, EmailModel model, String charset) {
+        this(smtpConfig, model, charset, new DefaultHtmlEmailFactory());
+    }
+
+    /**
+     * Constructor used for tests to inject a mock HtmlEmail factory.
+     */
+    public SendEmailTask(SMTPConfig smtpConfig, EmailModel model, String charset, HtmlEmailFactory emailFactory) {
         this.smtpConfig = smtpConfig;
         this.model = model;
         this.charset = charset;
+        this.emailFactory = emailFactory;
     }
 
     /**
@@ -85,7 +94,7 @@ public class SendEmailTask implements Callable<List<String>> {
         Thread.currentThread().setContextClassLoader(EmailService.class.getClassLoader());
         // End Fix
 
-        HtmlEmail email = new HtmlEmail();
+        HtmlEmail email = emailFactory.create();
         try {
             email.setCharset(charset);
             email.setHostName(smtpConfig.hostname);
