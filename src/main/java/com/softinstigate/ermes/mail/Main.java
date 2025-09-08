@@ -154,9 +154,9 @@ public class Main implements Callable<Integer> {
      */
     @Override
     public Integer call() {
-    // Validate incompatible flags early: SSL-on-connect and STARTTLS are
-    // mutually exclusive. The SMTPConfig factory methods express the
-    // desired security mode (forSsl / forStartTlsOptional / forStartTlsRequired / forPlain).
+        // Validate incompatible flags early: SSL-on-connect and STARTTLS are
+        // mutually exclusive. The SMTPConfig factory methods express the
+        // desired security mode (forSsl / forStartTlsOptional / forStartTlsRequired / forPlain).
         if (sslOn && startTls) {
             LOGGER.severe("Configuration error: --sslon and --starttls are mutually exclusive. Enable only one.");
             return 1;
