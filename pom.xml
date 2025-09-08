@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.softinstigate</groupId>
@@ -14,8 +16,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-    <!-- ByteBuddy agent version used by Mockito inline mock maker as a javaagent -->
-    <bytebuddy.version>1.17.5</bytebuddy.version>
+        <!-- ByteBuddy agent version used by Mockito inline mock maker as a javaagent -->
+        <bytebuddy.version>1.17.5</bytebuddy.version>
         <skipITs>false</skipITs>
         <skipUpdateLicense>true</skipUpdateLicense>
     </properties>
@@ -67,8 +69,8 @@
             <version>5.18.0</version>
             <scope>test</scope>
         </dependency>
-        <!-- Ensure the ByteBuddy agent JAR is available and loaded as a javaagent by the test runners
-             to avoid dynamic agent attachment which will be disallowed in future JDKs. -->
+        <!-- Ensure the ByteBuddy agent JAR is available and loaded as a javaagent by the test
+        runners to avoid dynamic agent attachment which will be disallowed in future JDKs. -->
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy-agent</artifactId>
@@ -144,8 +146,10 @@
                             <licenseName>apache_v2</licenseName>
                             <skipUpdateLicense>${skipUpdateLicense}</skipUpdateLicense>
                             <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
-                            <processStartTag>========================LICENSE_START=================================</processStartTag>
-                            <processEndTag>=========================LICENSE_END==================================</processEndTag>
+                            <processStartTag>
+                                ========================LICENSE_START=================================</processStartTag>
+                            <processEndTag>
+                                =========================LICENSE_END==================================</processEndTag>
                             <roots>
                                 <root>src/main/java</root>
                                 <root>src/test</root>
@@ -177,7 +181,8 @@
                                 </filter>
                             </filters>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>com.softinstigate.ermes.mail.Main</mainClass>
                                 </transformer>
                             </transformers>
@@ -193,8 +198,10 @@
                     <excludes>
                         <exclude>**/IT*.java</exclude>
                     </excludes>
-                    <!-- Load ByteBuddy agent as a javaagent so Mockito doesn't need to attach dynamically -->
-                    <argLine>-javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/${bytebuddy.version}/byte-buddy-agent-${bytebuddy.version}.jar</argLine>
+                    <!-- Load ByteBuddy agent as a javaagent so Mockito doesn't need to attach
+                    dynamically -->
+                    <argLine>
+                        -javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/${bytebuddy.version}/byte-buddy-agent-${bytebuddy.version}.jar</argLine>
                 </configuration>
             </plugin>
             <plugin>
@@ -203,7 +210,8 @@
                 <version>3.5.3</version>
                 <configuration>
                     <!-- Also load the agent for integration test runs -->
-                    <argLine>-javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/${bytebuddy.version}/byte-buddy-agent-${bytebuddy.version}.jar</argLine>
+                    <argLine>
+                        -javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/${bytebuddy.version}/byte-buddy-agent-${bytebuddy.version}.jar</argLine>
                 </configuration>
                 <executions>
                     <execution>
