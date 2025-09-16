@@ -114,13 +114,13 @@ Then add the following dependency:
 <dependency>
     <groupId>javax.mail</groupId>
     <artifactId>javax.mail-api</artifactId>
-    <version>1.5.6</version>
+    <version>1.6.2</version>
     <scope>runtime</scope>
 </dependency>
 <dependency>
     <groupId>com.sun.mail</groupId>
     <artifactId>javax.mail</artifactId>
-    <version>1.5.6</version>
+    <version>1.6.2</version>
     <scope>runtime</scope>
 </dependency>
 ```
