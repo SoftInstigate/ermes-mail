@@ -108,7 +108,7 @@ Then add the following dependency:
 </dependency>
 ```
 
-> **Warning**: As ErmesMail depends on `org.apache.commons.commons-email` v1.5, we suggest including the below runtime dependencies (`javax.mail-api` and `javax.mail`) to prevent classpath conflicts. The wrong version of these dependencies, included by other libraries, might provoke the following runtime exception when sending emails: `java.lang.NoSuchMethodError: 'void com.sun.mail.util.LineOutputStream.<init>(java.io.OutputStream, boolean)`
+> **Warning**: As ErmesMail depends on `org.apache.commons.commons-email` v1.6, we suggest including the below runtime dependencies (`javax.mail-api` and `javax.mail`) to prevent classpath conflicts. The wrong version of these dependencies, included by other libraries, might provoke the following runtime exception when sending emails: `java.lang.NoSuchMethodError: 'void com.sun.mail.util.LineOutputStream.<init>(java.io.OutputStream, boolean)`
 
 ```xml
 <dependency>
