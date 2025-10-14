@@ -86,7 +86,7 @@ You can read the e-mail message on the [Mailpit UI](http://0.0.0.0:8025/).
 
 ## Add ErmesMail to your Maven project
 
-To use ErmesMail in your Maven build, first add the JitPack repository in your pom.xml
+To use ErmesMail in your Maven build, first add the [JitPack repository](https://jitpack.io/#SoftInstigate/ermes-mail) in your pom.xml
 
 ```xml
 <repositories>
