@@ -276,11 +276,30 @@ public class EmailModel {
                 "from='" + from + '\'' +
                 ", senderFullName='" + senderFullName + '\'' +
                 ", subject='" + subject + '\'' +
-                ", message='" + message + '\'' +
+                ", message='[REDACTED]'" +
                 ", to=" + to +
                 ", cc=" + cc +
                 ", bcc=" + bcc +
                 ", attachments=" + attachments +
+                '}';
+    }
+
+    /**
+     * Create a secure string representation that excludes sensitive content.
+     * Use this method for logging to avoid exposing email content in logs.
+     * 
+     * @return a sanitized string representation
+     */
+    public String toSecureString() {
+        return "MailModel{" +
+                "from='" + from + '\'' +
+                ", senderFullName='" + senderFullName + '\'' +
+                ", subject='" + (subject != null ? "[" + subject.length() + " chars]" : "null") + '\'' +
+                ", message='" + (message != null ? "[" + message.length() + " chars]" : "null") + '\'' +
+                ", toCount=" + (to != null ? to.size() : 0) +
+                ", ccCount=" + (cc != null ? cc.size() : 0) +
+                ", bccCount=" + (bcc != null ? bcc.size() : 0) +
+                ", attachmentCount=" + (attachments != null ? attachments.size() : 0) +
                 '}';
     }
 }

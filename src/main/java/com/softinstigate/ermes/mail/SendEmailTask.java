@@ -84,7 +84,7 @@ public class SendEmailTask implements Callable<List<String>> {
      */
     @Override
     public List<String> call() {
-        LOGGER.info("Processing " + model.toString());
+        LOGGER.info("Processing " + model.toSecureString());
 
         final List<String> errors = new ArrayList<>();
 

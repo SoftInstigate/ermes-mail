@@ -47,7 +47,7 @@ public class EmailService {
     public EmailService(SMTPConfig smtpConfig, int threadPoolSize) {
         this.smtpConfig = smtpConfig;
         executor = Executors.newFixedThreadPool(threadPoolSize);
-        LOGGER.info("MailService initialized with " + smtpConfig.toString());
+        LOGGER.info("MailService initialized with " + smtpConfig.toSecureString());
     }
 
     /**

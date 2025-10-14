@@ -119,7 +119,23 @@ public class SMTPConfig {
         return "SMTPConfig{" +
                 "hostname='" + hostname + '\'' +
                 ", port=" + port +
-                ", username='" + username + '\'' +
+                ", username='" + (username != null && !username.isEmpty() ? "[REDACTED]" : "null") + '\'' +
+                ", securityMode=" + securityMode +
+                ", sslPort=" + sslPort +
+                '}';
+    }
+
+    /**
+     * Create a secure string representation for logging purposes.
+     * This excludes sensitive authentication information.
+     * 
+     * @return a sanitized string representation
+     */
+    public String toSecureString() {
+        return "SMTPConfig{" +
+                "hostname='" + hostname + '\'' +
+                ", port=" + port +
+                ", hasCredentials=" + (username != null && !username.isEmpty()) +
                 ", securityMode=" + securityMode +
                 ", sslPort=" + sslPort +
                 '}';
