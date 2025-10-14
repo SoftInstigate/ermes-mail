@@ -13,7 +13,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      BYTEBUDDY_VERSION: 1.17.5
+      BYTEBUDDY_VERSION: 1.17.8
     permissions:
       contents: read
       packages: write
