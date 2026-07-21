@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "22"
 
@@ -27,9 +27,9 @@ jobs:
       - name: Run OpenWiki
         run: openwiki code --update --print
         env:
-          OPENWIKI_PROVIDER: openrouter
+          OPENWIKI_PROVIDER: ${{ vars.OPENWIKI_PROVIDER || 'openrouter' }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          OPENWIKI_MODEL_ID: z-ai/glm-5.2
+          OPENWIKI_MODEL_ID: ${{ vars.OPENWIKI_MODEL_ID || 'z-ai/glm-5.2' }}
           LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
           LANGCHAIN_PROJECT: openwiki
           LANGCHAIN_TRACING_V2: "true"
