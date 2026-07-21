@@ -13,6 +13,20 @@ ErmesMail is developed in Java 17 and built with Maven 3.8.
 
 JavaDocs are available at the [ErmesMail JavaDocs](https://jitpack.io/com/github/softinstigate/ermes-mail/latest/javadoc/).
 
+## OpenWiki Documentation
+
+This repository includes an OpenWiki documentation set for recurring code documentation and project navigation.
+
+- Start here: [OpenWiki Quickstart](openwiki/quickstart.md)
+- Index: [OpenWiki Index](openwiki/index.md)
+- Source map: [ErmesMail Source Map](openwiki/source-map.md)
+- Architecture: [Architecture Overview](openwiki/architecture/overview.md)
+- Domain concepts: [Domain Concepts](openwiki/domain/concepts.md)
+- Operations runbook: [Operations Runbook](openwiki/operations/runbook.md)
+- Testing guide: [Testing Guide](openwiki/testing/guide.md)
+
+OpenWiki pages are refreshed by the scheduled GitHub Actions workflow. Prefer updating source code and core docs, then let OpenWiki regenerate.
+
 ## Build and cli execution
 
 1. Build the application with maven: `mvn package`.
