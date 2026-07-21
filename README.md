@@ -7,7 +7,7 @@ ErmesMail is a set of Java classes for sending e-mail messages asynchronously, v
 1. It can be embedded in your Java project as a tiny wrapper for the [Apache Commons Email library](https://commons.apache.org/proper/commons-email/).
 2. It can be used as a handy command line utility, to send emails programmatically from the shell.
 
-ErmesMail is developed in Java 17 and built with Maven 3.8.
+ErmesMail is developed in Java 17 and built with Maven.
 
 ## JavaDocs
 
@@ -51,7 +51,7 @@ Sends an HTML email to the given recipient(s).
                              SMTP user password.
     --sslon                Use SSL.
     --sslport=<sslPort>    SSL port (default is 465).
-    --starttls             Enable STARTTLS (upgrade to TLS if server supports it).
+    --starttls             Enable STARTTLS (upgrade to TLS).
     --starttls-required    Require STARTTLS (fail if not supported).
   -f, --from=<fromAddress>   FROM field.
   -n, --sender=<senderName>  Sender full name (optional).
@@ -78,20 +78,8 @@ After executing Mailpit (usually with the `mailpit` command) you can send your f
 $ java -jar target/ermes-mail.jar -h localhost -p 1025 \
   -f sender@email.com -s "test" -b "This is a <strong>HTML</strong> test email." \
   --to receiver@email.com
-  
-mag 24, 2022 4:46:16 PM com.softinstigate.ermes.mail.EmailService <init>
-INFORMAZIONI: MailService initialized with SMTPConfig{hostname='localhost', port=1025, username='', ssl=false, sslPort=465}
-mag 24, 2022 4:46:16 PM com.softinstigate.ermes.mail.EmailService send
-INFORMAZIONI: Sending emails asynchronously...
-mag 24, 2022 4:46:16 PM com.softinstigate.ermes.mail.SendEmailTask call
-INFORMAZIONI: Processing MailModel{from='sender@email.com', senderFullName='null', subject='test', message='This is a <strong>HTML</strong> test email.', to=[Recipient{email='receiver@email.com', name='null'}], cc=[], bcc=[], attachments=[]}
-mag 24, 2022 4:46:16 PM com.softinstigate.ermes.mail.SendEmailTask call
-INFORMAZIONI: Email successfully sent!
-TO: [Recipient{email='receiver@email.com', name='null'}]
-CC: []
-BCC: []
-mag 24, 2022 4:46:16 PM com.softinstigate.ermes.mail.EmailService shutdown
-INFORMAZIONI: ExecutorService terminated normally after shutdown request.```
+
+... Email successfully sent!
 ```
 
 You can read the e-mail message on the [Mailpit UI](http://0.0.0.0:8025/).
@@ -122,20 +110,19 @@ Then add the following dependency:
 </dependency>
 ```
 
-> **Warning**: As ErmesMail depends on `org.apache.commons.commons-email` v1.6, we suggest including the below runtime dependencies (`javax.mail-api` and `javax.mail`) to prevent classpath conflicts. The wrong version of these dependencies, included by other libraries, might provoke the following runtime exception when sending emails: `java.lang.NoSuchMethodError: 'void com.sun.mail.util.LineOutputStream.<init>(java.io.OutputStream, boolean)`
+> **Dependency note**: ErmesMail depends on `org.apache.commons:commons-email:1.6.0`, which brings `com.sun.mail:jakarta.mail:1.6.7` and `com.sun.activation:jakarta.activation:1.2.1` transitively. If your application has other mail-related dependencies, verify your effective classpath with `mvn dependency:tree` and align mail/activation versions to avoid runtime conflicts (for example `NoSuchMethodError` around `com.sun.mail.util.LineOutputStream`).
 
 ```xml
 <dependency>
-    <groupId>javax.mail</groupId>
-    <artifactId>javax.mail-api</artifactId>
-    <version>1.6.2</version>
-    <scope>runtime</scope>
-</dependency>
-<dependency>
     <groupId>com.sun.mail</groupId>
-    <artifactId>javax.mail</artifactId>
-    <version>1.6.2</version>
-    <scope>runtime</scope>
+    <artifactId>jakarta.mail</artifactId>
+    <version>1.6.7</version>
+</dependency>
+
+<dependency>
+    <groupId>com.sun.activation</groupId>
+    <artifactId>jakarta.activation</artifactId>
+    <version>1.2.1</version>
 </dependency>
 ```
 
@@ -191,8 +178,9 @@ To test different SMTP configurations:
 1. Use a local SMTP server like Mailpit for development and testing.
 2. For SSL (implicit TLS), use the `--sslon` and `--sslport` options (default SSL port is 465).
 3. For STARTTLS, use `--starttls` to enable opportunistic STARTTLS, and add `--starttls-required` if you want the client to fail when the server does not advertise STARTTLS.
-4. For plain SMTP, omit the `--sslon` and `--starttls` flags and use the standard port (usually 25 or 1025 for local testing).
-5. To test with real SMTP providers (e.g., Gmail), ensure your credentials and security settings are correct and that your network/firewall allows outbound connections to the SMTP server and port.
+4. `--sslon` and `--starttls` are mutually exclusive. Do not enable both in the same command.
+5. For plain SMTP, omit the `--sslon` and `--starttls` flags and use the standard port (usually 25 or 1025 for local testing).
+6. To test with real SMTP providers (e.g., Gmail), ensure your credentials and security settings are correct and that your network/firewall allows outbound connections to the SMTP server and port.
 
 If you encounter issues, check the logs for detailed error messages. For troubleshooting tips, see the [project issues](https://github.com/SoftInstigate/ermes-mail/issues) or contact the maintainers.
 
@@ -201,7 +189,7 @@ If you encounter issues, check the logs for detailed error messages. For trouble
 Integration tests are consolidated in `IntegrationScenariosIT` and cover two scenarios:
 
 - `local-plain-mailpit`: sends plain SMTP to a local Mailpit instance (localhost:1025). This test is executed only when Mailpit is reachable on `localhost:1025` (the test probes the TCP port and will be skipped automatically if nothing is listening).
-- `external-smtps-conditional`: performs an implicit SSL (SMTPS) send against an external SMTP provider and is run only when integration credentials/configuration are provided via environment variables or a local properties file.
+- `external-smtps-conditional`: performs an external SMTP send and is run only when integration credentials/configuration are provided via environment variables or a local properties file. By default it uses SMTPS, and it can be switched to STARTTLS via configuration.
 
 Provide external SMTP configuration either using environment variables or a `smtp-integration.properties` file in the project root with these keys:
 
@@ -212,6 +200,8 @@ Provide external SMTP configuration either using environment variables or a `smt
 - `SMTP_INTEGRATION_SENDER`
 - `SMTP_INTEGRATION_RECIPIENT`
 - `SMTP_INTEGRATION_SSLPORT` (optional, defaults to the port above)
+- `SMTP_INTEGRATION_STARTTLS` (optional, `true`/`false`; when omitted, port `587` implies STARTTLS)
+- `SMTP_INTEGRATION_STARTTLS_REQUIRED` (optional, `true`/`false`; applies when STARTTLS is enabled)
 
 Example `smtp-integration.properties` (do not commit this file):
 
@@ -240,7 +230,7 @@ mvn -Dmail.debug=true -DskipTests=true -DfailIfNoTests=false verify
 Notes:
 
 - The local Mailpit scenario will be automatically skipped if nothing is listening on `localhost:1025`.
-- The external SMTPS scenario is conditional and will be skipped when the required configuration is not present (either env vars or `smtp-integration.properties` / `.env`).
+- The external SMTP scenario is conditional and will be skipped when the required configuration is not present (either env vars or `smtp-integration.properties` / `.env`).
 - Older individual integration test files have been removed; `IntegrationScenariosIT` is the canonical integration test.
 - Keep integration credentials out of the repository; `smtp-integration.properties` is ignored by `.gitignore` and an example file is provided.
 
