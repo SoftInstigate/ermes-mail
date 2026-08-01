@@ -101,7 +101,18 @@ See `smtp-integration.properties.example` for the template. Alternatively, set e
 
 ### OpenWiki Update Workflow (`.github/workflows/openwiki-update.yml`)
 
-Automates documentation refresh. Not part of the build pipeline.
+**Trigger:** Scheduled cron (`29 4 */7 * *` — every 7 days at 04:29 UTC) or manual `workflow_dispatch`.
+
+**Steps:**
+1. Checkout code
+2. Set up Node.js 22
+3. Install OpenWiki globally (`npm install --global openwiki`)
+4. Run `openwiki code --update --print` using the OpenRouter provider with `xiaomi/mimo-v2.5-pro` model
+5. Create a pull request via `peter-evans/create-pull-request` on branch `openwiki/update` with any changes to `openwiki/`, `AGENTS.md`, or `CLAUDE.md`
+
+**Permissions:** `contents: write`, `pull-requests: write`.
+
+**Note:** Not part of the build pipeline — this is a documentation-only automation. Requires the `OPENROUTER_API_KEY` repository secret.
 
 ## Dependency Management
 
