@@ -2,93 +2,67 @@
 
 [![JitPack version](https://jitpack.io/v/com.softinstigate/ermes-mail.svg)](https://jitpack.io/#com.softinstigate/ermes-mail)
 
-ErmesMail is a set of Java classes for sending e-mail messages asynchronously, via SMTP servers.
+ErmesMail is a Java 17 library and CLI tool for sending HTML emails via SMTP. It wraps [Apache Commons Email](https://commons.apache.org/proper/commons-email/) with a clean API and adds a [picocli](https://picocli.info/)-based command-line interface for shell usage.
 
-1. It can be embedded in your Java project as a tiny wrapper for the [Apache Commons Email library](https://commons.apache.org/proper/commons-email/).
-2. It can be used as a handy command line utility, to send emails programmatically from the shell.
-
-ErmesMail is developed in Java 17 and built with Maven.
+- **As a library** — embed in your Maven project and call `EmailService` programmatically.
+- **As a CLI tool** — build a fat JAR and send emails from the shell.
 
 ## JavaDocs
 
-JavaDocs are available at the [ErmesMail JavaDocs](https://jitpack.io/com/github/softinstigate/ermes-mail/latest/javadoc/).
+JavaDocs are available at [jitpack.io](https://jitpack.io/com/github/softinstigate/ermes-mail/latest/javadoc/).
 
 ## OpenWiki Documentation
 
-This repository includes an OpenWiki documentation set for recurring code documentation and project navigation.
+- [Quickstart](openwiki/quickstart.md) — build, run, and first steps
+- [Architecture Overview](openwiki/architecture/overview.md) — package structure, class relationships
+- [Domain Concepts](openwiki/domain/concepts.md) — SMTPConfig, EmailModel, EmailService, SecurityMode
+- [Source Map](openwiki/source-map.md) — file-by-file guide
+- [Testing Guide](openwiki/testing/guide.md) — unit tests, integration tests, mocking patterns
+- [Operations Runbook](openwiki/operations/runbook.md) — SMTP configuration, CI/CD, troubleshooting
 
-- Start here: [OpenWiki Quickstart](openwiki/quickstart.md)
-- Index: [OpenWiki Index](openwiki/index.md)
-- Source map: [ErmesMail Source Map](openwiki/source-map.md)
-- Architecture: [Architecture Overview](openwiki/architecture/overview.md)
-- Domain concepts: [Domain Concepts](openwiki/domain/concepts.md)
-- Operations runbook: [Operations Runbook](openwiki/operations/runbook.md)
-- Testing guide: [Testing Guide](openwiki/testing/guide.md)
-
-OpenWiki pages are refreshed by the scheduled GitHub Actions workflow. Prefer updating source code and core docs, then let OpenWiki regenerate.
-
-## Build and cli execution
-
-1. Build the application with maven: `mvn package`.
-2. Run the Java executable by passing the following parameters:
+## Build
 
 ```shell
-$ java -jar target/ermes-mail.jar --help
-
-Usage: java -jar ermes-mail.jar [-v] [--help] [--sslon] [--starttls] [--starttls-required] [-P[=<password>]]
-                                -b=<message> -f=<fromAddress> [-h=<smtpHost>]
-                                [-n=<senderName>] [-p=<smtpPort>] -s=<subject>
-                                [--sslport=<sslPort>] [-u=<user>]
-                                [--bcc=<bccList>[,<bccList>...]...]...
-                                [--cc=<ccList>[,<ccList>...]...]...
-                                --to=<toList>[,<toList>...]... [--to=<toList>[,
-                                <toList>...]...]...
-Sends an HTML email to the given recipient(s).
-  -h, --host=<smtpHost>      SMTP host.
-  -p, --port=<smtpPort>      SMTP port.
-  -u, --user=<user>          SMTP user name.
-  -P, --password[=<password>]
-                             SMTP user password.
-    --sslon                Use SSL.
-    --sslport=<sslPort>    SSL port (default is 465).
-    --starttls             Enable STARTTLS (upgrade to TLS).
-    --starttls-required    Require STARTTLS (fail if not supported).
-  -f, --from=<fromAddress>   FROM field.
-  -n, --sender=<senderName>  Sender full name (optional).
-  -s, --subject=<subject>    Subject.
-  -b, --body=<message>       Message body (can be HTML).
-      --to=<toList>[,<toList>...]...
-                             List of mandatory TO recipients.
-      --cc=<ccList>[,<ccList>...]...
-                             List of optional CC recipients.
-      --bcc=<bccList>[,<bccList>...]...
-                             List of optional BCC recipients.
-      --help                 display this help message.
-  -v, --version              print version information and exit.
-Copyright(c) 2022 SoftInstigate srl (https://www.softinstigate.com)
+mvn package
 ```
 
-## Send a test email message to Mailpit
+Produces `target/ermes-mail.jar` (shaded fat JAR with all dependencies).
 
-To test the sending of e-mails via command line, we suggest running a local SMTP mock server like [Mailpit](https://github.com/axllent/mailpit). Please look at the [Mailpit installation instructions](https://github.com/axllent/mailpit#installation) for setup details.
-
-After executing Mailpit (usually with the `mailpit` command) you can send your first HTML email message to `localhost` with ErmesMail:
+## CLI Usage
 
 ```shell
-$ java -jar target/ermes-mail.jar -h localhost -p 1025 \
-  -f sender@email.com -s "test" -b "This is a <strong>HTML</strong> test email." \
+java -jar target/ermes-mail.jar --help
+```
+
+Key flags:
+
+| Flag | Description |
+|------|-------------|
+| `-h, --host` | SMTP host (default: `localhost`) |
+| `-p, --port` | SMTP port (default: `25`) |
+| `-u, --user` / `-P, --password` | Credentials |
+| `--sslon` + `--sslport` | Implicit SSL (SMTPS, typically port 465) |
+| `--starttls` / `--starttls-required` | STARTTLS upgrade |
+| `-f, --from` / `-n, --sender` | Sender address and optional display name |
+| `-s, --subject` / `-b, --body` | Email subject and HTML body |
+| `--to`, `--cc`, `--bcc` | Recipients (comma-separated) |
+
+### Quick test with Mailpit
+
+```shell
+# Start Mailpit (local SMTP mock), then:
+java -jar target/ermes-mail.jar -h localhost -p 1025 \
+  -f sender@email.com -s "Test" -b "<strong>Hello</strong>" \
   --to receiver@email.com
-
-... Email successfully sent!
 ```
 
-You can read the e-mail message on the [Mailpit UI](http://0.0.0.0:8025/).
+Read the message on the [Mailpit UI](http://0.0.0.0:8025/).
 
-> **Note**: To send messages via Google SMTP, it is necessary to configure your Gmail account by enabling IMAP. [More information](https://support.google.com/mail/answer/7126229)
+## Library Usage
 
-## Add ErmesMail to your Maven project
+### Maven setup
 
-To use ErmesMail in your Maven build, first add the [JitPack repository](https://jitpack.io/#SoftInstigate/ermes-mail) in your pom.xml
+Add the [JitPack repository](https://jitpack.io/#SoftInstigate/ermes-mail) to your `pom.xml`:
 
 ```xml
 <repositories>
@@ -99,7 +73,7 @@ To use ErmesMail in your Maven build, first add the [JitPack repository](https:/
 </repositories>
 ```
 
-Then add the following dependency:
+Then add the dependency:
 
 ```xml
 <dependency>
@@ -110,100 +84,89 @@ Then add the following dependency:
 </dependency>
 ```
 
-> **Dependency note**: ErmesMail depends on `org.apache.commons:commons-email:1.6.0`, which brings `com.sun.mail:jakarta.mail:1.6.7` and `com.sun.activation:jakarta.activation:1.2.1` transitively. If your application has other mail-related dependencies, verify your effective classpath with `mvn dependency:tree` and align mail/activation versions to avoid runtime conflicts (for example `NoSuchMethodError` around `com.sun.mail.util.LineOutputStream`).
+> **Dependency note**: ErmesMail depends on `org.apache.commons:commons-email:1.6.0`, which brings `com.sun.mail:jakarta.mail:1.6.7` and `com.sun.activation:jakarta.activation:1.2.1` transitively. If your application has other mail-related dependencies, verify your effective classpath with `mvn dependency:tree` and align mail/activation versions to avoid runtime conflicts.
 
-```xml
-<dependency>
-    <groupId>com.sun.mail</groupId>
-    <artifactId>jakarta.mail</artifactId>
-    <version>1.6.7</version>
-</dependency>
-
-<dependency>
-    <groupId>com.sun.activation</groupId>
-    <artifactId>jakarta.activation</artifactId>
-    <version>1.2.1</version>
-</dependency>
-```
-
-You can run `mvn dependency:tree` in your project to check if other artifacts are including these.
-
-### Java example
-
-There are two methods for sending emails: `EmailService.send` is asynchronous and returns a Future list of error strings. The `EmailService.sendSynch` is synchronous and returns a list of error strings. If the list is empty, it means no errors. However, the [`SendEmailTask`](src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java) logs exceptions anyway.
-
-You may want to use the asynchronous invocation only in case you have to send many emails in parallel and don't want to block the rest of the program; otherwise, the synchronous method works just fine.
-
-Internally the [`EmailService`](src/main/java/com/softinstigate/ermes/mail/EmailService.java) uses a [java.util.concurrent.ExecutorService](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorService.html) to send emails in parallel.
-
-A good understanding of [Java Futures](https://www.baeldung.com/java-future) would help you implement the best waiting strategy.
-
-Below a java fragment, for example:
+### Basic example
 
 ```java
-// Use the factory methods on SMTPConfig to express the desired security mode.
 SMTPConfig smtpConfig = SMTPConfig.forPlain("localhost", 1025, "user", "password");
 
 EmailModel emailModel = new EmailModel(
-    "dick.silly@domain.com", "Dick Silly",
+    "sender@domain.com", "Sender Name",
     "Test email - " + System.currentTimeMillis(),
     "This is a <strong>HTML</strong> message.");
-emailModel.addTo("john.doe@email.com", "John Doe");
-emailModel.addTo("serena.wiliams@email.com", "Serena Wiliams");
-emailModel.addCc("tom.clancy@email.com", "Tom Clancy");
-emailModel.addBcc("ann.smith@email.com", "Ann Smith");
+emailModel.addTo("recipient@email.com", "Recipient Name");
+emailModel.addCc("cc@email.com", "CC Name");
+emailModel.addBcc("bcc@email.com", "BCC Name");
 
-
-EmailService emailService = new EmailService(smtpConfig, 3); // 3 threads pool
-Future<List<String>> errors = emailService.send(emailModel); // send is async
-
-
-emailService.shutdown();
-
-
-List<String> listOfErrors = errors.get(); // WARNING: Future.get() is blocking
-if (!listOfErrors.isEmpty()) {
-    System.err.println("Errors sending emails: " + listOfErrors.toString());
+try (EmailService emailService = new EmailService(smtpConfig)) {
+    Future<List<String>> errors = emailService.send(emailModel);
+    List<String> listOfErrors = errors.get(); // blocking
+    if (!listOfErrors.isEmpty()) {
+        System.err.println("Errors: " + listOfErrors);
+    }
 }
 ```
 
-## SMTP Configuration and Testing
+`EmailService` implements `AutoCloseable`, so the thread pool (if created) is shut down automatically.
 
-ErmesMail supports plain SMTP, SSL (SMTPS), and STARTTLS (opportunistic or required).
+### Synchronous sending
 
-You can configure the SMTP host, port, user, password, and security mode via the command line or programmatically using the `SMTPConfig` factory methods.
+```java
+try (EmailService emailService = new EmailService(smtpConfig)) {
+    List<String> errors = emailService.sendSynch(emailModel);
+    if (!errors.isEmpty()) {
+        System.err.println("Errors: " + errors);
+    }
+}
+```
 
-To test different SMTP configurations:
+### Virtual threads support
 
-1. Use a local SMTP server like Mailpit for development and testing.
-2. For SSL (implicit TLS), use the `--sslon` and `--sslport` options (default SSL port is 465).
-3. For STARTTLS, use `--starttls` to enable opportunistic STARTTLS, and add `--starttls-required` if you want the client to fail when the server does not advertise STARTTLS.
-4. `--sslon` and `--starttls` are mutually exclusive. Do not enable both in the same command.
-5. For plain SMTP, omit the `--sslon` and `--starttls` flags and use the standard port (usually 25 or 1025 for local testing).
-6. To test with real SMTP providers (e.g., Gmail), ensure your credentials and security settings are correct and that your network/firewall allows outbound connections to the SMTP server and port.
+If your application manages concurrency externally (e.g. with virtual threads), you can initialize `EmailService` without an internal thread pool:
 
-If you encounter issues, check the logs for detailed error messages. For troubleshooting tips, see the [project issues](https://github.com/SoftInstigate/ermes-mail/issues) or contact the maintainers.
+```java
+// No thread pool — send() falls back to synchronous execution
+EmailService emailService = new EmailService(smtpConfig, 0);
+
+// Both methods work, but send() blocks since there is no pool
+emailService.send(emailModel);      // blocks, returns completed Future
+emailService.sendSynch(emailModel); // blocks, returns error list
+```
+
+When `threadPoolSize` is `0`:
+- No `ExecutorService` is ever created.
+- `send()` executes synchronously and returns an already-completed `Future`.
+- `sendSynch()` works as usual.
+- `shutdown()` is a no-op.
+
+This is useful in frameworks like RestHeart that use virtual threads — the framework manages concurrency, and ErmesMail does not duplicate it with an internal pool.
+
+### SMTP security modes
+
+`SMTPConfig` uses factory methods to express the security intent:
+
+```java
+SMTPConfig plain     = SMTPConfig.forPlain("localhost", 1025, "user", "password");
+SMTPConfig ssl       = SMTPConfig.forSsl("smtp.example.com", 465, "user", "password", 465);
+SMTPConfig startTls  = SMTPConfig.forStartTlsOptional("smtp.example.com", 587, "user", "password");
+SMTPConfig startTlsR = SMTPConfig.forStartTlsRequired("smtp.example.com", 587, "user", "password");
+```
+
+`--sslon` and `--starttls` are mutually exclusive.
+
+### Socket timeouts
+
+`SMTPConfig` includes configurable connection and socket timeouts (defaults: 10s connection, 60s socket). These are applied automatically via `HtmlEmail.setSocketConnectionTimeout()` and `HtmlEmail.setSocketTimeout()`.
 
 ## Running integration tests
 
-Integration tests are consolidated in `IntegrationScenariosIT` and cover two scenarios:
+Integration tests are in `IntegrationScenariosIT` and cover two scenarios:
 
-- `local-plain-mailpit`: sends plain SMTP to a local Mailpit instance (localhost:1025). This test is executed only when Mailpit is reachable on `localhost:1025` (the test probes the TCP port and will be skipped automatically if nothing is listening).
-- `external-smtps-conditional`: performs an external SMTP send and is run only when integration credentials/configuration are provided via environment variables or a local properties file. By default it uses SMTPS, and it can be switched to STARTTLS via configuration.
+- **`local-plain-mailpit`** — sends plain SMTP to a local Mailpit instance (`localhost:1025`). Skipped automatically if Mailpit is not reachable.
+- **`external-smtps-conditional`** — sends via an external SMTP provider. Only runs when credentials are provided via environment variables or a local properties file.
 
-Provide external SMTP configuration either using environment variables or a `smtp-integration.properties` file in the project root with these keys:
-
-- `SMTP_INTEGRATION_HOST` (e.g. `smtps.example.com`)
-- `SMTP_INTEGRATION_PORT` (e.g. `465`)
-- `SMTP_INTEGRATION_USERNAME`
-- `SMTP_INTEGRATION_PASSWORD`
-- `SMTP_INTEGRATION_SENDER`
-- `SMTP_INTEGRATION_RECIPIENT`
-- `SMTP_INTEGRATION_SSLPORT` (optional, defaults to the port above)
-- `SMTP_INTEGRATION_STARTTLS` (optional, `true`/`false`; when omitted, port `587` implies STARTTLS)
-- `SMTP_INTEGRATION_STARTTLS_REQUIRED` (optional, `true`/`false`; applies when STARTTLS is enabled)
-
-Example `smtp-integration.properties` (do not commit this file):
+Provide external SMTP configuration via environment variables or a `smtp-integration.properties` file in the project root:
 
 ```properties
 SMTP_INTEGRATION_HOST=smtps.example.com
@@ -212,47 +175,56 @@ SMTP_INTEGRATION_USERNAME=info@yourdomain.example
 SMTP_INTEGRATION_PASSWORD=supersecret
 SMTP_INTEGRATION_SENDER=info@yourdomain.example
 SMTP_INTEGRATION_RECIPIENT=you@example.com
-SMTP_INTEGRATION_SSLPORT=465
 ```
 
-Run the tests (integration tests are executed by the Maven `verify` phase). Use JavaMail debug to capture client-side TLS/SSL handshake logs when the external scenario runs:
+Run integration tests:
 
 ```bash
-mvn -Dmail.debug=true -DfailIfNoTests=false verify
+mvn verify
 ```
 
-To run only integration tests while skipping unit tests:
+With JavaMail debug output:
 
 ```bash
-mvn -Dmail.debug=true -DskipTests=true -DfailIfNoTests=false verify
+mvn -Dmail.debug=true verify
 ```
 
-Notes:
+## Migration from 2.x to 3.0
 
-- The local Mailpit scenario will be automatically skipped if nothing is listening on `localhost:1025`.
-- The external SMTP scenario is conditional and will be skipped when the required configuration is not present (either env vars or `smtp-integration.properties` / `.env`).
-- Older individual integration test files have been removed; `IntegrationScenariosIT` is the canonical integration test.
-- Keep integration credentials out of the repository; `smtp-integration.properties` is ignored by `.gitignore` and an example file is provided.
+Version 3.0 includes breaking changes:
 
-## Migration note
+| Change | Impact |
+|--------|--------|
+| `Recipient` and `Attachment` are now **records** | `recipient.email` → `recipient.email()`, `recipient.name` → `recipient.name()`, etc. |
+| Input validation on constructors | `null` values for `from`, `subject`, `message`, `email`, `url` now throw immediately |
+| `EmailModel.toString()` | Changed from `"MailModel{"` to `"EmailModel{"` |
+| `EmailService.send()` after shutdown | Throws `IllegalStateException` instead of `RejectedExecutionException` |
 
-Version 2.0 introduces a breaking change: the boolean-heavy `SMTPConfig` constructors were removed in favor of explicit factory methods that make the security policy clear.
+New features in 3.0:
 
-Old code (pre-2.0):
+| Feature | Description |
+|---------|-------------|
+| Lazy thread pool | `ExecutorService` created only on first `send()` call |
+| `threadPoolSize = 0` | No internal pool; `send()` falls back to synchronous execution |
+| `AutoCloseable` | `EmailService` can be used with try-with-resources |
+| Socket timeouts | Configurable `connectionTimeout` and `socketTimeout` in `SMTPConfig` |
+| Input validation | Early `NullPointerException` / `IllegalArgumentException` on invalid inputs |
+| Comprehensive test suite | 74 unit tests covering all classes and error paths |
+
+### 2.0 migration (from pre-2.0)
+
+The boolean-heavy `SMTPConfig` constructors were removed in 2.0 in favor of explicit factory methods:
 
 ```java
-// Older constructor with boolean flags (removed in 2.0)
-SMTPConfig smtpConfig = new SMTPConfig("localhost", 1025, "user", "password", false /*ssl*/);
+// Pre-2.0 (removed)
+SMTPConfig cfg = new SMTPConfig("localhost", 1025, "user", "password", false);
+
+// 2.0+ (current)
+SMTPConfig cfg = SMTPConfig.forPlain("localhost", 1025, "user", "password");
 ```
 
-New code (2.0+):
+## License
 
-```java
-// Use factory methods to express intent clearly
-SMTPConfig smtpPlain = SMTPConfig.forPlain("localhost", 1025, "user", "password");
-SMTPConfig smtpSsl = SMTPConfig.forSsl("smtp.example.com", 465, "user", "password", 465);
-SMTPConfig smtpStartTls = SMTPConfig.forStartTlsOptional("smtp.example.com", 587, "user", "password");
-SMTPConfig smtpStartTlsRequired = SMTPConfig.forStartTlsRequired("smtp.example.com", 587, "user", "password");
-```
+[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
-This makes it explicit whether you want plain SMTP, implicit SSL (SMTPS), or STARTTLS (optional or required).
+Copyright(c) SoftInstigate srl (https://www.softinstigate.com)
