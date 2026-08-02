@@ -9,7 +9,7 @@ tags: [quickstart, java, email, smtp, maven]
 
 ErmesMail (Ἑρμῆς Mail) is a Java library and CLI tool for sending HTML emails asynchronously via SMTP. It wraps [Apache Commons Email](https://commons.apache.org/proper/commons-email/) with a clean API and adds a [picocli](https://picocli.info/)-based command-line interface for shell usage.
 
-**Current version:** 2.1.1-SNAPSHOT (released: 2.1.0)  
+**Current version:** 3.0.0-SNAPSHOT (released: 2.1.0)  
 **License:** Apache License 2.0  
 **Organization:** [SoftInstigate srl](https://softinstigate.com)
 
