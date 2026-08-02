@@ -77,6 +77,16 @@ class MainCliTest {
         assertTrue((Boolean) getField(main, "sslOn") && (Boolean) getField(main, "startTls"));
     }
 
+    @Test
+    void mutuallyExclusiveFlagsReturnExitCode1() {
+        Main main = new Main();
+        CommandLine.populateCommand(main, "--sslon", "--starttls", "-f", "sender@example.com", "-s", "subj", "-b",
+                "body", "--to", "rcpt@example.com");
+
+        Integer exitCode = main.call();
+        assertEquals(1, exitCode, "--sslon + --starttls should return exit code 1");
+    }
+
     private Object getField(Object target, String name) {
         try {
             java.lang.reflect.Field f = target.getClass().getDeclaredField(name);
