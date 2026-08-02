@@ -28,12 +28,13 @@ All production classes are in `src/main/java/com/softinstigate/ermes/mail/`.
 
 **Role:** Public API for sending emails.  
 **Key behaviors:**
-- Manages a `java.util.concurrent.ExecutorService` (fixed thread pool)
-- `send(EmailModel)` — async, returns `Future<List<String>>`
+- Manages a `java.util.concurrent.ExecutorService` (fixed thread pool, created **lazily** on first `send()` call)
+- `send(EmailModel)` — async, returns `Future<List<String>>`; with `threadPoolSize=0`, executes synchronously and returns a completed Future
 - `sendSynch(EmailModel)` — sync, returns `List<String>`
-- `shutdown()` / `shutdown(long)` — graceful executor termination
+- `shutdown()` / `shutdown(long)` — graceful executor termination (no-op if pool was never created)
+- Implements `AutoCloseable` (`close()` delegates to `shutdown()`)
 
-**When changing:** Thread pool lifecycle is critical. The 10-second default shutdown timeout is hardcoded — if callers need longer, they use `shutdown(long)`. The constructor logs via `smtpConfig.toSecureString()`.
+**When changing:** Thread pool lifecycle is critical. `threadPoolSize=0` disables the pool entirely for external concurrency management (e.g., virtual threads). The 10-second default shutdown timeout is hardcoded — if callers need longer, they use `shutdown(long)`. The constructor logs via `smtpConfig.toSecureString()`.
 
 ### EmailModel.java
 
@@ -53,7 +54,8 @@ All production classes are in `src/main/java/com/softinstigate/ermes/mail/`.
 - Private constructor, public static factory methods
 - `SecurityMode` enum: `PLAIN`, `SSL`, `STARTTLS_OPTIONAL`, `STARTTLS_REQUIRED`
 - `toString()` redacts username; `toSecureString()` omits credentials entirely
-- `DEFAULT_SSL_PORT = 465`
+- `DEFAULT_SSL_PORT = 465`, `DEFAULT_CONNECTION_TIMEOUT = 10_000` ms, `DEFAULT_SOCKET_TIMEOUT = 60_000` ms
+- Fields include `connectionTimeout` and `socketTimeout` for transport-level timeouts
 
 **When changing:** Adding a new security mode requires a new factory method, a new enum value, and handling in `SendEmailTask.call()` where STARTTLS/SSL flags are set on `HtmlEmail`.
 
@@ -96,6 +98,18 @@ All test classes are in `src/test/java/com/softinstigate/ermes/mail/`.
 ### SendEmailTaskTest.java
 
 **Tests:** STARTTLS and SSL configuration is correctly applied to `HtmlEmail`. Uses Mockito mock of `HtmlEmail` injected via `HtmlEmailFactory`.
+
+### DefaultHtmlEmailFactoryTest.java
+
+**Tests:** `DefaultHtmlEmailFactory.create()` returns a non-null `HtmlEmail` instance.
+
+### EmailModelTest.java
+
+**Tests:** Non-null constructor validation, unmodifiable list returns from getters, secure logging (`toString()` redacts message, `toSecureString()` reports lengths/counts), `Recipient` and `Attachment` record validation.
+
+### EmailServiceTest.java
+
+**Tests:** Thread pool size 0 behavior (synchronous execution, no executor created), lazy executor initialization, `shutdown()` as no-op when no pool exists, `IllegalStateException` on `send()` after `shutdown()`.
 
 ### MainCliTest.java
 

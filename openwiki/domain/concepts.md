@@ -24,6 +24,14 @@ Holds SMTP server connection details. Construction is via static factory methods
 | `ssl` | `boolean` | Whether SSL-on-connect is enabled |
 | `sslPort` | `int` | SSL port (default 465) |
 | `securityMode` | `SecurityMode` | Enum expressing the transport security policy |
+| `connectionTimeout` | `int` | Socket connection timeout in ms (default 10,000) |
+| `socketTimeout` | `int` | Socket read timeout in ms (default 60,000) |
+
+### Defaults
+
+- `DEFAULT_SSL_PORT = 465`
+- `DEFAULT_CONNECTION_TIMEOUT = 10_000` ms
+- `DEFAULT_SOCKET_TIMEOUT = 60_000` ms
 
 ### Factory Methods
 
@@ -90,15 +98,18 @@ Represents an email message with sender, subject, HTML body, recipients, and att
 
 **Source:** `src/main/java/com/softinstigate/ermes/mail/EmailService.java`
 
-The primary API entry point. Manages an `ExecutorService` thread pool for async email delivery.
+The primary API entry point. Manages an `ExecutorService` thread pool for async email delivery. Implements `AutoCloseable` for use with try-with-resources.
 
-### Constructor
+### Constructors
 
 ```java
-EmailService(SMTPConfig smtpConfig, int threadPoolSize)
+EmailService(SMTPConfig smtpConfig)                             // pool size = availableProcessors()
+EmailService(SMTPConfig smtpConfig, int threadPoolSize)         // explicit size (0 = sync only)
 ```
 
-Creates a fixed thread pool of the given size. Logs the SMTP config (via `toSecureString()`) at initialization.
+- `Objects.requireNonNull(smtpConfig)` — throws `NullPointerException` if null
+- `IllegalArgumentException` if `threadPoolSize < 0`
+- The thread pool is created **lazily** on the first `send()` call, not in the constructor
 
 ### Methods
 
@@ -106,6 +117,11 @@ Creates a fixed thread pool of the given size. Logs the SMTP config (via `toSecu
 - `sendSynch(EmailModel)` — sync. Calls `SendEmailTask.call()` directly on the calling thread, returns `List<String>`.
 - `shutdown()` — graceful shutdown with 10-second timeout.
 - `shutdown(long timeout)` — graceful shutdown with custom timeout (seconds).
+- `close()` — equivalent to `shutdown()` (AutoCloseable).
+
+### Thread poolSize = 0
+
+When `threadPoolSize == 0`, no executor is created. `send()` executes synchronously and returns an already-completed `Future`. This is useful when the caller manages concurrency externally (e.g., virtual threads). `shutdown()` is a no-op.
 
 ### Thread Safety
 

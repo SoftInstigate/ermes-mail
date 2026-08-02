@@ -13,6 +13,9 @@ tags: [testing, junit, mockito, integration, ci]
 src/test/java/com/softinstigate/ermes/mail/
   SMTPConfigTest.java          — Unit tests for SMTPConfig factory methods
   SendEmailTaskTest.java       — Unit tests for SendEmailTask (mocked HtmlEmail)
+  DefaultHtmlEmailFactoryTest.java — Unit tests for DefaultHtmlEmailFactory
+  EmailModelTest.java          — Unit tests for EmailModel validation and secure logging
+  EmailServiceTest.java        — Unit tests for EmailService thread pool behavior
   MainCliTest.java             — CLI flag parsing tests
   IntegrationScenariosIT.java  — Live SMTP integration tests
 ```
@@ -91,6 +94,25 @@ This pattern avoids needing a live SMTP server while verifying that STARTTLS/SSL
 ### MainCliTest
 
 Tests CLI flag parsing using picocli's test harness.
+
+### DefaultHtmlEmailFactoryTest
+
+Verifies that `DefaultHtmlEmailFactory.create()` returns a non-null `HtmlEmail` instance — a simple contract test for the production factory.
+
+### EmailModelTest
+
+Tests `EmailModel` construction and behavior:
+- Non-null enforcement: constructor rejects null `from`, `subject`, `message`
+- Unmodifiable lists: `getToRecipients()`, `getCcRecipients()`, etc. return `List.copyOf()` snapshots
+- Secure logging: `toString()` redacts message body, `toSecureString()` reports metadata only
+- Record validation: `Recipient.email` and `Attachment.url`/`fileName` must be non-null
+
+### EmailServiceTest
+
+Tests `EmailService` thread pool lifecycle:
+- `threadPoolSize=0`: `send()` returns an already-completed Future, `shutdown()` is a no-op
+- Lazy executor: `shutdown()` without prior `send()` is a no-op (pool never created)
+- Post-shutdown: `send()` after `shutdown()` throws `IllegalStateException` (normal pool size)
 
 ## Integration Test Scenarios
 

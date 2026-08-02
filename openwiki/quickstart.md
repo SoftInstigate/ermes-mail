@@ -89,6 +89,9 @@ src/main/java/com/softinstigate/ermes/mail/
 src/test/java/com/softinstigate/ermes/mail/
   SMTPConfigTest.java          — Unit tests for config factories
   SendEmailTaskTest.java       — Unit tests with Mockito
+  DefaultHtmlEmailFactoryTest.java — Factory contract test
+  EmailModelTest.java          — Model validation and secure logging tests
+  EmailServiceTest.java        — Thread pool lifecycle tests
   MainCliTest.java             — CLI flag parsing tests
   IntegrationScenariosIT.java  — Live SMTP integration tests
 ```
