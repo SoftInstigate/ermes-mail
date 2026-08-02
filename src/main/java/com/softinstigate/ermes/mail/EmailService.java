@@ -19,20 +19,31 @@
  */
 package com.softinstigate.ermes.mail;
 
-import java.util.logging.Logger;
-
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
  * Email sending service that supports both asynchronous and synchronous delivery.
  *
- * <p>Wraps an {@link ExecutorService} thread pool and delegates to {@link SendEmailTask}
- * for the actual SMTP transaction via Apache Commons Email.
+ * <p>Delegates to {@link SendEmailTask} for the actual SMTP transaction via
+ * Apache Commons Email. An internal {@link ExecutorService} thread pool is
+ * created lazily on the first {@link #send(EmailModel)} call.
+ *
+ * <h3>Thread pool configuration</h3>
+ * <ul>
+ * <li>{@code threadPoolSize > 0} — the pool is created lazily; {@code send()}
+ *     executes asynchronously.</li>
+ * <li>{@code threadPoolSize == 0} — no pool is ever created; {@code send()}
+ *     falls back to synchronous execution, returning an already-completed
+ *     {@link Future}. This is useful when the caller manages concurrency
+ *     externally (e.g. virtual threads).</li>
+ * </ul>
  *
  * <p>Implements {@link AutoCloseable} so it can be used with try-with-resources:
  * <pre>{@code
@@ -50,53 +61,90 @@ public class EmailService implements AutoCloseable {
     private static final long DEFAULT_EXECUTOR_SHUTDOWN_TIMEOUT = 10; // executor shutdown timeout in seconds
 
     private final SMTPConfig smtpConfig;
-    private final ExecutorService executor;
+    private final int threadPoolSize;
+    private volatile ExecutorService executor; // null finché non serve
 
     /**
      * Constructor with default thread pool size equal to the number of available processors.
+     * The thread pool is created lazily on the first {@link #send(EmailModel)} call.
      *
      * @param smtpConfig the SMTP server credentials and configuration
+     * @throws NullPointerException if smtpConfig is null
      */
     public EmailService(SMTPConfig smtpConfig) {
         this(smtpConfig, Runtime.getRuntime().availableProcessors());
     }
 
     /**
-     * Constructor
+     * Constructor with explicit thread pool size.
+     *
+     * <p>The thread pool is created lazily on the first {@link #send(EmailModel)} call.
+     * If {@code threadPoolSize} is 0, no pool is created and {@code send()} falls back
+     * to synchronous execution, returning an already-completed {@link Future}.
+     * This is useful when the caller manages concurrency externally (e.g. virtual threads).
      *
      * @param smtpConfig     the SMTP server credentials and configuration
-     * @param threadPoolSize the ExecutorService thread pool size
+     * @param threadPoolSize the ExecutorService thread pool size (0 = no pool, sync only)
+     * @throws NullPointerException     if smtpConfig is null
+     * @throws IllegalArgumentException if threadPoolSize is negative
      */
     public EmailService(SMTPConfig smtpConfig, int threadPoolSize) {
         this.smtpConfig = Objects.requireNonNull(smtpConfig, "SMTPConfig must not be null");
-        if (threadPoolSize < 1) {
-            throw new IllegalArgumentException("threadPoolSize must be >= 1, got: " + threadPoolSize);
+        if (threadPoolSize < 0) {
+            throw new IllegalArgumentException("threadPoolSize must be >= 0, got: " + threadPoolSize);
         }
-        executor = Executors.newFixedThreadPool(threadPoolSize);
-        LOGGER.info("MailService initialized with " + smtpConfig.toSecureString());
+        this.threadPoolSize = threadPoolSize;
+        if (threadPoolSize == 0) {
+            LOGGER.info("EmailService initialized without thread pool: send() will execute synchronously");
+        }
     }
 
     /**
-     * Send emails asynchronously, using the ExecutorService
+     * Returns the internal executor, creating it lazily on first access.
+     *
+     * @return the ExecutorService
+     * @throws IllegalStateException if threadPoolSize is 0 (no pool configured)
+     */
+    private synchronized ExecutorService getExecutor() {
+        if (executor == null) {
+            executor = Executors.newFixedThreadPool(threadPoolSize);
+        }
+        return executor;
+    }
+
+    /**
+     * Send emails asynchronously, using the internal thread pool.
+     *
+     * <p>If no thread pool was configured ({@code threadPoolSize == 0}), this method
+     * falls back to synchronous execution and returns an already-completed {@link Future}.
      *
      * @param model the email object to send
-     * @return a {@code Future<List<String>> } of errors.
+     * @return a {@code Future<List<String>>} of errors; already completed if executed synchronously
+     * @throws NullPointerException if model is null
      */
     public Future<List<String>> send(EmailModel model) {
         Objects.requireNonNull(model, "EmailModel must not be null");
-        if (executor.isShutdown()) {
+        if (threadPoolSize == 0) {
+            return CompletableFuture.completedFuture(
+                    new SendEmailTask(smtpConfig, model).call());
+        }
+        ExecutorService exec = getExecutor();
+        if (exec.isShutdown()) {
             throw new IllegalStateException("Cannot send email: EmailService has been shut down");
         }
-        Future<List<String>> errors = executor.submit(new SendEmailTask(smtpConfig, model));
+        Future<List<String>> errors = exec.submit(new SendEmailTask(smtpConfig, model));
         LOGGER.info("Sending emails asynchronously...");
         return errors;
     }
 
     /**
-     * Send emails synchronously
+     * Send emails synchronously on the calling thread.
+     *
+     * <p>Does not use the internal thread pool regardless of configuration.
      *
      * @param model the email object to send
-     * @return a {@code List<String>} of errors.
+     * @return a {@code List<String>} of errors; empty if the email was sent successfully
+     * @throws NullPointerException if model is null
      */
     public List<String> sendSynch(EmailModel model) {
         Objects.requireNonNull(model, "EmailModel must not be null");
@@ -105,11 +153,17 @@ public class EmailService implements AutoCloseable {
     }
 
     /**
-     * Shutdowns the ExecutorService
+     * Shutdowns the ExecutorService.
      *
-     * @param executorShutdownTimeout timeout for executor.awaitTermination method
+     * <p>If no thread pool was created (lazy init never triggered or {@code threadPoolSize == 0}),
+     * this method is a no-op.
+     *
+     * @param executorShutdownTimeout timeout in seconds for executor.awaitTermination
      */
     public void shutdown(long executorShutdownTimeout) {
+        if (executor == null) {
+            return; // no-op: pool mai creato
+        }
         executor.shutdown();
         try {
             if (executor.awaitTermination(executorShutdownTimeout, TimeUnit.SECONDS)) {
@@ -129,7 +183,9 @@ public class EmailService implements AutoCloseable {
     }
 
     /**
-     * Shutdowns the ExecutorService using DEFAULT_EXECUTOR_SHUTDOWN_TIMEOUT
+     * Shutdowns the ExecutorService using the default timeout ({@value DEFAULT_EXECUTOR_SHUTDOWN_TIMEOUT}s).
+     *
+     * <p>If no thread pool was created, this method is a no-op.
      */
     public void shutdown() {
         this.shutdown(DEFAULT_EXECUTOR_SHUTDOWN_TIMEOUT);
