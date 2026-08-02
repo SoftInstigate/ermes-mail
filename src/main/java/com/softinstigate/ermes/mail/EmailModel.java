@@ -22,6 +22,7 @@ package com.softinstigate.ermes.mail;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * E-mails object model
@@ -45,10 +46,10 @@ public class EmailModel {
      * @param message message body
      */
     public EmailModel(String from, String senderFullName, String subject, String message) {
-        this.from = from;
+        this.from = Objects.requireNonNull(from, "'from' must not be null");
         this.senderFullName = senderFullName;
-        this.subject = subject;
-        this.message = message;
+        this.subject = Objects.requireNonNull(subject, "'subject' must not be null");
+        this.message = Objects.requireNonNull(message, "'message' must not be null");
         this.to = new ArrayList<>();
         this.cc = new ArrayList<>();
         this.bcc = new ArrayList<>();
@@ -226,7 +227,7 @@ public class EmailModel {
          * @param name optional recipient's name (cab be null)
          */
         public Recipient(String email, String name) {
-            this.email = email;
+            this.email = Objects.requireNonNull(email, "Recipient email must not be null");
             this.name = name;
         }
 
@@ -255,8 +256,8 @@ public class EmailModel {
          * @param description file description
          */
         public Attachment(String url, String fileName, String description) {
-            this.url = url;
-            this.fileName = fileName;
+            this.url = Objects.requireNonNull(url, "Attachment URL must not be null");
+            this.fileName = Objects.requireNonNull(fileName, "Attachment fileName must not be null");
             this.description = description;
         }
 
@@ -272,7 +273,7 @@ public class EmailModel {
 
     @Override
     public String toString() {
-        return "MailModel{" +
+        return "EmailModel{" +
                 "from='" + from + '\'' +
                 ", senderFullName='" + senderFullName + '\'' +
                 ", subject='" + subject + '\'' +
@@ -291,7 +292,7 @@ public class EmailModel {
      * @return a sanitized string representation
      */
     public String toSecureString() {
-        return "MailModel{" +
+        return "EmailModel{" +
                 "from='" + from + '\'' +
                 ", senderFullName='" + senderFullName + '\'' +
                 ", subject='" + (subject != null ? "[" + subject.length() + " chars]" : "null") + '\'' +

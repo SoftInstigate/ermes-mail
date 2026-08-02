@@ -35,7 +35,7 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 
 /**
- * Runnable class to invoke the email.send() method in a thread
+ * Callable task to send an email via Apache Commons Email.
  */
 public class SendEmailTask implements Callable<List<String>> {
 
@@ -88,62 +88,67 @@ public class SendEmailTask implements Callable<List<String>> {
 
         final List<String> errors = new ArrayList<>();
 
-        // Begin FIX for javax.activation.UnsupportedDataTypeException: no object DCH
-        // for MIME type multipart/alternative;
-        setDefaultCommandMap();
-        Thread.currentThread().setContextClassLoader(EmailService.class.getClassLoader());
-        // End Fix
-
-        HtmlEmail email = emailFactory.create();
         try {
-            email.setCharset(charset);
-            email.setHostName(smtpConfig.hostname);
-            email.setSmtpPort(smtpConfig.port);
-            email.setAuthentication(smtpConfig.username, smtpConfig.password);
-            email.setSSLOnConnect(smtpConfig.ssl);
-            email.setSslSmtpPort(String.valueOf(smtpConfig.sslPort));
-            // Configure STARTTLS using Commons Email API (preferred to mutating Session properties).
-            // The security mode is expressed via SMTPConfig.SecurityMode and set by
-            // the factory methods on SMTPConfig (forPlain/forSsl/forStartTls*).
-            if (smtpConfig.securityMode == SMTPConfig.SecurityMode.STARTTLS_OPTIONAL
-                    || smtpConfig.securityMode == SMTPConfig.SecurityMode.STARTTLS_REQUIRED) {
-                email.setStartTLSEnabled(true);
-                if (smtpConfig.securityMode == SMTPConfig.SecurityMode.STARTTLS_REQUIRED) {
-                    email.setStartTLSRequired(true);
+            // Begin FIX for javax.activation.UnsupportedDataTypeException: no object DCH
+            // for MIME type multipart/alternative;
+            setDefaultCommandMap();
+            Thread.currentThread().setContextClassLoader(EmailService.class.getClassLoader());
+            // End Fix
+
+            HtmlEmail email = emailFactory.create();
+            try {
+                email.setCharset(charset);
+                email.setHostName(smtpConfig.hostname);
+                email.setSmtpPort(smtpConfig.port);
+                email.setAuthentication(smtpConfig.username, smtpConfig.password);
+                email.setSSLOnConnect(smtpConfig.ssl);
+                email.setSslSmtpPort(String.valueOf(smtpConfig.sslPort));
+                // Configure STARTTLS using Commons Email API (preferred to mutating Session properties).
+                // The security mode is expressed via SMTPConfig.SecurityMode and set by
+                // the factory methods on SMTPConfig (forPlain/forSsl/forStartTls*).
+                if (smtpConfig.securityMode == SMTPConfig.SecurityMode.STARTTLS_OPTIONAL
+                        || smtpConfig.securityMode == SMTPConfig.SecurityMode.STARTTLS_REQUIRED) {
+                    email.setStartTLSEnabled(true);
+                    if (smtpConfig.securityMode == SMTPConfig.SecurityMode.STARTTLS_REQUIRED) {
+                        email.setStartTLSRequired(true);
+                    }
                 }
+                email.setFrom(model.from, model.senderFullName);
+                email.setSubject(model.subject);
+                email.setHtmlMsg(model.message);
+
+                processAttachments(email, model, errors);
+
+                for (EmailModel.Recipient r : model.getToRecipients()) {
+                    email.addTo(r.email, r.name);
+                }
+
+                for (EmailModel.Recipient r : model.getCcRecipients()) {
+                    email.addCc(r.email, r.name);
+                }
+
+                for (EmailModel.Recipient r : model.getBccRecipients()) {
+                    email.addBcc(r.email, r.name);
+                }
+
+                // Enable JavaMail debug if requested via system property (useful for integration tests)
+                boolean mailDebug = Boolean.getBoolean("mail.debug");
+                if (mailDebug) {
+                    email.setDebug(true);
+                }
+
+                email.send();
+
+                LOGGER.info(String.format("Email successfully sent!\nTO: %s \nCC: %s \nBCC: %s",
+                        model.getToRecipients(), model.getCcRecipients(), model.getBccRecipients()));
+
+            } catch (EmailException ex) {
+                LOGGER.log(Level.SEVERE, "Error sending email.", ex);
+                errors.add(ex.getMessage());
             }
-            email.setFrom(model.from, model.senderFullName);
-            email.setSubject(model.subject);
-            email.setHtmlMsg(model.message);
-
-            processAttachments(email, model, errors);
-
-            for (EmailModel.Recipient r : model.getToRecipients()) {
-                email.addTo(r.email, r.name);
-            }
-
-            for (EmailModel.Recipient r : model.getCcRecipients()) {
-                email.addCc(r.email, r.name);
-            }
-
-            for (EmailModel.Recipient r : model.getBccRecipients()) {
-                email.addBcc(r.email, r.name);
-            }
-
-            // Enable JavaMail debug if requested via system property (useful for integration tests)
-            boolean mailDebug = Boolean.getBoolean("mail.debug");
-            if (mailDebug) {
-                email.setDebug(true);
-            }
-
-            email.send();
-
-            LOGGER.info(String.format("Email successfully sent!\nTO: %s \nCC: %s \nBCC: %s", model.getToRecipients(),
-                    model.getCcRecipients(), model.getBccRecipients()));
-
-        } catch (EmailException ex) {
-            LOGGER.log(Level.SEVERE, "Error sending email.", ex);
-            errors.add(ex.getMessage());
+        } catch (RuntimeException ex) {
+            LOGGER.log(Level.SEVERE, "Unexpected error in SendEmailTask", ex);
+            errors.add("Unexpected error: " + ex.getMessage());
         }
 
         return errors;
@@ -158,12 +163,19 @@ public class SendEmailTask implements Callable<List<String>> {
     private void processAttachments(HtmlEmail email, EmailModel model, List<String> errors) {
         for (EmailModel.Attachment attachment : model.getAttachments()) {
             try {
+                if (attachment.url == null || attachment.url.isBlank()) {
+                    errors.add("Attachment URL is null or blank for: " + attachment.fileName);
+                    continue;
+                }
                 EmailAttachment emailAttachment = new EmailAttachment();
                 emailAttachment.setDisposition(EmailAttachment.ATTACHMENT);
                 emailAttachment.setURL(URI.create(attachment.url).toURL());
                 emailAttachment.setName(attachment.fileName);
                 emailAttachment.setDescription(attachment.description);
                 email.attach(emailAttachment);
+            } catch (IllegalArgumentException ex) {
+                LOGGER.log(Level.SEVERE, String.format("Invalid attachment URI '%s'", attachment.url), ex);
+                errors.add(String.format("Invalid attachment URI '%s': %s", attachment.url, ex.getMessage()));
             } catch (MalformedURLException ex) {
                 LOGGER.log(Level.SEVERE, String.format("Malformed attachment.url '%s'", attachment.url), ex);
                 errors.add(String.format("Malformed attachment.url '%s'", ex.getMessage()));

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import picocli.CommandLine;
@@ -172,6 +173,9 @@ public class Main implements Callable<Integer> {
                 smtpConfig = SMTPConfig.forStartTlsOptional(smtpHost, smtpPort, user, password);
             }
         } else {
+            if (startTlsRequired) {
+                LOGGER.warning("--starttls-required was set without --starttls; treating as plain SMTP");
+            }
             // plain SMTP
             smtpConfig = SMTPConfig.forPlain(smtpHost, smtpPort, user, password);
         }
@@ -192,22 +196,28 @@ public class Main implements Callable<Integer> {
         }
 
         EmailService emailService = new EmailService(smtpConfig, 1);
-        Future<List<String>> errors = emailService.send(emailModel);
-
-        int callResult = 0;
         try {
-            List<String> listOfErrors = errors.get();
-            if (!listOfErrors.isEmpty()) {
-                LOGGER.severe("Errors sending emails: " + listOfErrors.toString());
+            Future<List<String>> errors = emailService.send(emailModel);
+
+            int callResult = 0;
+            try {
+                List<String> listOfErrors = errors.get();
+                if (!listOfErrors.isEmpty()) {
+                    LOGGER.severe("Errors sending emails: " + listOfErrors.toString());
+                    callResult = 1;
+                }
+            } catch (InterruptedException e) {
+                LOGGER.log(Level.SEVERE, "Email sending interrupted.", e);
+                Thread.currentThread().interrupt();
+                callResult = 1;
+            } catch (ExecutionException e) {
+                LOGGER.log(Level.SEVERE, "Email sending failed.", e);
                 callResult = 1;
             }
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            callResult = 1;
+            return callResult;
+        } finally {
+            emailService.shutdown();
         }
-        emailService.shutdown();
-
-        return callResult;
     }
 
     /**

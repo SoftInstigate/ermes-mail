@@ -227,12 +227,26 @@ class EmailModelTest {
     }
 
     @Test
-    void toSecureStringHandlesNullSubjectAndMessage() {
-        EmailModel model = new EmailModel("a@b.com", "Alice", null, null);
+    void toSecureStringHandlesNullSenderFullName() {
+        EmailModel model = new EmailModel("a@b.com", null, "Sub", "Body");
 
         String s = model.toSecureString();
-        assertTrue(s.contains("subject='null'"), "Expected null subject, got: " + s);
-        assertTrue(s.contains("message='null'"), "Expected null message, got: " + s);
+        assertTrue(s.contains("senderFullName='null'"), "Expected null senderFullName, got: " + s);
+    }
+
+    @Test
+    void constructorRejectsNullFrom() {
+        assertThrows(NullPointerException.class, () -> new EmailModel(null, "Alice", "Sub", "Body"));
+    }
+
+    @Test
+    void constructorRejectsNullSubject() {
+        assertThrows(NullPointerException.class, () -> new EmailModel("a@b.com", "Alice", null, "Body"));
+    }
+
+    @Test
+    void constructorRejectsNullMessage() {
+        assertThrows(NullPointerException.class, () -> new EmailModel("a@b.com", "Alice", "Sub", null));
     }
 
     @Test

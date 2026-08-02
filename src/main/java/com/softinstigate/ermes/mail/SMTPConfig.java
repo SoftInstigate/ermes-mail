@@ -68,6 +68,12 @@ public class SMTPConfig {
      */
     private SMTPConfig(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword, boolean sslOn,
             int sslPort, SecurityMode mode) {
+        if (smtpHostname == null || smtpHostname.isBlank()) {
+            throw new IllegalArgumentException("SMTP hostname must not be null or blank");
+        }
+        if (smtpPort < 1 || smtpPort > 65535) {
+            throw new IllegalArgumentException("SMTP port must be between 1 and 65535, got: " + smtpPort);
+        }
         this.hostname = smtpHostname;
         this.port = smtpPort;
         this.username = smtpUsername;

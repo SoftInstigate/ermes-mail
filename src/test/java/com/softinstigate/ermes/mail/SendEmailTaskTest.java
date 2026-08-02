@@ -207,4 +207,22 @@ class SendEmailTaskTest {
 
         verify(email).setFrom("a@b", null);
     }
+
+    @Test
+    void processAttachmentsWithInvalidUriAddsError() throws Exception {
+        HtmlEmail email = mock(HtmlEmail.class);
+        HtmlEmailFactory factory = () -> email;
+
+        SMTPConfig cfg = SMTPConfig.forPlain("smtp", 25, "u", "p");
+        EmailModel model = new EmailModel("a@b", null, "subj", "body");
+        model.addTo("to@x", "To Name");
+        // URI.create() throws IllegalArgumentException for spaces in URI
+        model.addAttachment("not a valid uri", "bad.txt", "Bad");
+
+        SendEmailTask task = new SendEmailTask(cfg, model, "UTF-8", factory);
+        List<String> errors = task.call();
+
+        assertFalse(errors.isEmpty(), "Expected errors for invalid attachment URI");
+        assertTrue(errors.get(0).contains("Invalid attachment URI"), "Expected 'Invalid attachment URI' message, got: " + errors);
+    }
 }

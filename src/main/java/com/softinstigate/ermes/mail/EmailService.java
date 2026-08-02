@@ -22,6 +22,7 @@ package com.softinstigate.ermes.mail;
 import java.util.logging.Logger;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -45,7 +46,10 @@ public class EmailService {
      * @param threadPoolSize the ExecutorService thread poll size
      */
     public EmailService(SMTPConfig smtpConfig, int threadPoolSize) {
-        this.smtpConfig = smtpConfig;
+        this.smtpConfig = Objects.requireNonNull(smtpConfig, "SMTPConfig must not be null");
+        if (threadPoolSize < 1) {
+            throw new IllegalArgumentException("threadPoolSize must be >= 1, got: " + threadPoolSize);
+        }
         executor = Executors.newFixedThreadPool(threadPoolSize);
         LOGGER.info("MailService initialized with " + smtpConfig.toSecureString());
     }
@@ -57,6 +61,10 @@ public class EmailService {
      * @return a {@code Future<List<String>> } of errors.
      */
     public Future<List<String>> send(EmailModel model) {
+        Objects.requireNonNull(model, "EmailModel must not be null");
+        if (executor.isShutdown()) {
+            throw new IllegalStateException("Cannot send email: EmailService has been shut down");
+        }
         Future<List<String>> errors = executor.submit(new SendEmailTask(smtpConfig, model));
         LOGGER.info("Sending emails asynchronously...");
         return errors;
@@ -69,6 +77,7 @@ public class EmailService {
      * @return a {@code List<String>} of errors.
      */
     public List<String> sendSynch(EmailModel model) {
+        Objects.requireNonNull(model, "EmailModel must not be null");
         SendEmailTask task = new SendEmailTask(smtpConfig, model);
         return task.call();
     }
@@ -84,9 +93,15 @@ public class EmailService {
             if (executor.awaitTermination(executorShutdownTimeout, TimeUnit.SECONDS)) {
                 LOGGER.info("ExecutorService terminated normally after shutdown request.");
             } else {
-                LOGGER.warning("ExecutorService timeout elapsed: some emails may not have been sent.");
+                LOGGER.warning("ExecutorService timeout elapsed: forcing shutdown.");
+                List<Runnable> dropped = executor.shutdownNow();
+                if (!dropped.isEmpty()) {
+                    LOGGER.severe(dropped.size() + " tasks were abandoned and will not complete.");
+                }
             }
         } catch (InterruptedException e) {
+            LOGGER.warning("Shutdown interrupted; forcing immediate shutdown.");
+            executor.shutdownNow();
             Thread.currentThread().interrupt();
         }
     }

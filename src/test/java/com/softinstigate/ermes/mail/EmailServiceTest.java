@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.RejectedExecutionException;
 
 import org.junit.jupiter.api.Test;
 
@@ -75,14 +74,14 @@ class EmailServiceTest {
     }
 
     @Test
-    void shutdownTerminatesExecutor() {
+    void sendAfterShutdownThrowsIllegalState() {
         EmailService service = new EmailService(DUMMY_CONFIG, 1);
         service.shutdown();
 
         EmailModel model = new EmailModel("a@b.com", null, "Test", "Body");
         model.addTo("x@y.com", "X");
 
-        assertThrows(RejectedExecutionException.class, () -> service.send(model));
+        assertThrows(IllegalStateException.class, () -> service.send(model));
     }
 
     @Test
