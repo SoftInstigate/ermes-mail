@@ -97,4 +97,4 @@ src/test/java/com/softinstigate/ermes/mail/
 
 - **Recipient/Attachment model docs** — inner classes `Recipient`, `Attachment` in `EmailModel` could use standalone documentation if the model grows more complex. Source: `EmailModel.java`.
 - **Commons Email integration details** — deeper documentation of HtmlEmail lifecycle, attachment handling, and the `MailcapCommandMap` workaround in `SendEmailTask`. Source: `SendEmailTask.java`.
-- **GitHub Actions workflow details** — CI, Maven Publish, and OpenWiki Update workflows are documented at a high level but could benefit from a dedicated operations page expansion. Source: `.github/workflows/`.
+
