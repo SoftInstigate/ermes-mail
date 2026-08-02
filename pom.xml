@@ -17,7 +17,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <!-- ByteBuddy agent version used by Mockito inline mock maker as a javaagent -->
-        <bytebuddy.version>1.17.8</bytebuddy.version>
+        <bytebuddy.version>1.18.11-jdk5</bytebuddy.version>
         <skipITs>false</skipITs>
         <skipUpdateLicense>true</skipUpdateLicense>
     </properties>
@@ -60,13 +60,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.12.2</version>
+            <version>6.1.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.18.0</version>
+            <version>5.23.0</version>
             <scope>test</scope>
         </dependency>
         <!-- Ensure the ByteBuddy agent JAR is available and loaded as a javaagent by the test
@@ -91,7 +91,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version>
+                <version>3.5.0</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -109,7 +109,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.11.3</version>
+                <version>3.12.0</version>
                 <configuration>
                     <finalName>${project.artifactId}</finalName>
                     <doclint>none</doclint>
@@ -127,7 +127,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>2.5.0</version>
+                <version>2.7.1</version>
                 <configuration>
                     <verbose>true</verbose>
                     <includes>
@@ -161,7 +161,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.6.2</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -193,7 +193,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.3</version>
+                <version>3.5.6</version>
                 <configuration>
                     <excludes>
                         <exclude>**/IT*.java</exclude>
@@ -207,7 +207,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.5.3</version>
+                <version>3.5.6</version>
                 <configuration>
                     <!-- Also load the agent for integration test runs -->
                     <argLine>
