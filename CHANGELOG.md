@@ -6,6 +6,82 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) conv
 
 ---
 
+## [3.0.0] — 2026-08-02
+
+**Full diff**: https://github.com/SoftInstigate/ermes-mail/compare/2.1.0...3.0.0
+
+### Summary
+
+Major release with **breaking API changes** and significant modernization. Recipient and Attachment classes converted to Java records, input validation hardened across all constructors, and EmailService now supports lazy thread pool initialization with virtual-threads-friendly `poolSize=0` mode. Comprehensive test suite added (74 tests).
+
+### ⚠ Breaking changes
+
+- **`Recipient` and `Attachment` are now Java records** — direct field access (`recipient.email`) must change to accessor methods (`recipient.email()`). Same for `attachment.url()`, `attachment.fileName()`, `attachment.description()`.
+- **Input validation on constructors** — `null` values for `from`, `subject`, `message` in `EmailModel`, and `email` in `Recipient`, `url`/`fileName` in `Attachment`, now throw `NullPointerException` immediately at construction time instead of failing later during SMTP send.
+- **`EmailModel.toString()`** changed from `"MailModel{"` to `"EmailModel{"` (consistent with class name).
+- **`EmailModel.toSecureString()`** changed from `"MailModel{"` to `"EmailModel{"`.
+- **`EmailService.send()` after shutdown** throws `IllegalStateException` instead of `RejectedExecutionException`.
+- **`SMTPConfig` validation** — null/blank hostname and port outside 1–65535 now throw `IllegalArgumentException` in factory methods.
+
+### Migration guide
+
+Update field accesses to record accessor methods:
+
+```java
+// Before (2.x)
+recipient.email
+recipient.name
+attachment.url
+attachment.fileName
+
+// After (3.0)
+recipient.email()
+recipient.name()
+attachment.url()
+attachment.fileName()
+```
+
+### Features
+
+- **Lazy thread pool** — the `ExecutorService` in `EmailService` is created lazily on the first `send()` call, not at construction time. Applications that only use `sendSynch()` never create a thread pool.
+- **`threadPoolSize = 0`** — no internal pool is created; `send()` falls back to synchronous execution, returning an already-completed `Future`. Useful when the caller manages concurrency externally (e.g. virtual threads in RestHeart).
+- **`AutoCloseable`** — `EmailService` implements `AutoCloseable` for use with try-with-resources.
+- **Socket timeouts** — `SMTPConfig` now includes configurable `connectionTimeout` (default 10s) and `socketTimeout` (default 60s), applied via `HtmlEmail.setSocketConnectionTimeout()` and `HtmlEmail.setSocketTimeout()`.
+- **Default constructor** — `new EmailService(smtpConfig)` uses `Runtime.getRuntime().availableProcessors()` as pool size (lazy).
+- **Input validation** — early `NullPointerException` / `IllegalArgumentException` on invalid inputs across `SMTPConfig`, `EmailModel`, `Recipient`, and `Attachment`.
+
+### Error handling improvements
+
+- **`processAttachments()` catches `IllegalArgumentException`** — `URI.create()` with malformed URIs no longer escapes as an uncaught exception; the error is added to the error list.
+- **`SendEmailTask.call()` catches `RuntimeException`** — unexpected unchecked exceptions are captured in the error list instead of escaping the task.
+- **`EmailService.shutdown()` forces `shutdownNow()`** — after the await timeout, abandoned tasks are now properly logged and terminated.
+- **`Main.call()` logging** — replaced `e.printStackTrace()` with proper `LOGGER.log(Level.SEVERE, ...)`; `InterruptedException` now restores the interrupt flag; `shutdown()` moved to `try-finally`.
+
+### Java 17 modernization
+
+- **Records** — `Recipient` and `Attachment` converted from static inner classes to records with compact constructor validation.
+- **`List.copyOf()`** — replaces `Collections.unmodifiableList()` for true immutable snapshots.
+- **Switch expression** — `SecurityMode` handling in `SendEmailTask` uses enhanced switch with `→` syntax.
+- **`StandardCharsets.UTF_8.name()`** — replaces `"UTF-8"` magic string.
+- **`MailcapCommandMap`** — initialized once via `AtomicBoolean` instead of on every `send()` call.
+
+### Documentation
+
+- **Javadoc** updated across all classes: `@param`/`@return` on all public methods, field documentation, record component descriptions, private method documentation.
+- **README.md** rewritten: accurate API examples, virtual threads section, socket timeouts section, 2.x→3.0 migration guide.
+
+### Testing
+
+- **74 unit tests** covering all production classes:
+  - `EmailModelTest` (29 tests) — constructor, add/set recipients, unmodifiable lists, toString, toSecureString, validation
+  - `SMTPConfigTest` (11 tests) — factory methods, field assertions, toString redaction, toSecureString
+  - `SendEmailTaskTest` (12 tests) — all security modes, error paths, attachments, CC/BCC
+  - `EmailServiceTest` (15 tests) — sync/async, poolSize=0, lazy executor, shutdown, validation
+  - `MainCliTest` (4 tests) — CLI parsing, mutual exclusion runtime check
+  - `DefaultHtmlEmailFactoryTest` (3 tests) — factory contract
+
+---
+
 ## [2.1.0] — 2025-10-14
 
 **Full diff**: https://github.com/SoftInstigate/ermes-mail/compare/2.0.0...2.1.0
@@ -106,6 +182,7 @@ Initial public release under the `com.softinstigate` Maven group ID. Available v
 
 ---
 
+[3.0.0]: https://github.com/SoftInstigate/ermes-mail/compare/2.1.0...3.0.0
 [2.1.0]: https://github.com/SoftInstigate/ermes-mail/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/SoftInstigate/ermes-mail/compare/1.1.0...2.0.0
 [1.1.0]: https://github.com/SoftInstigate/ermes-mail/releases/tag/1.1.0
