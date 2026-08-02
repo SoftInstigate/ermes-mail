@@ -39,6 +39,8 @@ package com.softinstigate.ermes.mail;
 public class SMTPConfig {
 
     public static final int DEFAULT_SSL_PORT = 465;
+    public static final int DEFAULT_CONNECTION_TIMEOUT = 10_000; // ms
+    public static final int DEFAULT_SOCKET_TIMEOUT = 60_000; // ms
 
     public final String hostname;
     public final int port;
@@ -47,6 +49,8 @@ public class SMTPConfig {
     public final boolean ssl;
     public final int sslPort;
     public final SecurityMode securityMode;
+    public final int connectionTimeout;
+    public final int socketTimeout;
 
     /**
      * Security mode for the SMTP connection.
@@ -57,17 +61,9 @@ public class SMTPConfig {
 
     /**
      * Private initializer used by factory methods.
-     *
-     * @param smtpHostname SMTP hostname
-     * @param smtpPort SMTP port
-     * @param smtpUsername SMTP username
-     * @param smtpPassword SMTP password
-     * @param sslOn whether SSL-on-connect should be used
-     * @param sslPort SSL port value (only meaningful for SSL mode)
-     * @param mode the desired {@link SecurityMode}
      */
     private SMTPConfig(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword, boolean sslOn,
-            int sslPort, SecurityMode mode) {
+            int sslPort, SecurityMode mode, int connectionTimeout, int socketTimeout) {
         if (smtpHostname == null || smtpHostname.isBlank()) {
             throw new IllegalArgumentException("SMTP hostname must not be null or blank");
         }
@@ -81,6 +77,8 @@ public class SMTPConfig {
         this.ssl = sslOn;
         this.sslPort = sslPort;
         this.securityMode = mode;
+        this.connectionTimeout = connectionTimeout;
+        this.socketTimeout = socketTimeout;
     }
 
     /**
@@ -88,7 +86,7 @@ public class SMTPConfig {
      */
     public static SMTPConfig forPlain(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword) {
         return new SMTPConfig(smtpHostname, smtpPort, smtpUsername, smtpPassword, false, DEFAULT_SSL_PORT,
-                SecurityMode.PLAIN);
+                SecurityMode.PLAIN, DEFAULT_CONNECTION_TIMEOUT, DEFAULT_SOCKET_TIMEOUT);
     }
 
     /**
@@ -97,7 +95,7 @@ public class SMTPConfig {
     public static SMTPConfig forSsl(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword,
             int sslPort) {
         return new SMTPConfig(smtpHostname, smtpPort, smtpUsername, smtpPassword, true, sslPort,
-                SecurityMode.SSL);
+                SecurityMode.SSL, DEFAULT_CONNECTION_TIMEOUT, DEFAULT_SOCKET_TIMEOUT);
     }
 
     /**
@@ -107,7 +105,7 @@ public class SMTPConfig {
     public static SMTPConfig forStartTlsOptional(String smtpHostname, int smtpPort, String smtpUsername,
             String smtpPassword) {
         return new SMTPConfig(smtpHostname, smtpPort, smtpUsername, smtpPassword, false, DEFAULT_SSL_PORT,
-                SecurityMode.STARTTLS_OPTIONAL);
+                SecurityMode.STARTTLS_OPTIONAL, DEFAULT_CONNECTION_TIMEOUT, DEFAULT_SOCKET_TIMEOUT);
     }
 
     /**
@@ -117,7 +115,7 @@ public class SMTPConfig {
     public static SMTPConfig forStartTlsRequired(String smtpHostname, int smtpPort, String smtpUsername,
             String smtpPassword) {
         return new SMTPConfig(smtpHostname, smtpPort, smtpUsername, smtpPassword, false, DEFAULT_SSL_PORT,
-                SecurityMode.STARTTLS_REQUIRED);
+                SecurityMode.STARTTLS_REQUIRED, DEFAULT_CONNECTION_TIMEOUT, DEFAULT_SOCKET_TIMEOUT);
     }
 
     @Override

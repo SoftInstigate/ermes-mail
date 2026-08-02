@@ -31,13 +31,22 @@ import java.util.concurrent.TimeUnit;
 /**
  * Receive a SMTP server configuration and send emails with HTML content
  */
-public class EmailService {
+public class EmailService implements AutoCloseable {
 
     private static final Logger LOGGER = Logger.getLogger(EmailService.class.getName());
     private static final long DEFAULT_EXECUTOR_SHUTDOWN_TIMEOUT = 10; // executor shutdown timeout in seconds
 
     private final SMTPConfig smtpConfig;
     private final ExecutorService executor;
+
+    /**
+     * Constructor with default thread pool size equal to the number of available processors.
+     *
+     * @param smtpConfig the SMTP server credentials and configuration
+     */
+    public EmailService(SMTPConfig smtpConfig) {
+        this(smtpConfig, Runtime.getRuntime().availableProcessors());
+    }
 
     /**
      * Constructor
@@ -111,6 +120,11 @@ public class EmailService {
      */
     public void shutdown() {
         this.shutdown(DEFAULT_EXECUTOR_SHUTDOWN_TIMEOUT);
+    }
+
+    @Override
+    public void close() {
+        shutdown();
     }
 
 }

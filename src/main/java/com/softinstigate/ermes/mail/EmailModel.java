@@ -20,9 +20,9 @@
 package com.softinstigate.ermes.mail;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * E-mails object model
@@ -72,11 +72,7 @@ public class EmailModel {
      * @param emails list of TO email addresses
      */
     public void setMultipleTo(List<String> emails) {
-        List<Recipient> recipients = new ArrayList<Recipient>(emails.size());
-        emails.forEach(e -> {
-            recipients.add(new Recipient(e, null));
-        });
-        this.setTo(recipients);
+        this.setTo(toRecipients(emails));
     }
 
     /**
@@ -95,11 +91,7 @@ public class EmailModel {
      * @param emails list of multiple CC email addresses
      */
     public void setMultipleCc(List<String> emails) {
-        List<Recipient> recipients = new ArrayList<Recipient>(emails.size());
-        emails.forEach(e -> {
-            recipients.add(new Recipient(e, null));
-        });
-        this.setCc(recipients);
+        this.setCc(toRecipients(emails));
     }
 
     /**
@@ -118,11 +110,7 @@ public class EmailModel {
      * @param emails list of multiple BCC email addresses
      */
     public void setMultipleBcc(List<String> emails) {
-        List<Recipient> recipients = new ArrayList<Recipient>(emails.size());
-        emails.forEach(e -> {
-            recipients.add(new Recipient(e, null));
-        });
-        this.setBcc(recipients);
+        this.setBcc(toRecipients(emails));
     }
 
     /**
@@ -183,7 +171,7 @@ public class EmailModel {
      * @return the list of TO recipients
      */
     public final List<Recipient> getToRecipients() {
-        return Collections.unmodifiableList(to);
+        return List.copyOf(to);
     }
 
     /**
@@ -192,7 +180,7 @@ public class EmailModel {
      * @return the list of CC recipients
      */
     public final List<Recipient> getCcRecipients() {
-        return Collections.unmodifiableList(cc);
+        return List.copyOf(cc);
     }
 
     /**
@@ -201,7 +189,7 @@ public class EmailModel {
      * @return the list of BCC recipients
      */
     public final List<Recipient> getBccRecipients() {
-        return Collections.unmodifiableList(bcc);
+        return List.copyOf(bcc);
     }
 
     /**
@@ -210,64 +198,31 @@ public class EmailModel {
      * @return the list of attachments
      */
     public final List<Attachment> getAttachments() {
-        return Collections.unmodifiableList(attachments);
+        return List.copyOf(attachments);
+    }
+
+    private static List<Recipient> toRecipients(List<String> emails) {
+        return emails.stream()
+                .map(e -> new Recipient(e, null))
+                .collect(Collectors.toList());
     }
 
     /**
      * Recipient object model
      */
-    public static class Recipient {
-        public final String email;
-        public final String name; // Full name
-
-        /**
-         * Default constructor
-         * 
-         * @param email recipients' email
-         * @param name optional recipient's name (cab be null)
-         */
-        public Recipient(String email, String name) {
-            this.email = Objects.requireNonNull(email, "Recipient email must not be null");
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return "Recipient{" +
-                    "email='" + email + '\'' +
-                    ", name='" + name + '\'' +
-                    '}';
+    public record Recipient(String email, String name) {
+        public Recipient {
+            Objects.requireNonNull(email, "Recipient email must not be null");
         }
     }
 
     /**
      * Attachment object model
      */
-    public static class Attachment {
-        public final String url;
-        public final String fileName;
-        public final String description;
-
-        /**
-         * Default constructor
-         * 
-         * @param url attachment's URL
-         * @param fileName file to attach
-         * @param description file description
-         */
-        public Attachment(String url, String fileName, String description) {
-            this.url = Objects.requireNonNull(url, "Attachment URL must not be null");
-            this.fileName = Objects.requireNonNull(fileName, "Attachment fileName must not be null");
-            this.description = description;
-        }
-
-        @Override
-        public String toString() {
-            return "Attachment{" +
-                    "url='" + url + '\'' +
-                    ", fileName='" + fileName + '\'' +
-                    ", description='" + description + '\'' +
-                    '}';
+    public record Attachment(String url, String fileName, String description) {
+        public Attachment {
+            Objects.requireNonNull(url, "Attachment URL must not be null");
+            Objects.requireNonNull(fileName, "Attachment fileName must not be null");
         }
     }
 

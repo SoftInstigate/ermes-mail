@@ -33,8 +33,8 @@ class EmailModelTest {
 
         List<EmailModel.Recipient> recipients = model.getToRecipients();
         assertEquals(1, recipients.size());
-        assertEquals("c@d.com", recipients.get(0).email);
-        assertEquals("Charlie", recipients.get(0).name);
+        assertEquals("c@d.com", recipients.get(0).email());
+        assertEquals("Charlie", recipients.get(0).name());
     }
 
     @Test
@@ -44,8 +44,8 @@ class EmailModelTest {
 
         List<EmailModel.Recipient> cc = model.getCcRecipients();
         assertEquals(1, cc.size());
-        assertEquals("c@d.com", cc.get(0).email);
-        assertEquals("Charlie", cc.get(0).name);
+        assertEquals("c@d.com", cc.get(0).email());
+        assertEquals("Charlie", cc.get(0).name());
     }
 
     @Test
@@ -55,8 +55,8 @@ class EmailModelTest {
 
         List<EmailModel.Recipient> bcc = model.getBccRecipients();
         assertEquals(1, bcc.size());
-        assertEquals("c@d.com", bcc.get(0).email);
-        assertEquals("Charlie", bcc.get(0).name);
+        assertEquals("c@d.com", bcc.get(0).email());
+        assertEquals("Charlie", bcc.get(0).name());
     }
 
     @Test
@@ -67,8 +67,8 @@ class EmailModelTest {
 
         List<EmailModel.Recipient> recipients = model.getToRecipients();
         assertEquals(2, recipients.size());
-        assertEquals("new1@x.com", recipients.get(0).email);
-        assertEquals("new2@x.com", recipients.get(1).email);
+        assertEquals("new1@x.com", recipients.get(0).email());
+        assertEquals("new2@x.com", recipients.get(1).email());
     }
 
     @Test
@@ -79,8 +79,8 @@ class EmailModelTest {
 
         List<EmailModel.Recipient> cc = model.getCcRecipients();
         assertEquals(2, cc.size());
-        assertEquals("new1@x.com", cc.get(0).email);
-        assertEquals("new2@x.com", cc.get(1).email);
+        assertEquals("new1@x.com", cc.get(0).email());
+        assertEquals("new2@x.com", cc.get(1).email());
     }
 
     @Test
@@ -91,8 +91,8 @@ class EmailModelTest {
 
         List<EmailModel.Recipient> bcc = model.getBccRecipients();
         assertEquals(2, bcc.size());
-        assertEquals("new1@x.com", bcc.get(0).email);
-        assertEquals("new2@x.com", bcc.get(1).email);
+        assertEquals("new1@x.com", bcc.get(0).email());
+        assertEquals("new2@x.com", bcc.get(1).email());
     }
 
     @Test
@@ -104,7 +104,7 @@ class EmailModelTest {
 
         List<EmailModel.Recipient> recipients = model.getToRecipients();
         assertEquals(1, recipients.size());
-        assertEquals("new@x.com", recipients.get(0).email);
+        assertEquals("new@x.com", recipients.get(0).email());
     }
 
     @Test
@@ -116,7 +116,7 @@ class EmailModelTest {
 
         List<EmailModel.Recipient> cc = model.getCcRecipients();
         assertEquals(1, cc.size());
-        assertEquals("new@x.com", cc.get(0).email);
+        assertEquals("new@x.com", cc.get(0).email());
     }
 
     @Test
@@ -128,7 +128,7 @@ class EmailModelTest {
 
         List<EmailModel.Recipient> bcc = model.getBccRecipients();
         assertEquals(1, bcc.size());
-        assertEquals("new@x.com", bcc.get(0).email);
+        assertEquals("new@x.com", bcc.get(0).email());
     }
 
     @Test
@@ -141,7 +141,7 @@ class EmailModelTest {
 
         List<EmailModel.Attachment> attachments = model.getAttachments();
         assertEquals(1, attachments.size());
-        assertEquals("http://new.com/f.txt", attachments.get(0).url);
+        assertEquals("http://new.com/f.txt", attachments.get(0).url());
     }
 
     @Test
@@ -256,9 +256,9 @@ class EmailModelTest {
 
         List<EmailModel.Attachment> attachments = model.getAttachments();
         assertEquals(1, attachments.size());
-        assertEquals("http://example.com/file.pdf", attachments.get(0).url);
-        assertEquals("file.pdf", attachments.get(0).fileName);
-        assertEquals("A report", attachments.get(0).description);
+        assertEquals("http://example.com/file.pdf", attachments.get(0).url());
+        assertEquals("file.pdf", attachments.get(0).fileName());
+        assertEquals("A report", attachments.get(0).description());
     }
 
     @Test
@@ -283,8 +283,8 @@ class EmailModelTest {
     void recipientConstructorWithNullName() {
         EmailModel.Recipient r = new EmailModel.Recipient("a@b.com", null);
 
-        assertEquals("a@b.com", r.email);
-        assertNull(r.name);
+        assertEquals("a@b.com", r.email());
+        assertNull(r.name());
     }
 
     @Test
