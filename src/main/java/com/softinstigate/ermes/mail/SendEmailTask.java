@@ -81,9 +81,11 @@ public class SendEmailTask implements Callable<List<String>> {
     }
 
     /**
-     * Send the EmailModel using an Apache Commons' HtmlEmail instance
+     * Send the EmailModel using an Apache Commons' HtmlEmail instance.
+     * Configures SMTP settings, security, attachments, and recipients,
+     * then delegates to {@link HtmlEmail#send()}.
      *
-     * @return a {@code List<String>} of errors.
+     * @return a list of error messages; empty if the email was sent successfully
      */
     @Override
     public List<String> call() {
@@ -132,6 +134,7 @@ public class SendEmailTask implements Callable<List<String>> {
         return errors;
     }
 
+    /** Configure charset, hostname, port, authentication, and socket timeouts. */
     private void configureCharsetAndServer(HtmlEmail email) {
         email.setCharset(charset);
         email.setHostName(smtpConfig.hostname);
@@ -141,6 +144,7 @@ public class SendEmailTask implements Callable<List<String>> {
         email.setSocketTimeout(smtpConfig.socketTimeout);
     }
 
+    /** Configure SSL, SSL port, and STARTTLS based on the security mode. */
     private void configureSecurity(HtmlEmail email) {
         email.setSSLOnConnect(smtpConfig.ssl);
         email.setSslSmtpPort(String.valueOf(smtpConfig.sslPort));
@@ -155,12 +159,14 @@ public class SendEmailTask implements Callable<List<String>> {
         }
     }
 
+    /** Set sender address, subject, and HTML body. */
     private void configureSenderAndContent(HtmlEmail email) throws EmailException {
         email.setFrom(model.from, model.senderFullName);
         email.setSubject(model.subject);
         email.setHtmlMsg(model.message);
     }
 
+    /** Add all TO, CC, and BCC recipients to the email. */
     private void addRecipients(HtmlEmail email) throws EmailException {
         for (EmailModel.Recipient r : model.getToRecipients()) {
             email.addTo(r.email(), r.name());

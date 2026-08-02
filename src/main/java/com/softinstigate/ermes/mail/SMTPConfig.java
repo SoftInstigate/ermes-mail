@@ -20,7 +20,7 @@
 package com.softinstigate.ermes.mail;
 
 /**
- * SMTPConfig holds the SMTP server configuration used by {@link EmailService}.
+ * Immutable SMTP server configuration used by {@link EmailService}.
  *
  * <p>
  * Construction is done via explicit factory methods to make the security
@@ -34,29 +34,60 @@ package com.softinstigate.ermes.mail;
  *
  * <p>
  * The {@link SecurityMode} enum expresses the security policy (plain, SSL,
- * STARTTLS optional or required).
+ * STARTTLS optional or required). Connection and socket timeouts default to
+ * {@value #DEFAULT_CONNECTION_TIMEOUT} ms and {@value #DEFAULT_SOCKET_TIMEOUT} ms
+ * respectively.
  */
 public class SMTPConfig {
 
+    /** Default SSL port for SMTPS (implicit TLS). */
     public static final int DEFAULT_SSL_PORT = 465;
-    public static final int DEFAULT_CONNECTION_TIMEOUT = 10_000; // ms
-    public static final int DEFAULT_SOCKET_TIMEOUT = 60_000; // ms
 
+    /** Default connection timeout in milliseconds. */
+    public static final int DEFAULT_CONNECTION_TIMEOUT = 10_000;
+
+    /** Default socket (read) timeout in milliseconds. */
+    public static final int DEFAULT_SOCKET_TIMEOUT = 60_000;
+
+    /** SMTP server hostname. */
     public final String hostname;
+
+    /** SMTP server port. */
     public final int port;
+
+    /** SMTP username for authentication ({@code null} or empty for no auth). */
     public final String username;
+
+    /** SMTP password for authentication. */
     public final String password;
+
+    /** Whether SSL-on-connect (implicit TLS) is enabled. */
     public final boolean ssl;
+
+    /** SSL port value (only meaningful when {@link #ssl} is {@code true}). */
     public final int sslPort;
+
+    /** The security mode for this configuration. */
     public final SecurityMode securityMode;
+
+    /** Socket connection timeout in milliseconds. */
     public final int connectionTimeout;
+
+    /** Socket read timeout in milliseconds. */
     public final int socketTimeout;
 
     /**
      * Security mode for the SMTP connection.
      */
     public enum SecurityMode {
-        PLAIN, SSL, STARTTLS_OPTIONAL, STARTTLS_REQUIRED
+        /** No encryption. */
+        PLAIN,
+        /** Implicit TLS/SSL (SMTPS, typically port 465). */
+        SSL,
+        /** Opportunistic STARTTLS: upgrade if available, otherwise continue in plaintext. */
+        STARTTLS_OPTIONAL,
+        /** Mandatory STARTTLS: fail if the server does not advertise STARTTLS. */
+        STARTTLS_REQUIRED
     }
 
     /**
@@ -83,6 +114,12 @@ public class SMTPConfig {
 
     /**
      * Create a plain (no TLS) SMTP configuration.
+     *
+     * @param smtpHostname SMTP server hostname (must not be null or blank)
+     * @param smtpPort     SMTP server port (1–65535)
+     * @param smtpUsername SMTP username ({@code null} or empty for no auth)
+     * @param smtpPassword SMTP password
+     * @return a new {@code SMTPConfig} with {@link SecurityMode#PLAIN}
      */
     public static SMTPConfig forPlain(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword) {
         return new SMTPConfig(smtpHostname, smtpPort, smtpUsername, smtpPassword, false, DEFAULT_SSL_PORT,
@@ -91,6 +128,13 @@ public class SMTPConfig {
 
     /**
      * Create an SSL-on-connect SMTP configuration (implicit TLS, typically port 465).
+     *
+     * @param smtpHostname SMTP server hostname (must not be null or blank)
+     * @param smtpPort     SMTP server port (1–65535)
+     * @param smtpUsername SMTP username ({@code null} or empty for no auth)
+     * @param smtpPassword SMTP password
+     * @param sslPort      the SSL port to use (e.g. 465)
+     * @return a new {@code SMTPConfig} with {@link SecurityMode#SSL}
      */
     public static SMTPConfig forSsl(String smtpHostname, int smtpPort, String smtpUsername, String smtpPassword,
             int sslPort) {
@@ -101,6 +145,12 @@ public class SMTPConfig {
     /**
      * Create a STARTTLS (opportunistic) SMTP configuration: upgrade to TLS if
      * the server supports it, otherwise continue in plaintext.
+     *
+     * @param smtpHostname SMTP server hostname (must not be null or blank)
+     * @param smtpPort     SMTP server port (1–65535)
+     * @param smtpUsername SMTP username ({@code null} or empty for no auth)
+     * @param smtpPassword SMTP password
+     * @return a new {@code SMTPConfig} with {@link SecurityMode#STARTTLS_OPTIONAL}
      */
     public static SMTPConfig forStartTlsOptional(String smtpHostname, int smtpPort, String smtpUsername,
             String smtpPassword) {
@@ -111,6 +161,12 @@ public class SMTPConfig {
     /**
      * Create a STARTTLS-required SMTP configuration: fail if the server does not
      * advertise STARTTLS.
+     *
+     * @param smtpHostname SMTP server hostname (must not be null or blank)
+     * @param smtpPort     SMTP server port (1–65535)
+     * @param smtpUsername SMTP username ({@code null} or empty for no auth)
+     * @param smtpPassword SMTP password
+     * @return a new {@code SMTPConfig} with {@link SecurityMode#STARTTLS_REQUIRED}
      */
     public static SMTPConfig forStartTlsRequired(String smtpHostname, int smtpPort, String smtpUsername,
             String smtpPassword) {

@@ -25,7 +25,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * E-mails object model
+ * Email data model holding sender, subject, HTML body, recipients, and attachments.
+ *
+ * <p>Recipients are managed via {@link #addTo(String, String)}, {@link #addCc(String, String)},
+ * {@link #addBcc(String, String)}, or the bulk setters {@link #setMultipleTo(List)}, etc.
+ * All getter methods return unmodifiable snapshot lists.
+ *
+ * <p>Use {@link #toSecureString()} for safe logging (excludes message content).
  */
 public class EmailModel {
     public final String from; // Sender's email address
@@ -67,7 +73,7 @@ public class EmailModel {
     }
 
     /**
-     * adds a list of TO recipient
+     * Replace TO recipients with the given email addresses.
      *
      * @param emails list of TO email addresses
      */
@@ -86,9 +92,9 @@ public class EmailModel {
     }
 
     /**
-     * adds a list of CC recipients
+     * Replace CC recipients with the given email addresses.
      *
-     * @param emails list of multiple CC email addresses
+     * @param emails list of CC email addresses
      */
     public void setMultipleCc(List<String> emails) {
         this.setCc(toRecipients(emails));
@@ -105,9 +111,9 @@ public class EmailModel {
     }
 
     /**
-     * adds a list of BCC recipients
+     * Replace BCC recipients with the given email addresses.
      *
-     * @param emails list of multiple BCC email addresses
+     * @param emails list of BCC email addresses
      */
     public void setMultipleBcc(List<String> emails) {
         this.setBcc(toRecipients(emails));
@@ -208,7 +214,10 @@ public class EmailModel {
     }
 
     /**
-     * Recipient object model
+     * Email recipient with an address and an optional display name.
+     *
+     * @param email the recipient's email address (must not be null)
+     * @param name  the recipient's display name (may be null)
      */
     public record Recipient(String email, String name) {
         public Recipient {
@@ -217,7 +226,11 @@ public class EmailModel {
     }
 
     /**
-     * Attachment object model
+     * Email attachment referenced by URL.
+     *
+     * @param url         the attachment URL (must not be null)
+     * @param fileName    the file name to use in the email (must not be null)
+     * @param description optional human-readable description (may be null)
      */
     public record Attachment(String url, String fileName, String description) {
         public Attachment {

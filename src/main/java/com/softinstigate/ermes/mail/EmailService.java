@@ -29,7 +29,20 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Receive a SMTP server configuration and send emails with HTML content
+ * Email sending service that supports both asynchronous and synchronous delivery.
+ *
+ * <p>Wraps an {@link ExecutorService} thread pool and delegates to {@link SendEmailTask}
+ * for the actual SMTP transaction via Apache Commons Email.
+ *
+ * <p>Implements {@link AutoCloseable} so it can be used with try-with-resources:
+ * <pre>{@code
+ * try (EmailService service = new EmailService(smtpConfig)) {
+ *     service.send(emailModel);
+ * }
+ * }</pre>
+ *
+ * @see #send(EmailModel)
+ * @see #sendSynch(EmailModel)
  */
 public class EmailService implements AutoCloseable {
 
@@ -52,7 +65,7 @@ public class EmailService implements AutoCloseable {
      * Constructor
      *
      * @param smtpConfig     the SMTP server credentials and configuration
-     * @param threadPoolSize the ExecutorService thread poll size
+     * @param threadPoolSize the ExecutorService thread pool size
      */
     public EmailService(SMTPConfig smtpConfig, int threadPoolSize) {
         this.smtpConfig = Objects.requireNonNull(smtpConfig, "SMTPConfig must not be null");
@@ -122,6 +135,10 @@ public class EmailService implements AutoCloseable {
         this.shutdown(DEFAULT_EXECUTOR_SHUTDOWN_TIMEOUT);
     }
 
+    /**
+     * Shutdowns the executor and releases resources.
+     * Equivalent to calling {@link #shutdown()}.
+     */
     @Override
     public void close() {
         shutdown();
