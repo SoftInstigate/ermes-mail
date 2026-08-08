@@ -82,7 +82,7 @@ See `smtp-integration.properties.example` for the template. Alternatively, set e
 1. Checkout code
 2. Cache Maven repository
 3. Set up JDK 17 (Temurin)
-4. Download ByteBuddy agent JAR (version 1.17.5 in CI, 1.17.8 in publish)
+4. Download ByteBuddy agent JAR (version 1.18.11-jdk5, set via `BYTEBUDDY_VERSION` env)
 5. Run unit tests with `-javaagent` for Mockito inline mock-maker
 
 **Note:** Integration tests (`*IT.java`) are excluded by surefire configuration — they only run via `mvn verify` locally.
@@ -124,9 +124,9 @@ See `smtp-integration.properties.example` for the template. Alternatively, set e
 | `info.picocli:picocli` | 4.7.7 | compile | CLI argument parsing |
 | `javax.mail:javax.mail-api` | 1.6.2 | runtime | JavaMail API (pre-Jakarta) |
 | `com.sun.mail:javax.mail` | 1.6.2 | runtime | JavaMail implementation |
-| `org.junit.jupiter:junit-jupiter` | 5.12.2 | test | Test framework |
-| `org.mockito:mockito-core` | 5.18.0 | test | Mocking |
-| `net.bytebuddy:byte-buddy-agent` | 1.17.8 | test | Mockito inline mock-maker agent |
+| `org.junit.jupiter:junit-jupiter` | 6.1.2 | test | Test framework |
+| `org.mockito:mockito-core` | 5.23.0 | test | Mocking |
+| `net.bytebuddy:byte-buddy-agent` | 1.18.11-jdk5 | test | Mockito inline mock-maker agent |
 
 ### javax.mail Version Warning
 
@@ -197,3 +197,4 @@ See [CHANGELOG.md](../../CHANGELOG.md) for detailed release notes. Key milestone
 - **1.1.0** (2022-05-25) — Initial public release
 - **2.0.0** (2025-09-08) — Breaking API: factory methods for SMTPConfig, STARTTLS support, HtmlEmailFactory for testability
 - **2.1.0** (2025-10-14) — Security hardening: redacted logging, STARTTLS env var config for integration tests
+- **3.0.0** (2026-08-02) — Breaking: Recipient/Attachment as Java records, input validation, lazy thread pool, poolSize=0 mode, AutoCloseable, socket timeouts, 74 unit tests
