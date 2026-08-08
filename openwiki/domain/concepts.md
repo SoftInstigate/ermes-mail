@@ -74,11 +74,11 @@ Represents an email message with sender, subject, HTML body, recipients, and att
 | `bcc` | `List<Recipient>` | BCC recipients |
 | `attachments` | `List<Attachment>` | URL-based attachments |
 
-### Inner Classes
+### Inner Records
 
-**Recipient** — `{email, name}` tuple. Name is optional (null for address-only recipients).
+**Recipient** — `record Recipient(String email, String name)`. Name is optional (null for address-only recipients). The compact constructor validates that `email` is non-null.
 
-**Attachment** — `{url, fileName, description}`. Attachments are URL-based (not file-based); the URL is converted to `java.net.URI` then `java.net.URL` for Commons Email.
+**Attachment** — `record Attachment(String url, String fileName, String description)`. Attachments are URL-based (not file-based); the URL is converted to `java.net.URI` then `java.net.URL` for Commons Email. Both `url` and `fileName` are validated as non-null in the compact constructor.
 
 ### Builder-Style Methods
 

@@ -42,7 +42,7 @@ All production classes are in `src/main/java/com/softinstigate/ermes/mail/`.
 **Key behaviors:**
 - Holds sender info, subject, HTML body, recipients (TO/CC/BCC), attachments
 - Builder-style methods for adding recipients and attachments
-- Inner classes: `Recipient` (email + name), `Attachment` (url + fileName + description)
+- Inner records: `Recipient` (email + name) and `Attachment` (url + fileName + description) with compact-constructor null validation
 - `toSecureString()` for safe logging (reports metadata only)
 
 **When changing:** Recipients are stored in private `ArrayList`s, exposed as unmodifiable lists via getters. The `setMultipleTo/Cc/Bcc` methods accept `List<String>` (email-only, no names).

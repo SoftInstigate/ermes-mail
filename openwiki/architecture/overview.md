@@ -63,14 +63,39 @@ This keeps the library small and embeddable. There are no sub-packages — the e
 
 For synchronous usage, `EmailService.sendSynch()` bypasses the executor and calls `SendEmailTask.call()` directly on the calling thread.
 
+```mermaid
+sequenceDiagram
+    participant Caller
+    participant EmailService
+    participant Executor
+    participant Task as SendEmailTask
+    participant HtmlEmail
+
+    Caller->>EmailService: send(EmailModel)
+    Note over EmailService: Lazy: create pool on first send()
+    EmailService->>Executor: submit(SendEmailTask)
+    Executor->>Task: call()
+    Task->>HtmlEmail: create via HtmlEmailFactory
+    Task->>HtmlEmail: configure SMTP, security, content
+    HtmlEmail-->>Task: send() via transport
+    Task-->>Executor: errors list
+    Executor-->>EmailService: Future of errors
+    EmailService-->>Caller: Future of errors
+```
+
+*EmailService async send flow with lazy thread pool initialization.*
+
 ## Async Execution Model
 
 `EmailService` uses `Executors.newFixedThreadPool(threadPoolSize)` to parallelize email sends. Key behaviors:
 
-- **Thread pool size** is configurable at construction (e.g., `new EmailService(config, 3)` uses 3 threads).
+- **Thread pool size** is configurable at construction (e.g., `new EmailService(config, 3)` uses 3 threads). The default constructor uses `Runtime.getRuntime().availableProcessors()`.
+- **Lazy initialization** — the `ExecutorService` is created on the first `send()` call, not in the constructor. Applications that only use `sendSynch()` never create a thread pool.
+- **poolSize = 0** — no internal pool is ever created; `send()` executes synchronously and returns an already-completed `Future`. This is designed for callers that manage concurrency externally (e.g., virtual threads in RestHeart). `shutdown()` is a no-op.
+- **AutoCloseable** — `EmailService` implements `AutoCloseable`, so the pool (if created) is shut down automatically in try-with-resources blocks.
 - **send()** returns a `Future<List<String>>` immediately; callers block on `Future.get()` when they need the result.
-- **shutdown()** calls `executor.shutdown()` followed by `awaitTermination()` with a 10-second default timeout.
-- If the timeout elapses, a warning is logged — some emails may not have been sent.
+- **shutdown()** calls `executor.shutdown()` followed by `awaitTermination()` with a 10-second default timeout. If the timeout elapses, `shutdownNow()` is called to force-terminate abandoned tasks.
+- `send()` after `shutdown()` throws `IllegalStateException`.
 
 The CLI (`Main.java`) uses a pool size of 1 and blocks on `Future.get()` immediately, so it behaves synchronously.
 

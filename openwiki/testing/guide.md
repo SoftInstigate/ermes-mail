@@ -46,7 +46,7 @@ Integration tests use JUnit 5 `@TestFactory` with dynamic tests. Each scenario i
 Tests use Mockito's inline mock-maker, which requires the ByteBuddy agent. The CI workflow downloads the agent JAR and passes it via `-javaagent` in `argLine`:
 
 ```shell
-mvn -DargLine="-javaagent=target/test-agent/byte-buddy-agent-1.17.8.jar" test
+mvn -DargLine="-javaagent=target/test-agent/byte-buddy-agent-1.18.11-jdk5.jar" test
 ```
 
 ## Unit Test Patterns
@@ -105,7 +105,7 @@ Tests `EmailModel` construction and behavior:
 - Non-null enforcement: constructor rejects null `from`, `subject`, `message`
 - Unmodifiable lists: `getToRecipients()`, `getCcRecipients()`, etc. return `List.copyOf()` snapshots
 - Secure logging: `toString()` redacts message body, `toSecureString()` reports metadata only
-- Record validation: `Recipient.email` and `Attachment.url`/`fileName` must be non-null
+- Record validation: `Recipient.email()` and `Attachment.url()`/`fileName()` must be non-null
 
 ### EmailServiceTest
 
