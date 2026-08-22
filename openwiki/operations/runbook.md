@@ -190,6 +190,53 @@ The `maven-publish.yml` workflow publishes to GitHub Packages on tag push. Requi
 
 If `EmailService.shutdown()` logs "timeout elapsed: some emails may not have been sent", increase the shutdown timeout via `shutdown(long timeout)` or increase the thread pool size.
 
+## Release Process
+
+### Version Management (`setversion.sh`)
+
+The `setversion.sh` script manages version bumping with safety guards:
+
+```shell
+# Set a release version (must be on <major>.x branch):
+./setversion.sh 3.0.0
+
+# Set a SNAPSHOT version:
+./setversion.sh 3.0.2-SNAPSHOT
+
+# Preview changes without applying:
+./setversion.sh 3.0.0 --dry-run
+
+# Override guards (downgrade, wrong branch, dirty tree):
+./setversion.sh 3.0.0 --force
+```
+
+**Behavior for release versions** (no `-SNAPSHOT` suffix):
+1. Validates semver format and checks it's not a downgrade
+2. Requires current branch to match `<major>.x` (e.g., `3.x` for version `3.0.0`)
+3. Requires clean working tree
+4. Runs `mvn versions:set -DnewVersion=<version>`
+5. Updates `chart/Chart.yaml` if present
+6. Commits with message `Release version <version>`
+7. Creates git tag `<version>`
+8. After running: `git push && git push --tags`
+9. The `maven-publish.yml` workflow triggers on tag push, building and publishing to GitHub Packages
+
+**Behavior for SNAPSHOT versions** (`-SNAPSHOT` suffix):
+1. Runs `mvn versions:set -DnewVersion=<version>`
+2. Commits with message `Bump version to <version> [skip ci]`
+
+### Dependency Updates (`update-dependencies.sh`)
+
+```shell
+# Update dependencies (patch-level only):
+./update-dependencies.sh
+
+# Allow minor version updates:
+./update-dependencies.sh true
+```
+
+Runs `versions:use-latest-releases` and `versions:update-properties` sequentially. After updating, run `mvn test` to verify compatibility. Keep ByteBuddy in sync with Mockito — the `bytebuddy.version` property in `pom.xml` must match the version expected by `mockito-core`.
+
 ## Version History
 
 See [CHANGELOG.md](../../CHANGELOG.md) for detailed release notes. Key milestones:
