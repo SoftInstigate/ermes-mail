@@ -85,7 +85,8 @@ try (EmailService emailService = new EmailService(smtpConfig)) {
 | Recipient/Attachment model | [Domain](domain/concepts.md) | `EmailModel.java` | `Recipient` record, `Attachment` record | `EmailModelTest.java` | `mvn test` |
 | Integration test scenario | [Testing](testing/guide.md) | `IntegrationScenariosIT.java` | `scenarios()`, `DynamicTest` | `IntegrationScenariosIT.java` | `mvn verify` |
 | CI pipeline | [Operations](operations/runbook.md) | `.github/workflows/ci.yml` | `BYTEBUDDY_VERSION`, `argLine` | — | push to branch |
-| Dependency update | [Operations](operations/runbook.md) | `pom.xml` | `bytebuddy.version` property | all tests | `mvn test` |
+| Dependency update | [Operations](operations/runbook.md) | `pom.xml`, `update-dependencies.sh` | `bytebuddy.version` property | all tests | `mvn test` |
+| Release / version bump | [Operations](operations/runbook.md) | `setversion.sh` | `pom.xml` version, git tag | `mvn package` | `./setversion.sh <ver> --dry-run` |
 
 ## Project Structure (Quick Reference)
 
@@ -108,6 +109,9 @@ src/test/java/com/softinstigate/ermes/mail/
   EmailServiceTest.java        — Thread pool lifecycle tests
   MainCliTest.java             — CLI flag parsing tests
   IntegrationScenariosIT.java  — Live SMTP integration tests
+
+setversion.sh                  — Release versioning script (semver + git tag)
+update-dependencies.sh         — Maven dependency update script
 ```
 
 ## Backlog

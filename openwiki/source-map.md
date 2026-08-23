@@ -160,6 +160,36 @@ Uses `@TestFactory` with `DynamicTest` for conditional execution. Reads config f
 
 **Role:** Release notes following Keep a Changelog format. Documents breaking changes, migration guides, and security changes.
 
+### setversion.sh
+
+**Role:** Release versioning script. Safely sets the Maven project version with semver validation, branch-name checks, and git tagging.
+
+**Key behaviors:**
+- Accepts `major.minor.patch` or `major.minor.patch-SNAPSHOT` version formats
+- Validates semver, detects downgrades, checks for existing tags
+- Runs `mvn versions:set` to update pom.xml
+- For release versions: commits, creates a git tag (e.g., `3.0.0`); requires branch `<major>.x`
+- For SNAPSHOT versions: commits with `[skip ci]` suffix
+- Supports `--dry-run` (preview only) and `--force` (override guards)
+- Also updates `chart/Chart.yaml` for Helm-based deployments when present
+
+**When changing:** If the release process or versioning policy changes, update this script and the corresponding [Operations Runbook](operations/runbook.md) section.
+
+### update-dependencies.sh
+
+**Role:** Dependency update script. Runs Maven `versions:use-latest-releases` and `versions:update-properties` to update pom.xml dependencies.
+
+**Key behaviors:**
+- Takes optional first argument (`true`/`false`) to control `allowMinorUpdates`
+- Runs two Maven goals sequentially: `versions:use-latest-releases` then `versions:update-properties`
+- Uses Maven wrapper (`mvnw`) if present in the project root
+
+**When changing:** Use this script before a release cycle to update dependencies, then run `mvn test` to verify compatibility. Keep ByteBuddy in sync with Mockito.
+
+### .github/copilot-instructions.md
+
+**Role:** GitHub Copilot instructions for AI-assisted development in this repository. Covers architecture, key workflows, dependency patterns, and common pitfalls.
+
 ### LICENSE.txt
 
 **Role:** Apache License 2.0 full text.
@@ -174,4 +204,6 @@ Uses `@TestFactory` with `DynamicTest` for conditional execution. Reads config f
 | Add a new recipient type | `EmailModel.java` — add list, getter, add/set methods |
 | Debug SMTP connection issues | `SendEmailTask.call()` — enable `mail.debug=true` |
 | Add a new integration test scenario | `IntegrationScenariosIT.java` — add `DynamicTest` to `scenarios()` |
-| Update dependencies | `pom.xml` — keep ByteBuddy in sync with Mockito |
+| Update dependencies | `update-dependencies.sh` then verify with `mvn test`; keep ByteBuddy in sync with Mockito |
+| Create a release | `setversion.sh <version>` — updates pom.xml, commits, tags; see [Operations Runbook](operations/runbook.md) |
+| Change CI pipeline | `.github/workflows/ci.yml` — ByteBuddy agent version, Maven flags |
