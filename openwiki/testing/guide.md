@@ -1,8 +1,29 @@
 ---
 type: Testing
 title: ErmesMail Testing Guide
-description: How to run unit and integration tests, mocking patterns for SendEmailTask, and CI configuration for ErmesMail.
+description: How to run unit and integration tests, mocking patterns for SendEmailTask, ByteBuddy agent setup, and CI configuration for ErmesMail.
 tags: [testing, junit, mockito, integration, ci]
+verified:
+  - by: openwiki/0.4.3
+    at: 2026-09-01T09:33:22.001Z
+sources:
+  - id: openwiki-source-164e2da859b5277df81c7d94
+    resource: repo://.github/workflows/ci.yml
+  - id: openwiki-source-2355f81d7cf522f8dbdaabd4
+    resource: repo://pom.xml
+  - id: openwiki-source-02219b7976a0c9e88905c6dd
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/HtmlEmailFactory.java
+  - id: openwiki-source-1f12b1ce7d6a6ee6ae4915a4
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java
+  - id: openwiki-source-c1b9dac4ccfdcefca48255c3
+    resource: repo://src/test/java/com/softinstigate/ermes/mail/EmailServiceTest.java
+  - id: openwiki-source-bf6289d8d59b7e696ef23f13
+    resource: repo://src/test/java/com/softinstigate/ermes/mail/IntegrationScenariosIT.java
+  - id: openwiki-source-3d6eb9099e3c0ec4cef2e98c
+    resource: repo://src/test/java/com/softinstigate/ermes/mail/SendEmailTaskTest.java
+  - id: openwiki-source-2e9051b2ab4dcf828e614778
+    resource: repo://src/test/java/com/softinstigate/ermes/mail/SMTPConfigTest.java
+generated: { by: "openwiki/0.4.3", at: "2026-09-01T09:33:22.001Z" }
 ---
 
 # Testing Guide
@@ -43,7 +64,13 @@ Integration tests use JUnit 5 `@TestFactory` with dynamic tests. Each scenario i
 
 ### ByteBuddy Agent
 
-Tests use Mockito's inline mock-maker, which requires the ByteBuddy agent. The CI workflow downloads the agent JAR and passes it via `-javaagent` in `argLine`:
+Tests use Mockito's inline mock-maker, which requires the ByteBuddy agent. The agent is configured in `pom.xml` via `maven-surefire-plugin` and `maven-failsafe-plugin` using the `argLine` property:
+
+```xml
+<argLine>-javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/${bytebuddy.version}/byte-buddy-agent-${bytebuddy.version}.jar</argLine>
+```
+
+The CI workflow downloads the agent JAR and passes it via `-javaagent` in `argLine`:
 
 ```shell
 mvn -DargLine="-javaagent=target/test-agent/byte-buddy-agent-1.18.11-jdk5.jar" test
@@ -113,6 +140,8 @@ Tests `EmailService` thread pool lifecycle:
 - `threadPoolSize=0`: `send()` returns an already-completed Future, `shutdown()` is a no-op
 - Lazy executor: `shutdown()` without prior `send()` is a no-op (pool never created)
 - Post-shutdown: `send()` after `shutdown()` throws `IllegalStateException` (normal pool size)
+
+Note: EmailServiceTest does NOT use the HtmlEmailFactory injection pattern. It tests EmailService's thread pool behavior using real EmailService instances with unreachable ports to verify error handling and lifecycle semantics.
 
 ## Integration Test Scenarios
 
@@ -188,7 +217,7 @@ The test asserts the correct `SecurityMode` on the resulting `SMTPConfig` to pre
 
 ### Mocking Pattern for HtmlEmail
 
-The `HtmlEmailFactory` interface enables dependency injection for testing:
+The `HtmlEmailFactory` interface is the primary testability seam for email sending logic. It enables dependency injection for testing:
 
 ```java
 // In production:

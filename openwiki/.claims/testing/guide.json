@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6245d9cf347c27bd834f09f6c7cbd733d89eac5c1271d3fe6a713345d0f68f91",
+  "claims": [
+    {
+      "id": "claim_494abfddc5c441e4aed1ce17552a0ba0",
+      "statement": "Unit tests are executed with `mvn test` and exclude files matching `**/IT*.java` via maven-surefire-plugin configuration.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L196-L206",
+          "version": "repo-lines-v1:sha256:f1506faecac28ea90f6191afccdbe701ea09eb0081e47e22e46538ac25130935:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3ZWRhNzE3ZDRmZmJjYTFjMWUxNWM4ZjYyMWQ4NWYzYmFmNDVjODczNTc2NjNmYTYxYzA2MDk1N2U4ZTUyM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MWQyNjZlNzI0ZTNhYTc5ZDY4NWRhYmJmZmNhNWFmNzRiMzQ3OWM0ZGNjMTU4Y2M0N2Q4Y2JhNTk0OGJmYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1ZjE1ZjBmNzMxNzI0NWU3MjcwMzZiNzhmZjg4MWRhMTc1NjQzNTYyYTc4ZGJiYjBlNWYxNmVmZDg3OGMwZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUwODhjM2VjNDJlZWExYjFiY2QzODgyN2M5MTBiNWI3MjhiODgwODVmODI1Y2UzNGI5ZTQ5NzBjMGE2YTVhNjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cbee4df1a93147bbb63596f8451b0a4f",
+      "statement": "Integration tests are executed with `mvn verify` using JUnit 5 @TestFactory with dynamic tests that are conditionally enabled based on environment prerequisites.",
+      "evidence": [
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/IntegrationScenariosIT.java#L40-L49",
+          "version": "repo-lines-v1:sha256:af111dca4abaef9e97ad80e43272d9510879b71acaaec97a93c5f20111d8e0e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0NmU0MmRlNDdlMGFmZTg5YWQ1NGRjNmE4ZDM1YmFkN2RiOGNhMGQ5MmE2YzYzMDE5NjA3YzE1MWI4OGZmY2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlZGQxM2YxOWY2MjhiMzRhMmIwNTJkN2NkODEwMjBmOTZhMTFjOTNkOTEwMjA0OGUxY2ViY2NlMWZiODcwY2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmNjk0OTgxMzU5NTQ1OWZmOTc2ZWQ0ZTYwOTQ4ZDM0MjZlMjkzNzEwNDIxYmRhOTQ5MzFlZDYzYWJjM2ZhN2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwMjNiNTBhODRlODIyZTdhZmJhYTUzOTVlZWI5NzU2MmFkZDM5NWM2NDRmZDdmNmYyZGQ5YmM4ODIzZDE5ZjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8594ec0c6fe94e82a4970a4198685fee",
+      "statement": "ByteBuddy agent is configured in pom.xml via maven-surefire-plugin and maven-failsafe-plugin argLine properties, using version 1.18.11-jdk5 for Mockito inline mock-maker support.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L19-L21",
+          "version": "repo-lines-v1:sha256:11c6a0cf04dfc6bd572df40dcf36c1835b57b16fa9c2a3a5e84c01b562a4887b:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2U3ZWZiZTE1Njc5NzRiMDI3YWJiMGEwYzUxZTcyNzA3MGMyMzM1ZjE3MjQzMjgwNTAwNzRlMGJkYzk2OTg5MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODAyMjljNzhkMjc2YzM2Y2E5YTI4ZmZhZjM1NmVlNjQ4MGRkYWUyMWMwNWU0MGNjYjlmOGE3MmYyN2QyM2U2OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWJhZDdhNzQ3MjNkZmM0NGI5NzRjMGNjMGVhNDAxNDhhMzZmYTk4NjlkZDY2YWY3ODc5NGNhNTc3YjdkYjU1YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjhlNGZmYmQzYjQ3NGVjZGUyMTdjMTFhYzhjMTA1MGZhNTFjMmE3NmU4MzNhN2NlNmFlZmE2ODBhNDYxMDUzOCJ9"
+        },
+        {
+          "resource": "repo://pom.xml#L196-L206",
+          "version": "repo-lines-v1:sha256:f1506faecac28ea90f6191afccdbe701ea09eb0081e47e22e46538ac25130935:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3ZWRhNzE3ZDRmZmJjYTFjMWUxNWM4ZjYyMWQ4NWYzYmFmNDVjODczNTc2NjNmYTYxYzA2MDk1N2U4ZTUyM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MWQyNjZlNzI0ZTNhYTc5ZDY4NWRhYmJmZmNhNWFmNzRiMzQ3OWM0ZGNjMTU4Y2M0N2Q4Y2JhNTk0OGJmYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1ZjE1ZjBmNzMxNzI0NWU3MjcwMzZiNzhmZjg4MWRhMTc1NjQzNTYyYTc4ZGJiYjBlNWYxNmVmZDg3OGMwZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUwODhjM2VjNDJlZWExYjFiY2QzODgyN2M5MTBiNWI3MjhiODgwODVmODI1Y2UzNGI5ZTQ5NzBjMGE2YTVhNjgifQ"
+        },
+        {
+          "resource": "repo://pom.xml#L207-L224",
+          "version": "repo-lines-v1:sha256:267c4fb464534888a9f7aad4157e8245c33d928ef5f424ea86dc23e6e0a7b56c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzZjA1MDYxZTExOWMxZjk0M2Q5OGI0NzhmNWJiNTNkN2NkZTRkYjdjMDlmNzA4N2ZkNDQzNGRlNGU2MDg3M2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MWQyNjZlNzI0ZTNhYTc5ZDY4NWRhYmJmZmNhNWFmNzRiMzQ3OWM0ZGNjMTU4Y2M0N2Q4Y2JhNTk0OGJmYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmMzFlYmM0OWUxMDFmYmRlN2VkMjcxMmFhOGE5MmFjNTRmM2EzNzIyZTUxZDc5Njk0YjVmMDZjZGNjMDNkM2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVmMDNiOTQzNWYyZWVjYTI1MzUzNWVhOWRhOTNkYzA3NGNhNDYxMWZhZTFhNmY2MWZkZTYyNzM0NWY5MzhiZTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f53e299954fc420db9e1ad1768b357bd",
+      "statement": "SMTPConfigTest verifies factory methods produce correct SecurityMode and field values for Plain, SSL, STARTTLS Optional, and STARTTLS Required modes.",
+      "evidence": [
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/SMTPConfigTest.java#L30-L50",
+          "version": "repo-lines-v1:sha256:90e0c606ae7328732ff1be329f760cfecfa358d0bb46b3fc33ea3166b12ac790:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZjA5ZWIwYzU3NDRmYjk3MzMxYjk4ZmYzZmJmMDVhNjAyYmEzZjdmNjdlNWRhNWJlOTA5NTAzM2Y2MjU4MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0YWQwMmYzOGFhZGZiMjRiODU2NjIxNjQ0NDI4YjU5YTY3NTQ4YjhjNzJkZGQ0OTg5NmMwZDA5MjVmYzlmNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM0ZWQ5YWFjN2Y5NWE5MmZlNTE5MWI5OTY3NjFhNTJjYjk0ZmQxNjQ1MDE2Y2FmY2Y3YzExZjU0NjNiNTkzMTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_69da07748e49416bae650d85ee7a4f6b",
+      "statement": "SendEmailTaskTest uses Mockito to mock HtmlEmail and inject it via HtmlEmailFactory interface, enabling verification of STARTTLS/SSL configuration without network I/O.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/HtmlEmailFactory.java",
+          "version": "repo-file-v1:sha256:339739da6dbcdcbba6f59ea3812033b0e1e93534553f6476e941ec12d7641481"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/SendEmailTaskTest.java#L33-L53",
+          "version": "repo-lines-v1:sha256:c575059a19d9c3804e61864228057e934fd991667df848ccf9a1ecd61e992735:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZjA5ZWIwYzU3NDRmYjk3MzMxYjk4ZmYzZmJmMDVhNjAyYmEzZjdmNjdlNWRhNWJlOTA5NTAzM2Y2MjU4MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMyNzZhNjMyNGE5ZmZjMzc0MWM5ZDdhNjM5NTI3MDhhZjljMjVlN2UyZTViMzIwMDk3NGE0OGY0MWNiMGQ4OGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1NmI2MjAyMzcwZDUxYmQzOTg1ZWRlMWFjNzc3ZDMwY2IyZmQ2N2I0OTVkOWI1NjMxYWZjMWJkZjA5Y2Q4YzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ee85d07c56144fbfa442a54ba1fcb81e",
+      "statement": "EmailServiceTest verifies thread pool lifecycle: threadPoolSize=0 returns already-completed Future, lazy executor creation, shutdown without prior send is no-op, and send after shutdown throws IllegalStateException.",
+      "evidence": [
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/EmailServiceTest.java#L104-L114",
+          "version": "repo-lines-v1:sha256:8a012ee3984ee60742862c1e6c51faeb148c7014cc0db7501ac9182a4051c599:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZjA5ZWIwYzU3NDRmYjk3MzMxYjk4ZmYzZmJmMDVhNjAyYmEzZjdmNjdlNWRhNWJlOTA5NTAzM2Y2MjU4MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhNWNiMWIzOWZiM2M4NzllMDI1YWI1M2M2NGJkYzEzYzk0NzU2MmY5NzcwMjNlYTNmMzgzMGQ1ZTYyZjVlYmUifQ"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/EmailServiceTest.java#L139-L194",
+          "version": "repo-lines-v1:sha256:5f1a90a977c2c73d06902cc0a684747ec1edaefd1a62d2d78c10120b8736d916:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZjA5ZWIwYzU3NDRmYjk3MzMxYjk4ZmYzZmJmMDVhNjAyYmEzZjdmNjdlNWRhNWJlOTA5NTAzM2Y2MjU4MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiOWZmODYwMGQ2YTc3NDQwZWJjZTQzMTFmN2M3Njk4MjAxYTcyYWVjY2U4OGIwYzExMWNjYjgwNDcwNjlmYTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkM2NiNjhkZmM4NjVjYWM4NmY3OTE5MjYwOTQzZGUzYTQ0YjlkZGM2MDkzMzBkMTk2NjVmM2RkZmUxNTczMTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_964a79707bfc42619d2b5a5533049506",
+      "statement": "EmailServiceTest does NOT use HtmlEmailFactory injection pattern; it tests EmailService thread pool behavior using real instances with unreachable ports to verify error handling.",
+      "evidence": [
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/EmailServiceTest.java#L69-L86",
+          "version": "repo-lines-v1:sha256:f9f58e8dcc088feb720495573c8fa98cabc616ca87b64a2593f21254f2204ad0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZjA5ZWIwYzU3NDRmYjk3MzMxYjk4ZmYzZmJmMDVhNjAyYmEzZjdmNjdlNWRhNWJlOTA5NTAzM2Y2MjU4MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2NTI4YTkyZTU3NTRiYjQyNjVlMTQwMDE5YzQ4MGRkMGI5MjA1ODA2OGJiNDNlNzViNDVhMTJkYzNiNmE1NTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bbaf7467c07c48deb374d1f7c37fa848",
+      "statement": "local-plain-mailpit integration scenario TCP-probes localhost:1025 with 500ms timeout and skips via Assumptions.assumeTrue if Mailpit is unreachable.",
+      "evidence": [
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/IntegrationScenariosIT.java#L45-L68",
+          "version": "repo-lines-v1:sha256:8b7eacb8dc3de9fec617570ae62cde7dba25726e88a9bfda39c2f2938fad4a25:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5NTBmMTQ1YjJjYmEzNjIwOThjZGY2Mjg2Zjc0OTU1NzM0MjFmZDQ0NDA1NmQ5ZWQ3OWFmODE3ZGNjMTdkYzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3ZDE2NmVmM2QyNTM0MmMwNzRjMTBkN2E3ZTNhNzI3MWJlNzU5ZjdlNDI0ZjAwNjdlM2ZjMjAwNTY0OWUzMjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiNTc5YTYzZjFjZWRmNzg2MzM3Y2Q4M2VlNzlhMjA4N2NmNDExYmQwODcwOGJmNWU4MWZlZWY3ZmYzMGI2NWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZlMWU0YTM1NjQ2NDgwNzJiNjQ2YWZjNmVlMjM3YjY5MTdmYzIwMzgyMDk4NjYxNTM4YmI5OGI5YWQxMTRjNTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7b23a14dc95345b0b42b9a80862d3c20",
+      "statement": "external-smtps-conditional scenario reads SMTP credentials from environment variables or smtp-integration.properties, uses port heuristic (587→STARTTLS, otherwise→SSL), and asserts correct SecurityMode.",
+      "evidence": [
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/IntegrationScenariosIT.java#L71-L146",
+          "version": "repo-lines-v1:sha256:47c6b401c714351dd8985974045a44206020e5dac93b4d277cfd758f9a966382:eyJzZWxlY3RlZExpbmVDb3VudCI6NzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4Y2VlZjhmMTVhZjQ2NTI5ZjFiNDgzMmRlNmU4ZDBhYTUwOTFkMzA3ZGU3OTZlNjlhZmYwODBkNWZjM2JhZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3ZDE2NmVmM2QyNTM0MmMwNzRjMTBkN2E3ZTNhNzI3MWJlNzU5ZjdlNDI0ZjAwNjdlM2ZjMjAwNTY0OWUzMjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwZTM5YTFiOGVjM2MzY2UxZDg5YjRiZmUyNDMyNjllMGNiMDBlNGEwN2U5MTM3OWY0MjNkOWI1M2U0ZDkxODYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzMGQ5M2JjYmI0ZGU2MDlhYmIzOWZkMGI2YmFmYjUwZjhjNTgyNGY5MTM5ODQ3YzBhOTZiNTlmMGQ4NDU4MzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_888cc64ee2c64cdc82505e9dc85a7cd0",
+      "statement": "CI workflow (.github/workflows/ci.yml) triggers on *.java or pom.xml pushes, uses JDK 17 Temurin, downloads ByteBuddy agent, and runs unit tests only.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/ci.yml",
+          "version": "repo-file-v1:sha256:ee3c662294eaa879e240de5789c34f24ed42822b906a1e3f1854e0522499b2f7"
+        }
+      ]
+    },
+    {
+      "id": "claim_42333382e2794d168b66f66a181888b9",
+      "statement": "HtmlEmailFactory interface is the primary testability seam for email sending logic, enabling dependency injection of mock HtmlEmail instances in SendEmailTask.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/HtmlEmailFactory.java",
+          "version": "repo-file-v1:sha256:339739da6dbcdcbba6f59ea3812033b0e1e93534553f6476e941ec12d7641481"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java#L59-L71",
+          "version": "repo-lines-v1:sha256:8587b2b5b53c7c1811991402ffddd862e9d19bdd7f97c91e9f06ab882ace7650:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0OWFhYjYxYWUwOWM4MTA4Zjk5MGQ2NjFhOTU1NmRjZDQ3Y2ZmZTY4MGZjMGExNjI1MmQ4ZTk1NzRhNzQzMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdmNDJlOWRmMjAxYjU2ZjQwZTU0Mjg4ODBmODI0NzE0YmEzMTY3MzkwZjEwMDQ0Y2VjNWYwOWNkN2I0MDAyYjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjYjU4ZTA1OWE3Nzk2MjBkZGI0ODUwZmZhNWIxNGFlNDRmYzEwNGE0NjZmZjk4OGEwMmQxODFkOTI5NTJmZDYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T09:33:22.001Z"
+  }
+}
