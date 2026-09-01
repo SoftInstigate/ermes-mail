@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:ee0b2ae266898f83f97cd50f55ae6158362dd06f52a5fed52d6a3b9f150af34f",
+  "claims": [
+    {
+      "id": "claim_691c2c0be05d41d49ae0243a703b5fa4",
+      "statement": "The quickstart page serves as the entry point for the ErmesMail wiki, routing readers to architecture, domain, source-map, testing, and operations pages.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L14-L21",
+          "version": "repo-lines-v1:sha256:6ebcc29f0e019a5b9a1d48b174e3237a8e7aa04cf5df1a97d4f35bdfe8078f72:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWIyZjUyZjBjOGU4ZGM4ODQ0OWUzYzdlY2RmOWM0MmEzNzU3YmM3YjViZGI1YzkxMGFjOTA1OTAwYWFhMmUwNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2E2NWQ1MTQ2ZWVhOTA5YmU0N2EyOTdiNTg4YjY2ZjcwMjA5ZGY5NWNmZmI4YmUwNmM5ZGQ2MzI4ODQ1M2MyMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2Q3Zjk2YjM5NmQzOTYzZGM5YjNlZDBjZDk3NDRlNWZjMmU1ZmZiZTg2NGY3NzBjNzlhMzQ0MmUyY2Y2YmE3NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjVlOThjZjllZDkwY2VmMGUxMmI5MTM4YzQxYzkxNTI0ZGE4MzBjOTJmNzRmODg2ZDUwZWZmNGNiMzI1YzA4YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ce0dedf10c3f4bd5b70ebd6c330bf385",
+      "statement": "The quickstart page provides build instructions using Maven that produce a shaded fat JAR at target/ermes-mail.jar.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L23-L29",
+          "version": "repo-lines-v1:sha256:7f47858aa7136f21b677a7ba5ada7337dfe1bdbd85949e4f92cc872a447ee61f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjRiMmNmODMxZjdiY2FkYTc0OWRjMDE0YTZjNzVjYjM3Y2FmOWU5ZmRkNGRlMmViNjg3ODk3MmYzZGVkYjI4NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWJlMzRiMDY0ZDhhOTM3NDcwY2VhMmUwMjU5ZDgzZDQ0Yzg0NTQ1NzUzNGUyMWU4ZDQ0ZWMzMjM1NjM1MmUxNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjFjZjRlYTZkZDhjZGE2ZjdiOWMzZDMzODg4N2VjNWU0OGVkYmRhMTlkMjAzNzMxNjIwZGU0ZDViNzlkMzhiMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWM1ODY3NTBhNjZjZmU1NTI1YmMzN2Q3MDU0OTU2MDU0YTFjNWZkM2M1ZGYyNWZlNDJlNThhYmIyM2JmMjViZSJ9"
+        },
+        {
+          "resource": "repo://pom.xml#L82-L100",
+          "version": "repo-lines-v1:sha256:986863f5355ad858f86a6fa46c22bc270e90c36a18a64fd89b1141fa063036c0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiNmI2MGFjNTcwMjliZGExM2M1ZDcxNTJmODI0NGI1ZThkNTdjYmI2Mjk0Y2UzODQwMmY3YzA4YzA3YjZjZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MmM2ZmI1MmU0NzM0MGIzMTA5ZWVkZDQyNDg2ZjYzNTE3NzQ0YzE3YzNkNzg1ZjU0ZmFiOGFjYjVkYzk3NzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2OThjMzY3ZTc2NjYwZDY0Y2I5NTgwNWZiOGRkZmE4OTAwYmExOTE4MTg2ZTVjMjU2OGM4Y2FkZTc1YjlmMGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwNDQyN2UwMGI0ZDc1YjQ0NmM3NmZkZGM4YTA0NGUxNzU5NzE2M2RmNjMyYWRjYjIyNWIzNzQ4MWZiYjIxYTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2ff0bee00fa34d1195b5d1c455a19f5c",
+      "statement": "The quickstart page documents CLI usage with key flags for SMTP configuration, security modes, email content, and recipients.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L31-L49",
+          "version": "repo-lines-v1:sha256:281749b2541166a63818f3499b2297674cff6adbb4797c0cf71dda548731577a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNlNDc4NTMyODVmYzE0ZjYwNGRjNzM0NjlhOGFmZTU1NDU2M2MwZGZlOGQ5MTgzNTQ4YjNhNTAwZmU3ZmU5NjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxOWE1ZWRmMTI5ODMwYTViMTk4MWMzOGZlMDViYjFkYTM2NWZhZmY4ZmVhZDI2YzI0YTc2MmNiMzI4OGE3NzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkZWI3OGRhYTMxY2M4N2ZkMjZjNDQyZDk3MDdjYTE0MzE5OGVmYmRiZjE5MWRlM2M1NjAzMzc4NWI2ZDA0YmIifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/Main.java#L46-L100",
+          "version": "repo-lines-v1:sha256:7b50f5bdd425235a19f01c424c2a7cb5a46dabe0255b248993e7fb358b1c47d7:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExNjllZmEwZjFhMmExNjBkNGIyZmM0YjBlNGUzOTQxNjhhYTQyNTU3N2Q1MDNkNjJhYzE5MzNlOTBkODhkZDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllZDBkY2EyZDNiMjAzY2IxMzVjZjA5Yzc5ODVlN2EwZTJhNjc3ZTdhNDZmM2RhZDViZWM4NTA4ZmNmOTA4ZWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5ZTNmN2MyM2I1MDVlNjgwNjRmOTJlOWQzOTk3MjQ0ODYxNjI3MWE2NjQzMThkODYwNGMyYWU3MDE4YWZjNWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhZDFmN2EyYzJlZmI1MGE4YzExMDI5NTljZGNiZTlmNGRhMzY0MjE2ZDA5NDJkMWRhYjg2YTYxYjY1ZGUwNmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0551969eeee9419d80ce3c1294d6e3ba",
+      "statement": "The quickstart page includes a Mailpit quick test example showing how to send a test email to a local SMTP mock server.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L50-L57",
+          "version": "repo-lines-v1:sha256:215ac1dc8f10017984bc081cecd3f6660b6e1bd7670bc8f713e76ec10635cd37:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWI5YmE2M2YyZWY3MzRkNGRhZjA3OTQ1ODIzYjllMTQ4YWUzMmJlNWIwZTZkMWQ5M2QxOTI0N2VjZjM1YjkzZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDdjMDZjNTYxZDVjMzI3MzQzNjg1MjY4YTQ2YjMzOTFmMzk5OGVlZTg5MGQyYmU1MWYwZDIxY2M0YTUzYWU2ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzEyZTQwNWFmMTlhODE1NWE0ZjBjZDg2OGRlZWY4NTI3ZDUwMTU4NTUzMDM4MDQ4YTJmZmMzMDk5OTU0OGM1YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDQ1ZWY3MDE5ZmFmMGE3Nzc5NmJiZGJiNWFhYzFlMjRmZGE0ZjllZmZmOWQwOTFiOGRjYzFjMzI0MmIwZmJlNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_18e51e57e48242559ed94c4d117a477a",
+      "statement": "The quickstart page provides a library usage example showing how to create SMTPConfig and EmailModel objects and send emails programmatically.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L61-L100",
+          "version": "repo-lines-v1:sha256:37fdb37fe207d72304e23336f48b6780d0ef26b557df5e9643b3a2bb2b75e0ae:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMTQxYTBkYmVmMzUzMWZlNDk3MTY5YTIwM2M4MTk4MzA4OWMxYTczZDZiMzVjNTQzZDczYzdjOTI1MGMyNjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjNGRjY2RhODI2NDM3ZTA2ODJlYzkyOTM0ZDU0OTYzMTI4OTU5Y2VhNTNlZDJiNDNjMTE5MTI5ODFmMDI3ZDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0NWVmNzAxOWZhZjBhNzc3OTZiYmRiYjVhYWMxZTI0ZmRhNGY5ZWZmZjlkMDkxYjhkY2MxYzMyNDJiMGZiZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY0OGIzYTE4MTVkNTM0ZGNhZGE2ZjAzYTc5MTZlZjAyZTUxODQzYjJiNWEzNmIxNzZlOTE5YmU3YTYwNWRhZmEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailModel.java",
+          "version": "repo-file-v1:sha256:32ba14acd30ed51a476ad6272f640880c652a2d68973d6dd89bd6cef61485da7"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java",
+          "version": "repo-file-v1:sha256:59bc31b96248ce7b42172b8051c50dfa70b3fd3fa473e05cd5469896993585cc"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SMTPConfig.java",
+          "version": "repo-file-v1:sha256:77a04386d5ea9bf8dc5afbea5d0d8f15e8dfe60db33f79577dc6d46b3486b015"
+        }
+      ]
+    },
+    {
+      "id": "claim_0965c24f889e497b98854f0b4727fb09",
+      "statement": "The quickstart page includes a task routing table that maps common change scenarios to wiki pages, source entry points, key symbols, focused tests, and validation commands.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/DefaultHtmlEmailFactory.java",
+          "version": "repo-file-v1:sha256:3c48eeaee023de38dcb265ffe52bfd9c1dc6005e55bf3197950d890c5da5dacd"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailModel.java",
+          "version": "repo-file-v1:sha256:32ba14acd30ed51a476ad6272f640880c652a2d68973d6dd89bd6cef61485da7"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java",
+          "version": "repo-file-v1:sha256:59bc31b96248ce7b42172b8051c50dfa70b3fd3fa473e05cd5469896993585cc"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/HtmlEmailFactory.java",
+          "version": "repo-file-v1:sha256:339739da6dbcdcbba6f59ea3812033b0e1e93534553f6476e941ec12d7641481"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/Main.java",
+          "version": "repo-file-v1:sha256:c6ba531e8ec94b53d8a6b37767567188b1acc38977d8ead9135af238d0fdcb6c"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SMTPConfig.java",
+          "version": "repo-file-v1:sha256:77a04386d5ea9bf8dc5afbea5d0d8f15e8dfe60db33f79577dc6d46b3486b015"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java",
+          "version": "repo-file-v1:sha256:f3dc95a7b3199d5ad1295274376d3c18c93009024bc3cd425d48a9df977d4295"
+        }
+      ]
+    },
+    {
+      "id": "claim_e61cd7adee324e619d3d5b74f7af3550",
+      "statement": "The task routing table includes HtmlEmailFactory/DefaultHtmlEmailFactory as a change area for the testability seam, with entry points at HtmlEmailFactory.java and DefaultHtmlEmailFactory.java.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/DefaultHtmlEmailFactory.java",
+          "version": "repo-file-v1:sha256:3c48eeaee023de38dcb265ffe52bfd9c1dc6005e55bf3197950d890c5da5dacd"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/HtmlEmailFactory.java",
+          "version": "repo-file-v1:sha256:339739da6dbcdcbba6f59ea3812033b0e1e93534553f6476e941ec12d7641481"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java#L59-L71",
+          "version": "repo-lines-v1:sha256:8587b2b5b53c7c1811991402ffddd862e9d19bdd7f97c91e9f06ab882ace7650:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0OWFhYjYxYWUwOWM4MTA4Zjk5MGQ2NjFhOTU1NmRjZDQ3Y2ZmZTY4MGZjMGExNjI1MmQ4ZTk1NzRhNzQzMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdmNDJlOWRmMjAxYjU2ZjQwZTU0Mjg4ODBmODI0NzE0YmEzMTY3MzkwZjEwMDQ0Y2VjNWYwOWNkN2I0MDAyYjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjYjU4ZTA1OWE3Nzk2MjBkZGI0ODUwZmZhNWIxNGFlNDRmYzEwNGE0NjZmZjk4OGEwMmQxODFkOTI5NTJmZDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0bc6e61ccbe54916a8eedfc7c8e16d66",
+      "statement": "The quickstart page provides a project structure quick reference listing all8 production classes and7 test classes in the codebase.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/DefaultHtmlEmailFactory.java",
+          "version": "repo-file-v1:sha256:3c48eeaee023de38dcb265ffe52bfd9c1dc6005e55bf3197950d890c5da5dacd"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailModel.java",
+          "version": "repo-file-v1:sha256:32ba14acd30ed51a476ad6272f640880c652a2d68973d6dd89bd6cef61485da7"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java",
+          "version": "repo-file-v1:sha256:59bc31b96248ce7b42172b8051c50dfa70b3fd3fa473e05cd5469896993585cc"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/HtmlEmailFactory.java",
+          "version": "repo-file-v1:sha256:339739da6dbcdcbba6f59ea3812033b0e1e93534553f6476e941ec12d7641481"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/Main.java",
+          "version": "repo-file-v1:sha256:c6ba531e8ec94b53d8a6b37767567188b1acc38977d8ead9135af238d0fdcb6c"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SMTPConfig.java",
+          "version": "repo-file-v1:sha256:77a04386d5ea9bf8dc5afbea5d0d8f15e8dfe60db33f79577dc6d46b3486b015"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java",
+          "version": "repo-file-v1:sha256:f3dc95a7b3199d5ad1295274376d3c18c93009024bc3cd425d48a9df977d4295"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/VersionProvider.java",
+          "version": "repo-file-v1:sha256:386789b658f92e1f175fc32efbb6454df50c12768bcd6595b9c02a8e9885b079"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/DefaultHtmlEmailFactoryTest.java",
+          "version": "repo-file-v1:sha256:a0e93d3c731d6d54f357130eb5642baa02a933c9274ff8b66226dfb5c0b94588"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/EmailModelTest.java",
+          "version": "repo-file-v1:sha256:c5272c8ed967e0ffec0096955ca36439543f2bfe099839a76de593eb7541baa2"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/EmailServiceTest.java",
+          "version": "repo-file-v1:sha256:bd28a5a8bebe50963545c925be4201f360aa32d535da12323709d7c36d3c753d"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/IntegrationScenariosIT.java",
+          "version": "repo-file-v1:sha256:5e6bf88a3f50317bfa79f0cb99b680c6a3befcd1ccfa8fd8271bee05fab3ec5d"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/MainCliTest.java",
+          "version": "repo-file-v1:sha256:d54b7a9951c174d9399beee26324091779b501f5997ebd43c31cc9b46f124ea8"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/SMTPConfigTest.java",
+          "version": "repo-file-v1:sha256:d6eb9b0f25a5e7dda5c86648115e25bee9b44f8f0bddca1f5e58f9f6e3679ede"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/SendEmailTaskTest.java",
+          "version": "repo-file-v1:sha256:ba6b42f91edf8bb4f50d39e174f429d1b1b9d7da0a4f42b90c20e04a6008c10f"
+        }
+      ]
+    },
+    {
+      "id": "claim_d7bd7f4395fc42cbad1d76b3992da0d4",
+      "statement": "The project structure lists8 production classes: Main.java, EmailService.java, EmailModel.java, SMTPConfig.java, SendEmailTask.java, HtmlEmailFactory.java, DefaultHtmlEmailFactory.java, and VersionProvider.java.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/DefaultHtmlEmailFactory.java",
+          "version": "repo-file-v1:sha256:3c48eeaee023de38dcb265ffe52bfd9c1dc6005e55bf3197950d890c5da5dacd"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailModel.java",
+          "version": "repo-file-v1:sha256:32ba14acd30ed51a476ad6272f640880c652a2d68973d6dd89bd6cef61485da7"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java",
+          "version": "repo-file-v1:sha256:59bc31b96248ce7b42172b8051c50dfa70b3fd3fa473e05cd5469896993585cc"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/HtmlEmailFactory.java",
+          "version": "repo-file-v1:sha256:339739da6dbcdcbba6f59ea3812033b0e1e93534553f6476e941ec12d7641481"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/Main.java",
+          "version": "repo-file-v1:sha256:c6ba531e8ec94b53d8a6b37767567188b1acc38977d8ead9135af238d0fdcb6c"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SMTPConfig.java",
+          "version": "repo-file-v1:sha256:77a04386d5ea9bf8dc5afbea5d0d8f15e8dfe60db33f79577dc6d46b3486b015"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java",
+          "version": "repo-file-v1:sha256:f3dc95a7b3199d5ad1295274376d3c18c93009024bc3cd425d48a9df977d4295"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/VersionProvider.java",
+          "version": "repo-file-v1:sha256:386789b658f92e1f175fc32efbb6454df50c12768bcd6595b9c02a8e9885b079"
+        }
+      ]
+    },
+    {
+      "id": "claim_9bc8fc8ecbb04a6bbd2e563b7f137419",
+      "statement": "The project structure lists7 test classes: SMTPConfigTest.java, SendEmailTaskTest.java, DefaultHtmlEmailFactoryTest.java, EmailModelTest.java, EmailServiceTest.java, MainCliTest.java, and IntegrationScenariosIT.java.",
+      "evidence": [
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/DefaultHtmlEmailFactoryTest.java",
+          "version": "repo-file-v1:sha256:a0e93d3c731d6d54f357130eb5642baa02a933c9274ff8b66226dfb5c0b94588"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/EmailModelTest.java",
+          "version": "repo-file-v1:sha256:c5272c8ed967e0ffec0096955ca36439543f2bfe099839a76de593eb7541baa2"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/EmailServiceTest.java",
+          "version": "repo-file-v1:sha256:bd28a5a8bebe50963545c925be4201f360aa32d535da12323709d7c36d3c753d"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/IntegrationScenariosIT.java",
+          "version": "repo-file-v1:sha256:5e6bf88a3f50317bfa79f0cb99b680c6a3befcd1ccfa8fd8271bee05fab3ec5d"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/MainCliTest.java",
+          "version": "repo-file-v1:sha256:d54b7a9951c174d9399beee26324091779b501f5997ebd43c31cc9b46f124ea8"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/SMTPConfigTest.java",
+          "version": "repo-file-v1:sha256:d6eb9b0f25a5e7dda5c86648115e25bee9b44f8f0bddca1f5e58f9f6e3679ede"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/SendEmailTaskTest.java",
+          "version": "repo-file-v1:sha256:ba6b42f91edf8bb4f50d39e174f429d1b1b9d7da0a4f42b90c20e04a6008c10f"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.3",
+    "at": "2026-09-01T09:33:22.001Z"
+  }
+}

@@ -3,6 +3,45 @@ type: Quickstart
 title: ErmesMail Quickstart
 description: Entry point for the ErmesMail code wiki. Covers what the project does, how to build and run it, and where to find detailed documentation.
 tags: [quickstart, java, email, smtp, maven]
+verified:
+  - by: openwiki/0.4.3
+    at: 2026-09-01T09:33:22.001Z
+sources:
+  - id: openwiki-source-2355f81d7cf522f8dbdaabd4
+    resource: repo://pom.xml
+  - id: openwiki-source-23775c3de52f3ab95a13cb8b
+    resource: repo://README.md
+  - id: openwiki-source-b7f22bb017d700f0525c051c
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/DefaultHtmlEmailFactory.java
+  - id: openwiki-source-6c8b662796c793acd21608be
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/EmailModel.java
+  - id: openwiki-source-9c9aef1c80259f898ff61a39
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java
+  - id: openwiki-source-02219b7976a0c9e88905c6dd
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/HtmlEmailFactory.java
+  - id: openwiki-source-379f409926d155ca61dee235
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/Main.java
+  - id: openwiki-source-1f12b1ce7d6a6ee6ae4915a4
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java
+  - id: openwiki-source-9c21b3f210c87fd6502ff018
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/SMTPConfig.java
+  - id: openwiki-source-f0b50adc5b590b7d1e252df2
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/VersionProvider.java
+  - id: openwiki-source-2d7799a9989ae46bf347e54a
+    resource: repo://src/test/java/com/softinstigate/ermes/mail/DefaultHtmlEmailFactoryTest.java
+  - id: openwiki-source-0ece14d1aa35917f64939a50
+    resource: repo://src/test/java/com/softinstigate/ermes/mail/EmailModelTest.java
+  - id: openwiki-source-c1b9dac4ccfdcefca48255c3
+    resource: repo://src/test/java/com/softinstigate/ermes/mail/EmailServiceTest.java
+  - id: openwiki-source-bf6289d8d59b7e696ef23f13
+    resource: repo://src/test/java/com/softinstigate/ermes/mail/IntegrationScenariosIT.java
+  - id: openwiki-source-b31fc1816013f42827333e96
+    resource: repo://src/test/java/com/softinstigate/ermes/mail/MainCliTest.java
+  - id: openwiki-source-3d6eb9099e3c0ec4cef2e98c
+    resource: repo://src/test/java/com/softinstigate/ermes/mail/SendEmailTaskTest.java
+  - id: openwiki-source-2e9051b2ab4dcf828e614778
+    resource: repo://src/test/java/com/softinstigate/ermes/mail/SMTPConfigTest.java
+generated: { by: "openwiki/0.4.3", at: "2026-09-01T09:33:22.001Z" }
 ---
 
 # ErmesMail Quickstart
@@ -83,6 +122,7 @@ try (EmailService emailService = new EmailService(smtpConfig)) {
 | Change email sending logic | [Domain](domain/concepts.md) | `SendEmailTask.call()` | `configureSenderAndContent()`, `processAttachments()` | `SendEmailTaskTest.java` | `mvn test` |
 | Thread pool / concurrency | [Architecture](architecture/overview.md), [Domain](domain/concepts.md) | `EmailService.java` | `send()`, `sendSynch()`, `shutdown()`, `getExecutor()` | `EmailServiceTest.java` | `mvn test` |
 | Recipient/Attachment model | [Domain](domain/concepts.md) | `EmailModel.java` | `Recipient` record, `Attachment` record | `EmailModelTest.java` | `mvn test` |
+| HtmlEmailFactory seam | [Architecture](architecture/overview.md), [Domain](domain/concepts.md) | `HtmlEmailFactory.java`, `DefaultHtmlEmailFactory.java` | `HtmlEmailFactory` interface, `DefaultHtmlEmailFactory` implementation | `SendEmailTaskTest.java`, `DefaultHtmlEmailFactoryTest.java` | `mvn test` |
 | Integration test scenario | [Testing](testing/guide.md) | `IntegrationScenariosIT.java` | `scenarios()`, `DynamicTest` | `IntegrationScenariosIT.java` | `mvn verify` |
 | CI pipeline | [Operations](operations/runbook.md) | `.github/workflows/ci.yml` | `BYTEBUDDY_VERSION`, `argLine` | — | push to branch |
 | Dependency update | [Operations](operations/runbook.md) | `pom.xml`, `update-dependencies.sh` | `bytebuddy.version` property | all tests | `mvn test` |
@@ -113,9 +153,3 @@ src/test/java/com/softinstigate/ermes/mail/
 setversion.sh                  — Release versioning script (semver + git tag)
 update-dependencies.sh         — Maven dependency update script
 ```
-
-## Backlog
-
-- **Recipient/Attachment model docs** — inner records `Recipient`, `Attachment` in `EmailModel` could use standalone documentation if the model grows more complex. Source: `EmailModel.java`.
-- **Commons Email integration details** — deeper documentation of HtmlEmail lifecycle, attachment handling, and the `MailcapCommandMap` workaround in `SendEmailTask`. Source: `SendEmailTask.java`.
-
