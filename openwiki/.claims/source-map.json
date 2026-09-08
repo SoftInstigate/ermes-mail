@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:34a82b272bca2095a52e813ab2776db475b5d9176b63fcd2d264d9d889a42b80",
+  "claims": [
+    {
+      "id": "claim_adf33f57f5d349ae8d34a007df09e1bf",
+      "statement": "All eight production classes reside in src/main/java/com/softinstigate/ermes/mail/: Main (CLI entry point), EmailService (public sending API), EmailModel (data model), SMTPConfig (server configuration), SendEmailTask (Callable SMTP sender), HtmlEmailFactory (DI interface), DefaultHtmlEmailFactory (production impl), VersionProvider (picocli version).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/DefaultHtmlEmailFactory.java",
+          "version": "repo-file-v1:sha256:3c48eeaee023de38dcb265ffe52bfd9c1dc6005e55bf3197950d890c5da5dacd"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailModel.java",
+          "version": "repo-file-v1:sha256:32ba14acd30ed51a476ad6272f640880c652a2d68973d6dd89bd6cef61485da7"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java",
+          "version": "repo-file-v1:sha256:59bc31b96248ce7b42172b8051c50dfa70b3fd3fa473e05cd5469896993585cc"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/HtmlEmailFactory.java",
+          "version": "repo-file-v1:sha256:339739da6dbcdcbba6f59ea3812033b0e1e93534553f6476e941ec12d7641481"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/Main.java",
+          "version": "repo-file-v1:sha256:c6ba531e8ec94b53d8a6b37767567188b1acc38977d8ead9135af238d0fdcb6c"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SMTPConfig.java",
+          "version": "repo-file-v1:sha256:77a04386d5ea9bf8dc5afbea5d0d8f15e8dfe60db33f79577dc6d46b3486b015"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java",
+          "version": "repo-file-v1:sha256:f3dc95a7b3199d5ad1295274376d3c18c93009024bc3cd425d48a9df977d4295"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/VersionProvider.java",
+          "version": "repo-file-v1:sha256:386789b658f92e1f175fc32efbb6454df50c12768bcd6595b9c02a8e9885b079"
+        }
+      ]
+    },
+    {
+      "id": "claim_af7295c761714f0ebeaabede59623301",
+      "statement": "All seven test classes reside in src/test/java/com/softinstigate/ermes/mail/: SMTPConfigTest, SendEmailTaskTest, DefaultHtmlEmailFactoryTest, EmailModelTest, EmailServiceTest, MainCliTest, and IntegrationScenariosIT.",
+      "evidence": [
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/DefaultHtmlEmailFactoryTest.java",
+          "version": "repo-file-v1:sha256:a0e93d3c731d6d54f357130eb5642baa02a933c9274ff8b66226dfb5c0b94588"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/EmailModelTest.java",
+          "version": "repo-file-v1:sha256:c5272c8ed967e0ffec0096955ca36439543f2bfe099839a76de593eb7541baa2"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/EmailServiceTest.java",
+          "version": "repo-file-v1:sha256:bd28a5a8bebe50963545c925be4201f360aa32d535da12323709d7c36d3c753d"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/IntegrationScenariosIT.java",
+          "version": "repo-file-v1:sha256:5e6bf88a3f50317bfa79f0cb99b680c6a3befcd1ccfa8fd8271bee05fab3ec5d"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/MainCliTest.java",
+          "version": "repo-file-v1:sha256:d54b7a9951c174d9399beee26324091779b501f5997ebd43c31cc9b46f124ea8"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/SMTPConfigTest.java",
+          "version": "repo-file-v1:sha256:d6eb9b0f25a5e7dda5c86648115e25bee9b44f8f0bddca1f5e58f9f6e3679ede"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/SendEmailTaskTest.java",
+          "version": "repo-file-v1:sha256:ba6b42f91edf8bb4f50d39e174f429d1b1b9d7da0a4f42b90c20e04a6008c10f"
+        }
+      ]
+    },
+    {
+      "id": "claim_2793f936df6345079e334255054eeb4c",
+      "statement": "Main.java is the CLI entry point using picocli @Command/Callable<Integer>, parsing flags for SMTP connection, security mode, sender, recipients, subject, and body; it validates mutual exclusivity of --sslon and --starttls and uses EmailService with pool size 1 for effectively synchronous execution.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/Main.java#L157-L221",
+          "version": "repo-lines-v1:sha256:58d22937b15655f8fded9156ae1c8673cbee7751b67bba7c8a425e9e694c6491:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxMmRlMDljZjY4ODBhZWFkZThiYjE2MWMwYmZlYzRhYjNkZDI5ZmFiYjdhNGY0NmU3NmE3MWU4NWQ3YzQ5ZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhY2RhYzNkM2ZmZWU2ZTk0ZjNlOTcyODQyMTc1ZTgwYjY1YzQxMTM0NzRjMDc2NTU5ZDNlNTQ4ZDJlNGNjMTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxY2M4ZWVlMDk5MGExYTExZWYzMzYzYTA1MDBlN2NmYWE0ODBkODhhZTVkYmI4ZTczMWZkZjE3NDg2YWExNmYifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/Main.java#L36-L42",
+          "version": "repo-lines-v1:sha256:827eb704a29a91a61dafda426abde083d100b751d52837f51dc1db0c9408e4fc:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjI0Y2U3MDNlNjg3MWJkOTEyMTljYmM3YzEyMWQ0OTUxZmMyMjI1ZTkxNjdiYjVmY2E4MTM1ODRhZDY4MWZiZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmRlYmZmYzRhMjI2YTNhMWEwMTNmMGVmNDMxYTdmMzY2Zjk4NTRjN2FkZGRkMjVhMDA3YmZlZTVmMDJmZTNhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTU2MWIyZTlmNjQyMzdlZTk3YzA4MzI1ZmFiODRjOTQ0YWY0OThkYjFjMjcwN2ZlYzBlNmU1NDhjNTk3NGYyZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjllM2Y3YzIzYjUwNWU2ODA2NGY5MmU5ZDM5OTcyNDQ4NjE2MjcxYTY2NDMxOGQ4NjA0YzJhZTcwMThhZmM1ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b26c1b63caf84fe6b001757cee00e80a",
+      "statement": "EmailService manages a lazily-created ExecutorService for async email sending; threadPoolSize=0 disables the pool for synchronous-only use (e.g., virtual threads); it implements AutoCloseable and supports configurable shutdown timeouts.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java#L125-L138",
+          "version": "repo-lines-v1:sha256:29ee0837b63556cb508841fff98f4b6a5e3e6e8285a6e7a3941f138ad1c9615b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhMThmZWMyYmZmNjk4NTY5NDZlOGI0MTk2ZjUyNGUzYWM4MzNjMjFlMjVjZWU2ZGYyOWVmZDhlMGRhODdhMGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwZmMzODg5MDkwNmYzNTlkNmJkODMyZTFmNjBhNGEwYjgzMjM0ZTI5NjEyM2E0OWY2ZjQ1YzkxOTU0YTAzNDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdkZjhiNzcwYTMzMThiYTI0OWEzMTVkZWQyMzgwZDc5YjcyZjJlODQ2Njk5N2Y2MWQ2YTBkODVhMWE0ZmY1N2MifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java#L155-L200",
+          "version": "repo-lines-v1:sha256:146a419f9f73875a7a6c64d4a67284e986e61889a41705694a5c3e24e5ffeb4d:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5Y2JiYzY1NDY5ZGIxY2EyODQyZWZkOTdkZjdlZTJjZTZjYzE1NzE0ODJkMDFhMThiNzkwYTEwYzdjNTEwZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwNzg3ZWI3OGFjYjAxZTBiYWQ1ZDFjMTA0OTlkNTg0ODA1YjBmMTdjZTNhZDY1NGQ1NjhlZmRlMmFiMWI5NTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI1N2RlMmY5MTQ5MjY4MGU4ZWFiNWFmOTAxNzA5ZGVmNmNmZjVkMDczYzM1MzQ4NmZjYTM4YWVjZmNmOTg2ZGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUxY2ViNzRiYzA1Nzg0ZmI3ZDI4ZjU1NzU2NWQyNGU3N2Q4ZDBkMDBiZWZhNDZlNWQ0YTk5YzA1ZTEwMzhhYTkifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java#L58-L100",
+          "version": "repo-lines-v1:sha256:4ba928dde8495bf44a8641f87e623495704ce757e26ae079905b4ae769bae5c4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhMTBmMjRlYzIwZjg2NDQwNDBiMThjNzkxNmZiNjFmZDY1NGUwNzk5ZjUwYjY3OTU0MTljZWFlMzEwZmIzOWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0ZDY2OTk5ZTM4YTNiOGU0NDc2MWQ2ZjQ2OGNiYTZjNDcxNTQ0Yjk0MTZmZDU1MTM0NDU1ZjA1MzgyYWI5NWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA3NzFkOWM2YjRlODQwNjBiYTgxODUzYWNiMzQzNGQzZjliYTg4YTBiYzEzZjA1ZmM5ZmU4NWM5YTAzZDNiMDkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6cd0e8d65a544aa48627c9dc17e7b68a",
+      "statement": "SendEmailTask.call() configures HtmlEmail via private helper methods (configureCharsetAndServer, configureSecurity, configureSenderAndContent, processAttachments, addRecipients) and includes a MailcapCommandMap workaround using AtomicBoolean for idempotent initialization.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java#L137-L200",
+          "version": "repo-lines-v1:sha256:00e1e656fcd376f9578affc9d6dfe200ab5bab8a9186ce5e28cdf6dfcebdd528:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiZDU3YjQzN2Y0ZGI4MWYzNzU2NmQ2NjY5ZDU5MDgzZTczNjgzMGM0YjAwNzUzNmY5ZjIyYzk3MTI1MWVjODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzYmU4N2ViZDM5MmNjZTE2ZjYxYTQxMmNkYjc0MjdlZjc5MjJlNWE0MzdjNjRkNDJmYjRlMTQ4NzlmMjU2MWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlMjQyNmM3OGQ1ODJiMzliNDU1YmY5YjRmNWM3M2EwZGFhYmYyMmExY2FiZDY5MmVjM2ZiNmY2NTM0M2Q3MGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4ZmYxNjU5YzMyODc4NDg4NDM2ZmRkNzdhMWZmYjFiNWZlOGZjNzQ3ZDE0NjY3Y2RjOTdjNzllOTViMDA2ZWYifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java#L90-L135",
+          "version": "repo-lines-v1:sha256:3ba64f44bc9130ea4c5e16ff92205c58605b45debaac88a358c36e2353cae68b:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkYzJiMzExYWJlODc1NzJlOGE3Y2MwZDk5NmE2NTg0NDA3NmU1MjMyZDIxYjdhODU0NzVmOWI0MDU1Yjc0OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0OTdkZjI5ZTZhZGVmYWIwNWU5MjMxNjZmYWNmMjY1NWEzOTE1NGE4ZTI5MzE3Mzc2M2ZiMGE2MzM3NTc5ZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1NTk3MDk5ODcxMDk1MmI0YjlhMzZhOWJhMjhlMWVmYTU5M2MwMzI0MTVjNjJjMjZjNGMzNzc5ZjgxNmU5YzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f25ceb8a919d46f78a7a4bb405fa5184",
+      "statement": "The CI workflow (.github/workflows/ci.yml) runs unit tests on push to branches, path-filtered to **/*.java and pom.xml (tags ignored), downloads ByteBuddy agent, and runs mvn test with -javaagent on JDK 17 Temurin.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/ci.yml",
+          "version": "repo-file-v1:sha256:ee3c662294eaa879e240de5789c34f24ed42822b906a1e3f1854e0522499b2f7"
+        }
+      ]
+    },
+    {
+      "id": "claim_d6ac3a2012cc4c49a34c0d4dbb5f3ed6",
+      "statement": "The maven-publish workflow (.github/workflows/maven-publish.yml) publishes to GitHub Packages on tag push; it runs mvn package (including tests) before mvn deploy -DskipITs using GITHUB_TOKEN.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/maven-publish.yml",
+          "version": "repo-file-v1:sha256:6bb6fc9644c229752e785483f70c1ef99ffd62c45e76b26c9cf4868c564b2cef"
+        }
+      ]
+    },
+    {
+      "id": "claim_2f62370be4a64f82b91b190dd1f99fa1",
+      "statement": "setversion.sh validates semver, detects downgrades, checks for existing tags, runs mvn versions:set, and for release versions creates a git tag requiring branch <major>.x; for SNAPSHOT versions it commits with [skip ci]; it supports --dry-run and --force.",
+      "evidence": [
+        {
+          "resource": "repo://setversion.sh",
+          "version": "repo-file-v1:sha256:29433e66e0b4bb8c8bfa680d34ce5d1b1daad7931e7a238e026046083a6980b6"
+        }
+      ]
+    },
+    {
+      "id": "claim_48fec0f6cc1b491a99af8b8a6cb18581",
+      "statement": "update-dependencies.sh runs two Maven goals sequentially (versions:use-latest-releases then versions:update-properties), takes an optional boolean argument for allowMinorUpdates, and uses mvnw if present.",
+      "evidence": [
+        {
+          "resource": "repo://update-dependencies.sh",
+          "version": "repo-file-v1:sha256:2bc44be0dddeefff44fb23e62231f9d90dbc52c285221e23778d5ff7677095ac"
+        }
+      ]
+    },
+    {
+      "id": "claim_ab5eda9c8c974d909f35cf4f55f49e81",
+      "statement": "IntegrationScenariosIT uses @TestFactory with DynamicTest for two conditional scenarios: local plain SMTP against Mailpit on localhost:1025 (auto-skipped via socket check) and external SMTPS with credentials from env vars or properties files (auto-detects STARTTLS vs implicit SSL).",
+      "evidence": [
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/IntegrationScenariosIT.java",
+          "version": "repo-file-v1:sha256:5e6bf88a3f50317bfa79f0cb99b680c6a3befcd1ccfa8fd8271bee05fab3ec5d"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.0",
+    "at": "2026-09-08T09:00:18.765Z"
+  }
+}

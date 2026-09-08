@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6b58e4c440375e6ce276a7e5ec74e6a7cca773d36eb0bd3361092000c443f22c",
+  "claims": [
+    {
+      "id": "claim_49a01c0ea27b4e299895d25703e6b377",
+      "statement": "ErmesMail follows a layered architecture where Main CLI delegates to EmailService, which manages async email delivery via a thread pool using SendEmailTask and Apache Commons Email HtmlEmail.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java#L58-L100",
+          "version": "repo-lines-v1:sha256:4ba928dde8495bf44a8641f87e623495704ce757e26ae079905b4ae769bae5c4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhMTBmMjRlYzIwZjg2NDQwNDBiMThjNzkxNmZiNjFmZDY1NGUwNzk5ZjUwYjY3OTU0MTljZWFlMzEwZmIzOWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0ZDY2OTk5ZTM4YTNiOGU0NDc2MWQ2ZjQ2OGNiYTZjNDcxNTQ0Yjk0MTZmZDU1MTM0NDU1ZjA1MzgyYWI5NWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA3NzFkOWM2YjRlODQwNjBiYTgxODUzYWNiMzQzNGQzZjliYTg4YTBiYzEzZjA1ZmM5ZmU4NWM5YTAzZDNiMDkifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/Main.java#L156-L221",
+          "version": "repo-lines-v1:sha256:59fd25af3ea719af84eb38873a04fcc648eeb17c5c7e8a35604e59585109ee88:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkYzJiMzExYWJlODc1NzJlOGE3Y2MwZDk5NmE2NTg0NDA3NmU1MjMyZDIxYjdhODU0NzVmOWI0MDU1Yjc0OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmM2ZkOWZhYWFhOTZkMzYyMWMzOTIzOTUxZjM4MWMwMGJmOWI3MTg3MmQyOGI3ZDUwZDkxYWMwZTFkODYxOTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxY2M4ZWVlMDk5MGExYTExZWYzMzYzYTA1MDBlN2NmYWE0ODBkODhhZTVkYmI4ZTczMWZkZjE3NDg2YWExNmYifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java#L42-L135",
+          "version": "repo-lines-v1:sha256:da1eba0602279fc04a982c64e3f711a02e3fefa26ec8afb671c7a1a3158ad677:eyJzZWxlY3RlZExpbmVDb3VudCI6OTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2NTkwOGQ4NzhmM2UxZmE4MDZmYzIxOTgzMGY3Y2JjNDFiNDg4YjdiNzMwOTcxODNkZGUyYjIyODRiYjY4NjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxYmY2ZTdiNDQxZTZiYTUzYzcyYWViNzNlYmQ0ZjM1OTYzNjM5MDI0OWRlNzIwYjQ2M2UyNTcxZWRkNDMyNjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1NTk3MDk5ODcxMDk1MmI0YjlhMzZhOWJhMjhlMWVmYTU5M2MwMzI0MTVjNjJjMjZjNGMzNzc5ZjgxNmU5YzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e8c8dc333b904158833fef3f7fbc8e69",
+      "statement": "EmailService uses lazy thread pool initialization (thread-safe via synchronized accessor) with configurable pool size; poolSize=0 creates no pool and send() executes synchronously returning an already-completed Future.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java#L108-L113",
+          "version": "repo-lines-v1:sha256:55133119890c8a4f24f2973992a8f948047d16644244129e6aea7c45bdedec13:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGUxOTI3MmYwNjQzMTA4YTExNGZmN2I3Y2FiMTAzZTgwM2YwNTg1NTU3NjgyYTAxMjBiN2U2YWM5ODRmN2EyNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzdiYTJiNGVlZTIzNzczMzM1MTIyZGMwOTZmMWNjYzU3MzQyYzQxMjUwOWFjOGRjNDlmMDQ0ZGJmOTA0YmYxZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjk0ZTBlN2EwZTY0OTZiMzQ0MjFjYTY3OTE5OWM2OGVkNDUxNzc3NzM4MWUxOGEwOTdhOTQ4ZTlkYzJlMTNkNSJ9"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java#L125-L138",
+          "version": "repo-lines-v1:sha256:29ee0837b63556cb508841fff98f4b6a5e3e6e8285a6e7a3941f138ad1c9615b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhMThmZWMyYmZmNjk4NTY5NDZlOGI0MTk2ZjUyNGUzYWM4MzNjMjFlMjVjZWU2ZGYyOWVmZDhlMGRhODdhMGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwZmMzODg5MDkwNmYzNTlkNmJkODMyZTFmNjBhNGEwYjgzMjM0ZTI5NjEyM2E0OWY2ZjQ1YzkxOTU0YTAzNDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdkZjhiNzcwYTMzMThiYTI0OWEzMTVkZWQyMzgwZDc5YjcyZjJlODQ2Njk5N2Y2MWQ2YTBkODVhMWE0ZmY1N2MifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java#L91-L100",
+          "version": "repo-lines-v1:sha256:e624663f1f85e17995820c7e6c94f7e9802575c2a2706af7b306c548a63d8d11:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1ZjIzYjY1M2YzNTkyM2UxNDNjYTZmMjI1NmI1YjRlMzUxOTQ1MzA4ZGVkYzBkMjZhMjE0MTAwMmMxZWZjMTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQxZDA4ODlhMTBkMTYzOWE1N2JmYmNlZDYyYjA4ODliZTcwMGZiNWE4MDg4Yzk3MmQ1ZjQxNjVmNjNmMzI4NGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA3NzFkOWM2YjRlODQwNjBiYTgxODUzYWNiMzQzNGQzZjliYTg4YTBiYzEzZjA1ZmM5ZmU4NWM5YTAzZDNiMDkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fe88d9782379472891198b72d9251387",
+      "statement": "EmailService implements AutoCloseable for automatic thread pool shutdown in try-with-resources blocks; shutdown() calls executor.shutdown() with 10-second awaitTermination timeout followed by shutdownNow() if needed.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java#L163-L183",
+          "version": "repo-lines-v1:sha256:a832e2a7b9b383b457ce7048b6b0a7a55c4a834edca09a9c7c9d4a04da887fbc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkMTI4MmY4MjZlNTgyODhmYTljZjdjN2IxNzBhYzAwOGQyYTE1YjY3MDE2YTczZWNlZGZlNGZhNjM5OTA1N2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVkOWRhYTY3ZWQ4OTkzNzk5ZTI4MjczYTg4ZTlkY2FmODQ4N2UwNzA0YzdkMzNkZTBkNDc1NjJjNDcwNWFiNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2NmE5OGZhYzM3NGZjMWQzMTQ2MjkxMDEzNWNkNGFjYzVlODRiZTQyZTFkOTNjNTU5NGFiOGVkNWU0MjAwOGMifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java#L198-L201",
+          "version": "repo-lines-v1:sha256:f11889df146518389cd699d1b587fb8b4f29b09b5b2b2a902634bce4fc6be33b:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWRjMmIzMTFhYmU4NzU3MmU4YTdjYzBkOTk2YTY1ODQ0MDc2ZTUyMzJkMjFiN2E4NTQ3NWY5YjQwNTViNzQ5MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDMzNTgzMGZiYzMwNDM4ZDQyNzg4NjZjNDJkNzg2NmUyZDRiNDg1YTE3YmY1NDhmMWRjZTRjMzJlMjFiMGQ3MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODA0Zjg5ZmMwZWM5OGM5ODI0MTgzZTc5NWQzZWRkMTllOTMwZjdiYzQ3MWY5MDEyYWEzZDUwM2JlMmY4OTc0YiJ9"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java#L58-L58",
+          "version": "repo-lines-v1:sha256:fa10f24ec20f8644040b18c7916fb61fd654e0799f50b6795419ceae310fb39d:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmExMGYyNGVjMjBmODY0NDA0MGIxOGM3OTE2ZmI2MWZkNjU0ZTA3OTlmNTBiNjc5NTQxOWNlYWUzMTBmYjM5ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmExMGYyNGVjMjBmODY0NDA0MGIxOGM3OTE2ZmI2MWZkNjU0ZTA3OTlmNTBiNjc5NTQxOWNlYWUzMTBmYjM5ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDRkNjY5OTllMzhhM2I4ZTQ0NzYxZDZmNDY4Y2JhNmM0NzE1NDRiOTQxNmZkNTUxMzQ0NTVmMDUzODJhYjk1ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWQ2NDE1NWZjNzg4NThjNDM4ZTM5ODg4OTE4ZDdmMzJmZmVhMjUyNjZkY2JhOTJjMzgzZGIyZTRlNWVhNjQ1YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bdef645adc314c948053d507f700853b",
+      "statement": "SMTPConfig.SecurityMode enum defines four transport security modes: PLAIN, SSL, STARTTLS_OPTIONAL, and STARTTLS_REQUIRED, each with corresponding static factory methods.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SMTPConfig.java#L124-L175",
+          "version": "repo-lines-v1:sha256:346b467b62601306cfaa7f4d10d20ab85006c2589918b4b778d1cd790f2fd72a:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwZTFhYjIyYmQ0NjU2NjMxM2M5ZDdiMGNkYmI2NWUzZDdjNzlmNzQ5MzE2NDZmMWU3MTI4YWM1ZDc4NzdjYjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2YzQ5YjYwN2ZjOGNjZWFlMWIyODRhM2M1OWNhNmNiY2Y1MzdiZjJjZTI2ZTg1NGMyZmVkNmMxMWQ5MThmMGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzYzhlZjczOGFjNGUyNzNlMWU2MjY2YjMxYTdkMTg0NDRiMWUxOTA5MjQyNjUxOGE1OTM4MGYwOTg3OGJkNWYifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SMTPConfig.java#L82-L91",
+          "version": "repo-lines-v1:sha256:b9448e962c5e0049fc2ac34bebf3cc60673b8c67214523904c2936b1ce793170:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmYTA4ZTUwMWQzNmU4NWU2OWQzMzdkNDQ0OTIzZTEyYzAxNGVkYWU0ZWMxZTE3Y2U0Y2Y3MzI3OTFhNTNiMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY4NmJjNjYxYWZlMDhmMTVmNWUwODQ3YmQyNDUxN2M2YjAxZTliNDY1NzNhNWU0NTRiNDk1OWRjNDNjMDNmMzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4NjFiYTk4YTkzZDc2ODczOGY1NDgxMGJhNjY3MGMzNjI5YTc1ZDNiMWY5NDZmNDk1MjRkYzU2ZDAzZGQxNWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7fc8e69b4d454e4a91db2ca854bfee6b",
+      "statement": "HtmlEmailFactory interface abstracts HtmlEmail creation for testability; production uses DefaultHtmlEmailFactory while tests inject Mockito mocks to verify security configuration without live SMTP.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/DefaultHtmlEmailFactory.java#L28-L33",
+          "version": "repo-lines-v1:sha256:b4d8f1eebaa509b1b8f3099d515da8958235df406da588352945a1455356abd4:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDhkYjUxYjEwYjM1ZTM2NTNiOTdhMDJjYjczNDgxZmM4NDNlZjMxNjg4MmU2YzM5YzNlMDIyZTQ0YmJlMmQwZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGIzNzY2YzNiNTEwYWM5NWQ4MGUxNTRkYmZhNDMxODNmYTI0ZDVhYzBhMGJlYmRjNzJhM2Y2NTI4OWUxMDY4ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODA0Zjg5ZmMwZWM5OGM5ODI0MTgzZTc5NWQzZWRkMTllOTMwZjdiYzQ3MWY5MDEyYWEzZDUwM2JlMmY4OTc0YiJ9"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/HtmlEmailFactory.java#L28-L34",
+          "version": "repo-lines-v1:sha256:85a2620c73e057bcee46b62169b639babb5609bb63f3e8d2561148dab2c1fb4d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGUzZmE4MzBmMGZiMmE5NWJjNzU2ZjYxMDk3YjU1Y2E4NWRlMDQyMjFkZTdmOGEzYWI3ZjA1ODdhZjU2NmI4OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjVmOGI1MDFkZmY5NzIwOThhM2IzNjUwMTZlYTk0ZTcyZGIyODcwMzRlMzJjN2Y5MTcxZGE5ZTg2NTk0YjM1YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWY2NDYyNzkyNjQ5OGY5MjU3MjlmMzQyZDcwNmI2YjRkZGY2YjA1ZDgyY2M4NTM5ZmRiZThlM2Y2MDM5OTIxMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        },
+        {
+          "resource": "repo://src/test/java/com/softinstigate/ermes/mail/SendEmailTaskTest.java#L34-L53",
+          "version": "repo-lines-v1:sha256:edbfafd9dffd79277109d696f9dc249eeea739cd34c3dc8bdd4760dbe6ca6a7c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3OGY3YmRhOWEwZTExNmYwNTI3YmRjM2VlYmI3YzY5OGVkNjE0NDY3ZjcwMDA0ODJlYTkyY2E2M2I2MThhY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhMjQ4MmE1NzkxZDZlOGUwN2IzOTI2MGJhY2ZjODBlMWI5NjY5NjdhNGFkODc3MmM2OGE0OTFlZDc2ZjNkNGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1NmI2MjAyMzcwZDUxYmQzOTg1ZWRlMWFjNzc3ZDMwY2IyZmQ2N2I0OTVkOWI1NjMxYWZjMWJkZjA5Y2Q4YzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5b4a8edda8324b829d5e50de2d62a0cd",
+      "statement": "SMTPConfig.toString() redacts username and EmailModel.toString() redacts message body; both have toSecureString() methods that omit credentials and content, reporting only metadata for safe logging.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/EmailModel.java#L242-L273",
+          "version": "repo-lines-v1:sha256:186e1300342d49d9c52787154cd08d4811b3fc07bd7efd2998f1a757a0defae0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkYzJiMzExYWJlODc1NzJlOGE3Y2MwZDk5NmE2NTg0NDA3NmU1MjMyZDIxYjdhODU0NzVmOWI0MDU1Yjc0OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SMTPConfig.java#L177-L202",
+          "version": "repo-lines-v1:sha256:3e2dc8290570013c80303c47bc9f5f67690afe4d495c2da2a94c6a46002bb81c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkYzJiMzExYWJlODc1NzJlOGE3Y2MwZDk5NmE2NTg0NDA3NmU1MjMyZDIxYjdhODU0NzVmOWI0MDU1Yjc0OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4NGUxMTJkNGQ5ZGFkMjFjNTBhNjI1YTQ0YTdjNWJiNmE0MGZiNmRiNWZmMmNlOGU3MTc0Y2MxMzlkMmE3ZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java#L92-L94",
+          "version": "repo-lines-v1:sha256:b02db3d3432c3099c1b0a968d34e2b6e6bcebdcdb245517be794f30a79f225a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWRkZWQ0ZGNhMzA1N2RjN2RiZGEyNzU3MTcyMzQ1N2RmODVhNjE0MzQwMjgwNDFjZDdkZGVkMmVjYmFmYWI1NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMDQ0OTE0Njk3MjJlODM2M2E5NGU0MDQ0NTM4ZTAxM2EyYTIxN2UzNmIxZTU2OGJhNjBhY2I3YjRjOGYyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWQyZmNiYmQ2YjdmZWQxYjA5MmI0YWU0MTI1OWIyNWI4OWFiYjBhZWUxNzNiYmEzZmRkMzhhNTc5ZjM3ZGMyNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjhmNzZhNzQ0OWRkY2UwNzIyZTIzMDQ1MGZlZDc5OGIyZmRjZGE0MTgzODFiMmIyMDJkYWRlYWEwOTljNjc3MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_529f9ab998c7472f92a66b515aeea07d",
+      "statement": "SMTPConfig includes configurable socket timeouts (connectionTimeout default 10s, socketTimeout default 60s) applied via HtmlEmail.setSocketConnectionTimeout() and HtmlEmail.setSocketTimeout().",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SMTPConfig.java#L46-L50",
+          "version": "repo-lines-v1:sha256:3db8cf3b50131b5e2f5623e0a8bba4861350b6530359ab707c7e27d53eaa3493:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDI0NzY4MTE3MWQ3ZTAyYWQwNTM0NGRkNzgzYzdkNjgyM2U0OTdhMDE1ZWYxNGM0NjU2YjNiMjkyMTkxYmY3NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTY3MmRiM2VlYzk1NjI1Y2RiNTUwMTdhOTQ0NDI3ZWM5MDUxNTFlMWU5ZjJkNTdjNGY5OWRjM2IyNWQyMzY4NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWI5NGE2MGRmMjA5YzY5MGE2OWU2NTc1M2Y5MTJhZGY5YzQwNWEyZDhhMGI2NTlhYjNhOWUzNjIwNGNiMGNiZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDlhNWE2NjJkNjk5ZDdmMzFjYmNiNzdmZTAyNTIyOGYzMzRhMWJmMTcxNzZiMTI2MTAyN2U0ZTU5YTEzMDEzZCJ9"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java#L138-L145",
+          "version": "repo-lines-v1:sha256:705ea9b2c1d0247c5cf59eb9766d6f09774956fc6d3eafe25418e35459fcfb90:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDlhOWZiMmE0ZjdhYzM2OTcwNGJmYmEwMmNiZGM0MzFmOGNjODgxYmJmMzkxYzJjZWRmYmRhY2IyMjk2NjU2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODM2NDE3N2UyMTU1NmNkOTRjOWQyYzA5NDU2ZDAxYTJkMzRlYmExNDdhNjc1MDM4ODg4MjU3YzBhZjI4ZmIwOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWRlODkzOTg4YmY2MDAxOWQ2NGI4OThhMGNhOTkwOWE1YmQxMTdhODhhOWQ2ZDVjZGM1NTgyZjY2YzIyYTI4MCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.0",
+    "at": "2026-09-08T09:00:18.765Z"
+  }
+}
