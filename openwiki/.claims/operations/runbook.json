@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8f6b55f4af3a643f83fada4cd962ca7d8e806b821b042a9fb096bbd56633fa83",
+  "claims": [
+    {
+      "id": "claim_1cf65995f27e4587b0dec5bafad70a67",
+      "statement": "The standard Maven build (`mvn clean package`) produces both a versioned JAR (`target/ermes-mail-<version>.jar`) and a shaded fat JAR (`target/ermes-mail.jar`) with all dependencies bundled for CLI usage and distribution.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L162-L192",
+          "version": "repo-lines-v1:sha256:b8e83f45e60b3bb731a33debc3a8cbfebfa311d454b036123fa719d5af11688d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjOThjZjRmNzA4ODM3Zjk0OTAyYjZkYjU2M2Y5ZTRhN2ZhZmFjMzczYjZiOTNiYWM1ZjU4NDk1Yzg5MGMzMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MWQyNjZlNzI0ZTNhYTc5ZDY4NWRhYmJmZmNhNWFmNzRiMzQ3OWM0ZGNjMTU4Y2M0N2Q4Y2JhNTk0OGJmYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdiOWJiNTZjYmZkZmQxNDM2MTI4NDA0NzllYTEyYzUxMGNkYjQ1MDI0MDVjN2ZjOWY0NjBiMzY2M2E4NTJjYzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY1ZjE1ZjBmNzMxNzI0NWU3MjcwMzZiNzhmZjg4MWRhMTc1NjQzNTYyYTc4ZGJiYjBlNWYxNmVmZDg3OGMwZjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_89b11e6e30e9428bb5f5fbbd8e848f92",
+      "statement": "ErmesMail supports four SMTP security modes: Plain SMTP (ports 25/1025), SSL/SMTPS (port 465 with `--sslon --sslport`), STARTTLS optional (port 587 with `--starttls`), and STARTTLS required (port 587 with `--starttls --starttls-required`).",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L48-L80",
+          "version": "repo-lines-v1:sha256:941d08d9d06dd2ae80681b9c997abaa04da9064e0ba45e689eb65ef2eb5bdb71:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjZThkZjNjMDVmODUzZGE2ZjBmZWQ1NzVlZmM2OWM4ZjdhOTQxN2NiZWEzMjFjODY1N2RmNWE4YzdlZWRkNzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiZmE4OTc2NGI1N2JhYzdkMDg4MDk1ZmFiNTdmNmY2MGFiMGQwM2QwZDY3NzVhY2UzMWYxNWRiNjE0ZmZjY2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyZTFjOTQzMzNiYjBmMzRlYTI3MDU4ZWVkMzg2ZTBmNjcxYzlhNTA4OWMwMGY3ZTE5MzkxODllOTk4OWI0ZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwOTBmYzJhNDExZjJkODM0M2I4MTJkYTM3MDMwNmUxNzFkYTcyMDI2YmI4NDRhNzYxM2FjNDdhM2ExMjViOWIifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/softinstigate/ermes/mail/SMTPConfig.java",
+          "version": "repo-file-v1:sha256:77a04386d5ea9bf8dc5afbea5d0d8f15e8dfe60db33f79577dc6d46b3486b015"
+        }
+      ]
+    },
+    {
+      "id": "claim_6a787d3ab4434a0baf5e973360363b2d",
+      "statement": "The CI workflow (`.github/workflows/ci.yml`) triggers on push to any branch when `*.java` or `pom.xml` files change, ignores tags, downloads the ByteBuddy agent JAR (version 1.18.11-jdk5), and runs unit tests with `-javaagent` for Mockito inline mock-maker support.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/ci.yml",
+          "version": "repo-file-v1:sha256:ee3c662294eaa879e240de5789c34f24ed42822b906a1e3f1854e0522499b2f7"
+        }
+      ]
+    },
+    {
+      "id": "claim_69ed03470ff042c9af6f691a8eee39ee",
+      "statement": "The Maven Publish workflow (`.github/workflows/maven-publish.yml`) triggers on tag push, builds with `mvn package`, and publishes to GitHub Packages using `mvn deploy` with `GITHUB_TOKEN`.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/maven-publish.yml",
+          "version": "repo-file-v1:sha256:6bb6fc9644c229752e785483f70c1ef99ffd62c45e76b26c9cf4868c564b2cef"
+        }
+      ]
+    },
+    {
+      "id": "claim_30cd891e87c1410ea76d60a8f8f8b8ed",
+      "statement": "The OpenWiki Update workflow (`.github/workflows/openwiki-update.yml`) runs on a scheduled cron (`29 4 */7 * *` — every 7 days at 04:29 UTC) or manual `workflow_dispatch`, installs OpenWiki globally, runs `openwiki code --update --print` with the OpenRouter provider and `xiaomi/mimo-v2.5-pro` model, and creates a pull request on branch `openwiki/update` for changes to `openwiki/`, `AGENTS.md`, or `CLAUDE.md`.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/openwiki-update.yml",
+          "version": "repo-file-v1:sha256:bed9dcea7c8e8f091bc1de58eb7457ae45216d50683da110f71098a63d43d681"
+        }
+      ]
+    },
+    {
+      "id": "claim_8462fc5236df4ed9886c64c7cc0520ad",
+      "statement": "The project uses specific dependency versions: commons-email 1.6.0 (compile), picocli 4.7.7 (compile), JUnit Jupiter 6.1.2 (test), Mockito 5.23.0 (test), and ByteBuddy 1.18.11-jdk5 (test) as defined in pom.xml.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L48-L80",
+          "version": "repo-lines-v1:sha256:941d08d9d06dd2ae80681b9c997abaa04da9064e0ba45e689eb65ef2eb5bdb71:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjZThkZjNjMDVmODUzZGE2ZjBmZWQ1NzVlZmM2OWM4ZjdhOTQxN2NiZWEzMjFjODY1N2RmNWE4YzdlZWRkNzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiZmE4OTc2NGI1N2JhYzdkMDg4MDk1ZmFiNTdmNmY2MGFiMGQwM2QwZDY3NzVhY2UzMWYxNWRiNjE0ZmZjY2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyZTFjOTQzMzNiYjBmMzRlYTI3MDU4ZWVkMzg2ZTBmNjcxYzlhNTA4OWMwMGY3ZTE5MzkxODllOTk4OWI0ZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwOTBmYzJhNDExZjJkODM0M2I4MTJkYTM3MDMwNmUxNzFkYTcyMDI2YmI4NDRhNzYxM2FjNDdhM2ExMjViOWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_57298b663c874a7788a83890d0b31e0e",
+      "statement": "The `setversion.sh` script validates semver format, prevents downgrades (unless `--force`), requires the current branch to match `<major>.x` pattern for release versions (e.g., `3.x` for version `3.0.0`), requires a clean working tree, updates `chart/Chart.yaml` if present, commits with appropriate messages, and creates git tags for release versions.",
+      "evidence": [
+        {
+          "resource": "repo://setversion.sh",
+          "version": "repo-file-v1:sha256:29433e66e0b4bb8c8bfa680d34ce5d1b1daad7931e7a238e026046083a6980b6"
+        }
+      ]
+    },
+    {
+      "id": "claim_b87290af8d3442ada0e27a951a435ee7",
+      "statement": "ErmesMail is distributed via JitPack (consumers add JitPack repository and use `com.softinstigate:ermes-mail:<version>:shaded` dependency) and GitHub Packages (published automatically on tag push via the Maven Publish workflow).",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/maven-publish.yml",
+          "version": "repo-file-v1:sha256:6bb6fc9644c229752e785483f70c1ef99ffd62c45e76b26c9cf4868c564b2cef"
+        },
+        {
+          "resource": "repo://pom.xml#L40-L46",
+          "version": "repo-lines-v1:sha256:99f5878d5103ab2c401b570e9246d79f027c85288a5b217ca1ffea532fb6b075:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjViY2Y4MzRhYTljYjcyM2FjNThhZDg0NTk5M2I4YzM1ODdjOGQ1MjEwYjJkN2EzMDhhYzQ0YzQxNDc1YjcxMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjZiYjczYTc3YWRhOTZiZGVjYmMzYjcxYzlmYzA0NTRkMDFiNzk4NGI1OWFkOGQ3ZjRhNmZkYjg4MWVjOWZkNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTBhZDBkYjFkZDU2MDI0YTZkYTk2OGZiMDQ3MGY2MGI1YTE3YWE3ZTczZjdjZGQyODQxOGExODcyOTA1NjE1OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjEwOTgyODNhZGZmOWQzMmM4ZjFhNTA3MDI1ZTE4YzFmNzBiNTA3OGQ5MjVkMjM1Yzc1YzgzZGY0ODE5ODRkNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7c1f7c4db1804159be79e8eab14291a6",
+      "statement": "Commons Email 1.6.0 requires the pre-Jakarta `javax.mail` namespace; adding explicit runtime dependencies for `javax.mail-api:1.6.2` and `com.sun.mail:javax.mail:1.6.2` prevents `NoSuchMethodError` for `LineOutputStream.<init>`.",
+      "evidence": [
+        {
+          "resource": "repo://CHANGELOG.md#L120-L123",
+          "version": "repo-lines-v1:sha256:9e13a5012fd9c8d7ad0acf977674eb29428ee797465c4d8d6fb63f5643435606:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2VlZTNkMTdiNjE4MTFjMzdlNjYwOGYzODQyYjUyN2FmNzIwNzEwZGZhNmU4MDBjMjc0YTczNGI1ZjA0OTFjZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTA4MzExMmE4NmEyZGVhMmU5NjA0YTgxOWY0ODVhMDViOWQxYjc2ZmFlNTRkZTI2ZWQzM2FjOTVkNjcxZmRjZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTE2NGQ0OTE1OWVmNGMwMzRkZWVhNjI5MTc3M2IyMmI3NWU1ODNhZmNkNDE3ZjQyNDViZTU1OTAwNTdhNDhkMCJ9"
+        },
+        {
+          "resource": "repo://pom.xml#L48-L54",
+          "version": "repo-lines-v1:sha256:99d38585cae39d6db862887591043d608dc12201d1ee9fd02c826698e9e400e1:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmNlOGRmM2MwNWY4NTNkYTZmMGZlZDU3NWVmYzY5YzhmN2E5NDE3Y2JlYTMyMWM4NjU3ZGY1YThjN2VlZGQ3NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzE1ZTc2ZGM3MTA4ODNiZWUwNjBiMWFkNmI1OWVhZDk0OGY0MmJmZGI3ZWE1YjhkYjVkMzBkMzVlYTBkMGRiMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjJlMWM5NDMzM2JiMGYzNGVhMjcwNThlZWQzODZlMGY2NzFjOWE1MDg5YzAwZjdlMTkzOTE4OWU5OTg5YjRkMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjYyOGRjZjY2ODViNjJjMWU4NGViYjkzY2YyMzE5NTFkZDJmZGFlYTZlNTZiODg3YzczYmIyMmVkYWNiOTllZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4039729ec2f64b7cb152349f9a37110d",
+      "statement": "Integration tests are excluded from unit test runs by surefire configuration (`**/IT*.java` pattern) and only execute via `mvn verify` locally; they require a `smtp-integration.properties` file or matching environment variables for SMTP credentials.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L196-L200",
+          "version": "repo-lines-v1:sha256:7cc006fc22f94048fd352ab038b2dea4a90381dbc9ba0a48772e2e53165f4d15:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzdlZGE3MTdkNGZmYmNhMWMxZTE1YzhmNjIxZDg1ZjNiYWY0NWM4NzM1NzY2M2ZhNjFjMDYwOTU3ZThlNTIzZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjQ5M2JhM2JkMzBlMmE0YzE5OTEwOGQ0YzJmOWFkN2UwOTcwYzEzM2RiNjY5M2UwNThjYjEyMDI2ZjE2MmQxYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjVmMTVmMGY3MzE3MjQ1ZTcyNzAzNmI3OGZmODgxZGExNzU2NDM1NjJhNzhkYmJiMGU1ZjE2ZWZkODc4YzBmMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTc4MjUxNjQxMTk2NDhlM2ZkOGIxMjcxYmFjNTUxOTQ3NDQ3YTA4OTQ5ZjY2OTBiY2M5NTk4ZTY5MjNkYmI2YyJ9"
+        },
+        {
+          "resource": "repo://smtp-integration.properties.example",
+          "version": "repo-file-v1:sha256:c572792f981e16c16dad8dc9e4a735a1ecd7e107db045d306cafab4815f9e22c"
+        }
+      ]
+    },
+    {
+      "id": "claim_4e475c8489f9438db36df071d0ee644a",
+      "statement": "The `update-dependencies.sh` script runs `versions:use-latest-releases` and `versions:update-properties` sequentially; passing `true` as the first argument allows minor version updates (default is patch-level only).",
+      "evidence": [
+        {
+          "resource": "repo://update-dependencies.sh",
+          "version": "repo-file-v1:sha256:2bc44be0dddeefff44fb23e62231f9d90dbc52c285221e23778d5ff7677095ac"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.0",
+    "at": "2026-09-08T09:00:18.765Z"
+  }
+}

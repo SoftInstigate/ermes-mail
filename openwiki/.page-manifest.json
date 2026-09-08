@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "pages": {
+    "/openwiki/architecture/overview.md": {
+      "pageVersion": "sha256:6b58e4c440375e6ce276a7e5ec74e6a7cca773d36eb0bd3361092000c443f22c",
+      "completedBy": "openwiki/0.5.0",
+      "completedRunId": "74d31513-967d-462c-a37e-24eca508c076",
+      "gitHead": "76176146ad9497fb936f0ad1520a7d41f8a8914c",
+      "sourceFingerprint": "sha256:0dca455ab59be87c9c9773285bb077a653356e019bc2f3cb42bd6a644e5c1086"
+    },
+    "/openwiki/domain/concepts.md": {
+      "pageVersion": "sha256:f290807f7fbc43499beafd99edab2ab9c09520025afcd9a2b38b9816582ed8a7",
+      "completedBy": "openwiki/0.5.0",
+      "completedRunId": "74d31513-967d-462c-a37e-24eca508c076",
+      "gitHead": "76176146ad9497fb936f0ad1520a7d41f8a8914c",
+      "sourceFingerprint": "sha256:0dca455ab59be87c9c9773285bb077a653356e019bc2f3cb42bd6a644e5c1086"
+    },
+    "/openwiki/operations/runbook.md": {
+      "pageVersion": "sha256:8f6b55f4af3a643f83fada4cd962ca7d8e806b821b042a9fb096bbd56633fa83",
+      "completedBy": "openwiki/0.5.0",
+      "completedRunId": "74d31513-967d-462c-a37e-24eca508c076",
+      "gitHead": "76176146ad9497fb936f0ad1520a7d41f8a8914c",
+      "sourceFingerprint": "sha256:0dca455ab59be87c9c9773285bb077a653356e019bc2f3cb42bd6a644e5c1086"
+    },
+    "/openwiki/quickstart.md": {
+      "pageVersion": "sha256:37033ad1910764e79833e4df5e11675b312ee0799d3139c854649f6be375c947",
+      "completedBy": "openwiki/0.5.0",
+      "completedRunId": "74d31513-967d-462c-a37e-24eca508c076",
+      "gitHead": "76176146ad9497fb936f0ad1520a7d41f8a8914c",
+      "sourceFingerprint": "sha256:0dca455ab59be87c9c9773285bb077a653356e019bc2f3cb42bd6a644e5c1086"
+    },
+    "/openwiki/source-map.md": {
+      "pageVersion": "sha256:34a82b272bca2095a52e813ab2776db475b5d9176b63fcd2d264d9d889a42b80",
+      "completedBy": "openwiki/0.5.0",
+      "completedRunId": "74d31513-967d-462c-a37e-24eca508c076",
+      "gitHead": "76176146ad9497fb936f0ad1520a7d41f8a8914c",
+      "sourceFingerprint": "sha256:0dca455ab59be87c9c9773285bb077a653356e019bc2f3cb42bd6a644e5c1086"
+    }
+  }
+}

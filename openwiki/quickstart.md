@@ -4,8 +4,8 @@ title: ErmesMail Quickstart
 description: Entry point for the ErmesMail code wiki. Covers what the project does, how to build and run it, and where to find detailed documentation.
 tags: [quickstart, java, email, smtp, maven]
 verified:
-  - by: openwiki/0.4.3
-    at: 2026-09-01T09:33:22.001Z
+  - by: openwiki/0.5.0
+    at: 2026-09-08T09:00:18.765Z
 sources:
   - id: openwiki-source-2355f81d7cf522f8dbdaabd4
     resource: repo://pom.xml
@@ -41,7 +41,7 @@ sources:
     resource: repo://src/test/java/com/softinstigate/ermes/mail/SendEmailTaskTest.java
   - id: openwiki-source-2e9051b2ab4dcf828e614778
     resource: repo://src/test/java/com/softinstigate/ermes/mail/SMTPConfigTest.java
-generated: { by: "openwiki/0.4.3", at: "2026-09-01T09:33:22.001Z" }
+generated: { by: "openwiki/0.5.0", at: "2026-09-08T09:00:18.765Z" }
 ---
 
 # ErmesMail Quickstart
@@ -56,6 +56,22 @@ ErmesMail (Ἑρμῆς Mail) is a Java library and CLI tool for sending HTML em
 
 1. **As a library** — embed in your Maven project and call `EmailService` programmatically
 2. **As a CLI tool** — build a fat JAR and send emails from the shell
+
+```mermaid
+flowchart TD
+    A[Start] --> B{Usage mode?}
+    B -->|Library| C[Add Maven dependency]
+    B -->|CLI| D[Build fat JAR]
+    C --> E[Create SMTPConfig]
+    D --> F[Run with flags]
+    E --> G[Create EmailModel]
+    F --> H[Parse CLI options]
+    G --> I[Use EmailService]
+    H --> I
+    I --> J[Send email]
+```
+
+*Figure: Two paths to send email with ErmesMail — library (programmatic) and CLI (shell).*
 
 ## Build
 
@@ -102,6 +118,13 @@ try (EmailService emailService = new EmailService(smtpConfig)) {
     // or: List<String> errors = emailService.sendSynch(emailModel); // synchronous
 }
 ```
+
+Key 3.0 features:
+- **Lazy thread pool** — the `ExecutorService` is created only on the first `send()` call
+- **Virtual threads support** — `threadPoolSize=0` disables internal pool, letting callers manage concurrency externally
+- **Socket timeouts** — configurable `connectionTimeout` and `socketTimeout` in `SMTPConfig`
+- **`AutoCloseable`** — `EmailService` implements `AutoCloseable` for try-with-resources
+- **Input validation** — early `NullPointerException`/`IllegalArgumentException` on invalid inputs
 
 ## Key Documentation Pages
 

@@ -4,8 +4,8 @@ title: ErmesMail Domain Concepts
 description: Core domain objects in ErmesMail — SMTPConfig, EmailModel, EmailService, SendEmailTask, HtmlEmailFactory, and Main.
 tags: [domain, smtp, email, config, model]
 verified:
-  - by: openwiki/0.4.3
-    at: 2026-09-01T09:33:22.001Z
+  - by: openwiki/0.5.0
+    at: 2026-09-08T09:00:18.765Z
 sources:
   - id: openwiki-source-b7f22bb017d700f0525c051c
     resource: repo://src/main/java/com/softinstigate/ermes/mail/DefaultHtmlEmailFactory.java
@@ -25,7 +25,7 @@ sources:
     resource: repo://src/test/java/com/softinstigate/ermes/mail/EmailServiceTest.java
   - id: openwiki-source-3d6eb9099e3c0ec4cef2e98c
     resource: repo://src/test/java/com/softinstigate/ermes/mail/SendEmailTaskTest.java
-generated: { by: "openwiki/0.4.3", at: "2026-09-01T09:33:22.001Z" }
+generated: { by: "openwiki/0.5.0", at: "2026-09-08T09:00:18.765Z" }
 ---
 
 # Domain Concepts
@@ -33,6 +33,7 @@ generated: { by: "openwiki/0.4.3", at: "2026-09-01T09:33:22.001Z" }
 ## SMTPConfig
 
 **Source:** `src/main/java/com/softinstigate/ermes/mail/SMTPConfig.java`
+<!-- openwiki: broken internal link [../source-map.md#smtpconfigjava] heading anchor "smtpconfigjava" does not exist in "../source-map.md". Fix the href or restore the target, then delete this comment. -->
 **Source Map:** See [SMTPConfig.java](../source-map.md#smtpconfigjava) for change guidance.
 
 Holds SMTP server connection details. Construction is via static factory methods (not public constructors) to make the security intent explicit.
@@ -86,6 +87,7 @@ The private constructor validates that `hostname` is non-null and non-blank, and
 ## EmailModel
 
 **Source:** `src/main/java/com/softinstigate/ermes/mail/EmailModel.java`
+<!-- openwiki: broken internal link [../source-map.md#emailmodeljava] heading anchor "emailmodeljava" does not exist in "../source-map.md". Fix the href or restore the target, then delete this comment. -->
 **Source Map:** See [EmailModel.java](../source-map.md#emailmodeljava) for change guidance.
 
 Represents an email message with sender, subject, HTML body, recipients, and attachments.
@@ -134,6 +136,7 @@ All getter methods (`getToRecipients()`, `getCcRecipients()`, `getBccRecipients(
 ## EmailService
 
 **Source:** `src/main/java/com/softinstigate/ermes/mail/EmailService.java`
+<!-- openwiki: broken internal link [../source-map.md#emailservicejava] heading anchor "emailservicejava" does not exist in "../source-map.md". Fix the href or restore the target, then delete this comment. -->
 **Source Map:** See [EmailService.java](../source-map.md#emailservicejava) for change guidance.
 
 The primary API entry point. Manages an `ExecutorService` thread pool for async email delivery. Implements `AutoCloseable` for use with try-with-resources.
@@ -178,6 +181,7 @@ When `threadPoolSize == 0`, no executor is created. `send()` executes synchronou
 ## SendEmailTask
 
 **Source:** `src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java`
+<!-- openwiki: broken internal link [../source-map.md#sendemailtaskjava] heading anchor "sendemailtaskjava" does not exist in "../source-map.md". Fix the href or restore the target, then delete this comment. -->
 **Source Map:** See [SendEmailTask.java](../source-map.md#sendemailtaskjava) for change guidance.
 
 Implements `Callable<List<String>>`. Configures and sends a single email via Apache Commons Email `HtmlEmail`.
@@ -223,8 +227,8 @@ If the system property `mail.debug` is `true`, the task enables JavaMail debug o
 ## HtmlEmailFactory
 
 **Source:** `src/main/java/com/softinstigate/ermes/mail/HtmlEmailFactory.java`
-<!-- openwiki: broken internal link [../source-map.md#htmlEmailfactoryjava] heading anchor "htmlEmailfactoryjava" does not exist in "../source-map.md". Fix the href or restore the target, then delete this comment. -->
-**Source Map:** See [HtmlEmailFactory.java](../source-map.md#htmlEmailfactoryjava) for change guidance.
+<!-- openwiki: broken internal link [../source-map.md#htmlemailfactoryjava] heading anchor "htmlemailfactoryjava" does not exist in "../source-map.md". Fix the href or restore the target, then delete this comment. -->
+**Source Map:** See [HtmlEmailFactory.java](../source-map.md#htmlemailfactoryjava) for change guidance.
 
 A single-method interface for creating `HtmlEmail` instances.
 
@@ -262,6 +266,7 @@ The production implementation. Its `create()` method returns `new HtmlEmail()`.
 ## Main (CLI)
 
 **Source:** `src/main/java/com/softinstigate/ermes/mail/Main.java`
+<!-- openwiki: broken internal link [../source-map.md#mainjava] heading anchor "mainjava" does not exist in "../source-map.md". Fix the href or restore the target, then delete this comment. -->
 **Source Map:** See [Main.java](../source-map.md#mainjava) for change guidance.
 
 Picocli-based CLI entry point. Implements `Callable<Integer>` with annotated fields for all CLI flags.

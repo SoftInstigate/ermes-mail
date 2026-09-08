@@ -1,3 +1,3 @@
 # Files
 
-- [ErmesMail Architecture Overview](overview.md) - High-level architecture of ErmesMail covering package structure, class relationships, async execution model, and SMTP security modes.
+- [ErmesMail Architecture Overview](overview.md) - High-level architecture covering package structure, class relationships, async execution model, SMTP security modes, testability pattern, and logging security.

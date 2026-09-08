@@ -3,6 +3,29 @@ type: Operations
 title: ErmesMail Operations & Runbook
 description: Operational guidance for ErmesMail — SMTP configuration, CI/CD pipelines, publishing, troubleshooting common issues.
 tags: [operations, smtp, ci, cd, troubleshooting, maven]
+verified:
+  - by: openwiki/0.5.0
+    at: 2026-09-08T09:00:18.765Z
+sources:
+  - id: openwiki-source-164e2da859b5277df81c7d94
+    resource: repo://.github/workflows/ci.yml
+  - id: openwiki-source-4a6c16f0a98b1c8c5fe325d8
+    resource: repo://.github/workflows/maven-publish.yml
+  - id: openwiki-source-6d4b4e707b8d60b6ccfa3425
+    resource: repo://.github/workflows/openwiki-update.yml
+  - id: openwiki-source-ca6cb4b1a14fd7969dfae3ec
+    resource: repo://CHANGELOG.md
+  - id: openwiki-source-2355f81d7cf522f8dbdaabd4
+    resource: repo://pom.xml
+  - id: openwiki-source-9a509e4f28155fbfb293d571
+    resource: repo://setversion.sh
+  - id: openwiki-source-5be7a0cd795be8951d2d6606
+    resource: repo://smtp-integration.properties.example
+  - id: openwiki-source-9c21b3f210c87fd6502ff018
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/SMTPConfig.java
+  - id: openwiki-source-8538a375cf4827a2b63a0319
+    resource: repo://update-dependencies.sh
+generated: { by: "openwiki/0.5.0", at: "2026-09-08T09:00:18.765Z" }
 ---
 
 # Operations & Runbook
@@ -159,7 +182,7 @@ ErmesMail is distributed via [JitPack](https://jitpack.io/#SoftInstigate/ermes-m
 
 ### GitHub Packages
 
-The `maven-publish.yml` workflow publishes to GitHub Packages on tag push. Requires a GitHub token with `packages:write` permission.
+The `maven-publish.yml` workflow publishes to GitHub Packages on tag push. Requires a GitHub token with `packages: write` permission.
 
 ## Troubleshooting
 

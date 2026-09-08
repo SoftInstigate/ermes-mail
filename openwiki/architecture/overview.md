@@ -1,8 +1,29 @@
 ---
 type: Architecture
 title: ErmesMail Architecture Overview
-description: High-level architecture of ErmesMail covering package structure, class relationships, async execution model, and SMTP security modes.
+description: High-level architecture covering package structure, class relationships, async execution model, SMTP security modes, testability pattern, and logging security.
 tags: [architecture, java, concurrency, smtp, design]
+verified:
+  - by: openwiki/0.5.0
+    at: 2026-09-08T09:00:18.765Z
+sources:
+  - id: openwiki-source-b7f22bb017d700f0525c051c
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/DefaultHtmlEmailFactory.java
+  - id: openwiki-source-6c8b662796c793acd21608be
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/EmailModel.java
+  - id: openwiki-source-9c9aef1c80259f898ff61a39
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/EmailService.java
+  - id: openwiki-source-02219b7976a0c9e88905c6dd
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/HtmlEmailFactory.java
+  - id: openwiki-source-379f409926d155ca61dee235
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/Main.java
+  - id: openwiki-source-1f12b1ce7d6a6ee6ae4915a4
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/SendEmailTask.java
+  - id: openwiki-source-9c21b3f210c87fd6502ff018
+    resource: repo://src/main/java/com/softinstigate/ermes/mail/SMTPConfig.java
+  - id: openwiki-source-3d6eb9099e3c0ec4cef2e98c
+    resource: repo://src/test/java/com/softinstigate/ermes/mail/SendEmailTaskTest.java
+generated: { by: "openwiki/0.5.0", at: "2026-09-08T09:00:18.765Z" }
 ---
 
 # Architecture Overview
@@ -90,7 +111,7 @@ sequenceDiagram
 `EmailService` uses `Executors.newFixedThreadPool(threadPoolSize)` to parallelize email sends. Key behaviors:
 
 - **Thread pool size** is configurable at construction (e.g., `new EmailService(config, 3)` uses 3 threads). The default constructor uses `Runtime.getRuntime().availableProcessors()`.
-- **Lazy initialization** — the `ExecutorService` is created on the first `send()` call, not in the constructor. Applications that only use `sendSynch()` never create a thread pool.
+- **Lazy initialization** — the `ExecutorService` is created on the first `send()` call, not in the constructor. This lazy initialization is thread-safe via a `synchronized` accessor method. Applications that only use `sendSynch()` never create a thread pool.
 - **poolSize = 0** — no internal pool is ever created; `send()` executes synchronously and returns an already-completed `Future`. This is designed for callers that manage concurrency externally (e.g., virtual threads in RestHeart). `shutdown()` is a no-op.
 - **AutoCloseable** — `EmailService` implements `AutoCloseable`, so the pool (if created) is shut down automatically in try-with-resources blocks.
 - **send()** returns a `Future<List<String>>` immediately; callers block on `Future.get()` when they need the result.
@@ -123,3 +144,11 @@ This pattern was introduced in v2.0.0 specifically to make `SendEmailTask` testa
 Since v2.1.0, `SMTPConfig.toString()` redacts the username and `EmailModel.toString()` redacts the message body. Both classes have `toSecureString()` methods that omit credentials and content entirely, reporting only metadata (hostname, port, security mode, recipient counts).
 
 `EmailService` and `SendEmailTask` use `toSecureString()` for their log lines, so default log output never exposes passwords or email content.
+
+## Socket Timeouts
+
+Since v3.0.0, `SMTPConfig` includes configurable socket timeouts:
+- **Connection timeout** — default 10 seconds (`DEFAULT_CONNECTION_TIMEOUT`)
+- **Socket read timeout** — default 60 seconds (`DEFAULT_SOCKET_TIMEOUT`)
+
+These are applied via `HtmlEmail.setSocketConnectionTimeout()` and `HtmlEmail.setSocketTimeout()` in `SendEmailTask`.

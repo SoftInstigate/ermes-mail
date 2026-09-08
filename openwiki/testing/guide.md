@@ -3,9 +3,6 @@ type: Testing
 title: ErmesMail Testing Guide
 description: How to run unit and integration tests, mocking patterns for SendEmailTask, ByteBuddy agent setup, and CI configuration for ErmesMail.
 tags: [testing, junit, mockito, integration, ci]
-verified:
-  - by: openwiki/0.4.3
-    at: 2026-09-01T09:33:22.001Z
 sources:
   - id: openwiki-source-164e2da859b5277df81c7d94
     resource: repo://.github/workflows/ci.yml
